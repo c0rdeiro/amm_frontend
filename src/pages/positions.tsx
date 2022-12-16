@@ -3,16 +3,24 @@ import PositionsHeader, {
 } from '@/components/Positions/PositionsHeader'
 import PositionsTable from '@/components/Positions/PositionsTable'
 import { SelectItem } from '@/components/shared/Form/Select'
-import { tokens } from '@/constants'
+import { getTokens } from '@/lib/getTokens'
 import { CustomPage } from '@/types/next'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 const PositionsPage: CustomPage = () => {
+  const { data: tokens } = useQuery({
+    queryKey: ['tokens'],
+    queryFn: getTokens,
+    refetchInterval: 5000,
+  })
+
   const allOperations: SelectItem[] = [{ label: 'Call' }, { label: 'Put' }]
   const [operationFilter, setOperationFilter] =
     useState<SelectItem[]>(allOperations)
 
-  const allTokens: SelectItem[] = tokens.map((item) => ({ label: item.label }))
+  const allTokens: SelectItem[] =
+    tokens?.map((item) => ({ label: item.symbol })) ?? []
   const [tokensFilter, setTokensFilter] = useState<SelectItem[]>(allTokens)
 
   const allStatuses: SelectItem[] = [{ label: 'Open' }, { label: 'Closed' }]

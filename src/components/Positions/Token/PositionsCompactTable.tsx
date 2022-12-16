@@ -1,5 +1,3 @@
-import { tokens } from '@/constants'
-import useTokenIcon from '@/hooks/useTokenIcon'
 import { useToken } from '@/store/tokenStore'
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
@@ -22,45 +20,46 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
   showTableHeader = true,
 }) => {
   const token = useToken()
+
   const data: PositionType[] = [
-    {
-      token: tokens[0]!,
-      operation: 'Call',
-      numContracts: 0.546,
-      strike: 1300.0,
-      expDate: new Date('2022-11-4'),
-      value: 7.45,
-      costPerOption: 1375.21,
-      price: 1456.09,
-      profit: 44.16,
-      status: 'Closed',
-      impliedVolatility: 88.74,
-      delta: 4.45,
-      vega: 12.12,
-      gamma: 21.32,
-      theta: 14.14,
-      openInterest: 3800,
-      openDate: new Date(),
-    },
-    {
-      token: tokens[0]!,
-      operation: 'Put',
-      numContracts: 0.546,
-      strike: 1300.0,
-      expDate: new Date('2022-11-4'),
-      value: 7.45,
-      costPerOption: 1456.09,
-      price: 1375.21,
-      profit: -44.16,
-      status: 'Open',
-      impliedVolatility: 88.74,
-      delta: 4.45,
-      vega: 12.12,
-      gamma: 21.32,
-      theta: 14.14,
-      openInterest: 3800,
-      openDate: new Date(),
-    },
+    // {
+    //   token: tokens[0]!,
+    //   operation: 'Call',
+    //   numContracts: 0.546,
+    //   strike: 1300.0,
+    //   expDate: new Date('2022-11-4'),
+    //   value: 7.45,
+    //   costPerOption: 1375.21,
+    //   price: 1456.09,
+    //   profit: 44.16,
+    //   status: 'Closed',
+    //   impliedVolatility: 88.74,
+    //   delta: 4.45,
+    //   vega: 12.12,
+    //   gamma: 21.32,
+    //   theta: 14.14,
+    //   openInterest: 3800,
+    //   openDate: new Date(),
+    // },
+    // {
+    //   token: tokens[0]!,
+    //   operation: 'Put',
+    //   numContracts: 0.546,
+    //   strike: 1300.0,
+    //   expDate: new Date('2022-11-4'),
+    //   value: 7.45,
+    //   costPerOption: 1456.09,
+    //   price: 1375.21,
+    //   profit: -44.16,
+    //   status: 'Open',
+    //   impliedVolatility: 88.74,
+    //   delta: 4.45,
+    //   vega: 12.12,
+    //   gamma: 21.32,
+    //   theta: 14.14,
+    //   openInterest: 3800,
+    //   openDate: new Date(),
+    // },
   ]
 
   const columnHelper = createColumnHelper<PositionType>()
@@ -196,7 +195,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
       data={data.filter(
         (position) =>
           (statusToShow === 'All' || position.status === statusToShow) &&
-          position.token.label === token.label
+          position.token.symbol === token.symbol
       )}
       columns={columns}
       getRowCanExpand={(row: Row<PositionType>) =>

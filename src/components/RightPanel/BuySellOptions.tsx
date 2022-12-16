@@ -30,7 +30,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
     <>
       <div className="flex flex-col items-center gap-1 overflow-y-auto">
         <div className="text-2.5xl font-semibold">
-          {`${option.isSell ? 'Sell' : 'Buy'} ${token.label} ${
+          {`${option.isSell ? 'Sell' : 'Buy'} ${token.symbol} ${
             option.isCall ? 'Call' : 'Put'
           }`}
         </div>
@@ -43,7 +43,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         </div>
       </div>
       <div className="flex items-start justify-center gap-1 overflow-visible pb-4 text-xs text-text-purple">
-        {`You bet on ${token.label} being `}
+        {`You bet on ${token.symbol} being `}
         <span
           className={clsx({
             'text-red': isBelow,
@@ -160,7 +160,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           type="submit"
           label={`${
             option.isSell ? 'SELL' : 'BUY'
-          } ${token.label.toUpperCase()} ${option.isCall ? 'CALL' : 'PUT'}`}
+          } ${token.symbol.toUpperCase()} ${option.isCall ? 'CALL' : 'PUT'}`}
         />
         <div className="flex items-start gap-2 py-2 text-xs text-text-purple">
           {' '}

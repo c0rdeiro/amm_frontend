@@ -23,6 +23,8 @@ export default function formatNumber(
   value: number,
   options?: FormatNumberOptions
 ) {
+  // const f = new Intl.NumberFormat('en-US')
+
   const {
     decimalCases = 0,
     symbol = '',

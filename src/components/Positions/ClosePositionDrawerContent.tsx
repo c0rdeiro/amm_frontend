@@ -25,7 +25,7 @@ const ClosePositionDrawerContent: React.FC<ClosePositionDrawerContentProps> = ({
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 font-medium">
       <div className="flex flex-col items-center gap-1 pb-4">
         <h1 className="text-2.5xl font-semibold">
-          {`Sell ${position.token.label.toUpperCase()} ${position.operation}`}
+          {`Sell ${position.token.symbol.toUpperCase()} ${position.operation}`}
         </h1>
         <h2 className="text-lg ">
           {`Strike ${formatNumber(position.strike, {

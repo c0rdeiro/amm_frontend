@@ -14,10 +14,8 @@ type MenuLinkType = {
 }
 
 type MarketTokenType = {
-  label: string
-  iconPath: string
+  symbol: string
   price: number
-  priceCurrency: '$'
 }
 
 type TokenInfoType = {

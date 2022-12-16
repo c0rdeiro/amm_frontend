@@ -1,5 +1,4 @@
-import { tokens } from '@/constants'
-import useTokenIcon from '@/hooks/useTokenIcon'
+import tokenIcon from '@/hooks/tokenIcon'
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
@@ -7,7 +6,7 @@ import { getPercentage } from '@/utils/getPercentage'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useState } from 'react'
-import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
+import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
 import ClosePositionDrawerContent from './ClosePositionDrawerContent'
@@ -16,44 +15,44 @@ import PositionsExpandedRow from './PositionsExpandedRow'
 
 const PositionsTable = () => {
   const data: PositionType[] = [
-    {
-      token: tokens[0]!,
-      operation: 'Call',
-      numContracts: 0.546,
-      strike: 1300.0,
-      expDate: new Date('2022-11-4'),
-      value: 7.45,
-      costPerOption: 1375.21,
-      price: 1456.09,
-      profit: 44.16,
-      status: 'Closed',
-      impliedVolatility: 88.74,
-      delta: 4.45,
-      vega: 12.12,
-      gamma: 21.32,
-      theta: 14.14,
-      openInterest: 3800,
-      openDate: new Date(),
-    },
-    {
-      token: tokens[1]!,
-      operation: 'Put',
-      numContracts: 0.546,
-      strike: 1300.0,
-      expDate: new Date('2022-11-4'),
-      value: 7.45,
-      costPerOption: 1456.09,
-      price: 1375.21,
-      profit: -44.16,
-      status: 'Open',
-      impliedVolatility: 88.74,
-      delta: 4.45,
-      vega: 12.12,
-      gamma: 21.32,
-      theta: 14.14,
-      openInterest: 3800,
-      openDate: new Date(),
-    },
+    // {
+    //   token: tokens[0],
+    //   operation: 'Call',
+    //   numContracts: 0.546,
+    //   strike: 1300.0,
+    //   expDate: new Date('2022-11-4'),
+    //   value: 7.45,
+    //   costPerOption: 1375.21,
+    //   price: 1456.09,
+    //   profit: 44.16,
+    //   status: 'Closed',
+    //   impliedVolatility: 88.74,
+    //   delta: 4.45,
+    //   vega: 12.12,
+    //   gamma: 21.32,
+    //   theta: 14.14,
+    //   openInterest: 3800,
+    //   openDate: new Date(),
+    // },
+    // {
+    //   token: tokens[1]!,
+    //   operation: 'Put',
+    //   numContracts: 0.546,
+    //   strike: 1300.0,
+    //   expDate: new Date('2022-11-4'),
+    //   value: 7.45,
+    //   costPerOption: 1456.09,
+    //   price: 1375.21,
+    //   profit: -44.16,
+    //   status: 'Open',
+    //   impliedVolatility: 88.74,
+    //   delta: 4.45,
+    //   vega: 12.12,
+    //   gamma: 21.32,
+    //   theta: 14.14,
+    //   openInterest: 3800,
+    //   openDate: new Date(),
+    // },
   ]
 
   const columnHelper = createColumnHelper<PositionType>()
@@ -62,8 +61,8 @@ const PositionsTable = () => {
       id: 'token',
       cell: (info) => (
         <DataTableContentItem clickType="expand" row={info.row}>
-          {useTokenIcon(info.getValue().label, 18)}
-          {info.getValue().label}
+          {tokenIcon(info.getValue().symbol, 18)}
+          {info.getValue().symbol}
         </DataTableContentItem>
       ),
       header: () => <span>Market</span>,
@@ -211,7 +210,7 @@ const PositionsTable = () => {
   return (
     <DataTable
       colorScheme="white"
-      data={data}
+      data={data ?? []}
       columns={columns}
       getRowCanExpand={(row: Row<PositionType>) =>
         row.original.status === 'Open'

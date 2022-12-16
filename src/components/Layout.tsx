@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isLg, active, isMd, isSm, isXl } = useBreakpoints()
+  const { isXl } = useBreakpoints()
 
   return (
     <>
