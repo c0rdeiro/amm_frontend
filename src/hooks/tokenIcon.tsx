@@ -4,7 +4,7 @@ import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import LINKIcon from '@/Icons/tokens/link'
 
-export default function useTokenIcon(
+export default function tokenIcon(
   token: string,
   size: number
 ): React.ReactNode {

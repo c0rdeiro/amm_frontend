@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Image from 'next/image'
 import { useToken } from '@/store/tokenStore'
-import useTokenIcon from '@/hooks/useTokenIcon'
+import tokenIcon from '@/hooks/tokenIcon'
 import formatDateTime from '@/utils/formatDateTime'
 import { PositionType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
@@ -54,7 +54,7 @@ const PositionCloseModal: React.FC<PositionCloseModalProps> = ({
                   quality={100}
                 />
                 <div className="flex flex-col items-center gap-4">
-                  {useTokenIcon(token.label, 56)}
+                  {tokenIcon(token.label, 56)}
                   <div className="flex flex-col items-center justify-center">
                     <h3 className="text-2.5xl font-semibold ">{token.label}</h3>
                     <p className="text-text-purple">

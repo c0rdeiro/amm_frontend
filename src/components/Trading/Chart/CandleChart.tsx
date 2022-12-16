@@ -1,4 +1,4 @@
-import useTokenIcon from '@/hooks/useTokenIcon.jsx'
+import tokenIcon from '@/hooks/tokenIcon.jsx'
 import {
   useGraphVisibleRange,
   useToken,

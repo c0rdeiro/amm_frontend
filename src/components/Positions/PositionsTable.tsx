@@ -1,5 +1,5 @@
 import { tokens } from '@/constants'
-import useTokenIcon from '@/hooks/useTokenIcon'
+import tokenIcon from '@/hooks/tokenIcon'
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
@@ -62,7 +62,7 @@ const PositionsTable = () => {
       id: 'token',
       cell: (info) => (
         <DataTableContentItem clickType="expand" row={info.row}>
-          {useTokenIcon(info.getValue().label, 18)}
+          {tokenIcon(info.getValue().label, 18)}
           {info.getValue().label}
         </DataTableContentItem>
       ),

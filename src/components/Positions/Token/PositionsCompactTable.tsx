@@ -1,5 +1,5 @@
 import { tokens } from '@/constants'
-import useTokenIcon from '@/hooks/useTokenIcon'
+import tokenIcon from '@/hooks/tokenIcon'
 import { useToken } from '@/store/tokenStore'
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'

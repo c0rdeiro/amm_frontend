@@ -1,5 +1,5 @@
 import { tokens } from '@/constants'
-import useTokenIcon from '@/hooks/useTokenIcon'
+import tokenIcon from '@/hooks/tokenIcon'
 import { useToken, useTokenActions } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import { Listbox, Transition } from '@headlessui/react'
@@ -15,7 +15,7 @@ const TokenSelect: React.FC = () => {
   }
   return (
     <div className="flex flex-row items-start gap-2 text-2.5xl font-semibold">
-      {useTokenIcon(token.label, 36)}
+      {tokenIcon(token.label, 36)}
       <Listbox value={token.label} onChange={log}>
         <Listbox.Button className="flex flex-row items-center gap-1">
           {token.label} <MdOutlineKeyboardArrowDown size="1.5rem" />
@@ -36,7 +36,7 @@ const TokenSelect: React.FC = () => {
                   onClick={() => setToken(item)}
                   className="flex gap-2 px-2 py-2 hover:cursor-pointer"
                 >
-                  {useTokenIcon(item.label, 20)}
+                  {tokenIcon(item.label, 20)}
                   {item.label}
                 </Listbox.Option>
               ))}
