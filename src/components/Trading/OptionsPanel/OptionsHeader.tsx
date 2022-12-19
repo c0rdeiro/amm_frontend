@@ -1,16 +1,45 @@
-import Select from '@/components/shared/Form/Select'
+import Select, { SelectItem } from '@/components/shared/Form/Select'
 import Tabs from '@/components/shared/Tabs'
-import { useOptionsActions } from '@/store/optionsStore'
+import { getTokenOptionsExpiries } from '@/lib/getTokenOptionsExpiries'
+import { useOptionExpDate, useOptionsActions } from '@/store/optionsStore'
+import { useToken } from '@/store/tokenStore'
 import { TabType } from '@/types/next'
-import { useState } from 'react'
+import formatDateTime from '@/utils/formatDateTime'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from 'react-icons/hi2'
 import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 
 const OptionsHeader: React.FC = () => {
-  const dates: { label: string }[] = [{ label: 'Exp Nov 4, 5am' }]
-  const [filterDate, setFilterDate] = useState<{ label: string }>(dates[0]!)
-  const { setIsCall, setIsSell } = useOptionsActions()
-  //TODO: type actions
+  const token = useToken()
+  const filterDate = useOptionExpDate()
+  const { data: expiries } = useQuery({
+    queryKey: ['expiries', token.symbol],
+    queryFn: () => getTokenOptionsExpiries(token.symbol),
+  })
+
+  useEffect(() => {
+    if (!filterDate && expiries?.length) {
+      setExpDate({
+        value: expiries[0]!,
+        label: `Exp ${formatDateTime(new Date(+expiries[0]!), {
+          hideHours: false,
+          hideMinutes: false,
+        })}`,
+      })
+    }
+  }, [expiries])
+
+  const dates: SelectItem[] =
+    expiries?.map((item) => ({
+      value: item,
+      label: `Exp ${formatDateTime(new Date(+item), {
+        hideHours: false,
+        hideMinutes: false,
+      })}`,
+    })) ?? []
+  // const [filterDate, setFilterDate] = useState<SelectItem | undefined>(dates[0])
+  const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
   const buyOrSellTabs: TabType[] = [
     {
       label: 'Buy',
@@ -54,7 +83,7 @@ const OptionsHeader: React.FC = () => {
       </div>
       <Select
         selectedItem={filterDate}
-        setSelectedItem={() => setFilterDate}
+        setSelectedItem={setExpDate}
         items={dates}
       />
     </div>

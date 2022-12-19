@@ -19,7 +19,7 @@ type TokenStore = {
 const useTokenStore = create<TokenStore>((set) => ({
   token: {
     symbol: 'ETH',
-    price: 1666.72,
+    price: 0,
   },
   info: [
     { label: '24h Change', value: 3.43, type: '%', colorMode: 'redgreen' },

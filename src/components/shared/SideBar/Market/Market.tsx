@@ -9,7 +9,6 @@ const Market: React.FC = () => {
     queryFn: getTokens,
     refetchInterval: 5000,
   })
-
   const tokens: MarketTokenType[] = data ?? []
 
   return (

@@ -15,15 +15,25 @@ const PositionsPage: CustomPage = () => {
     refetchInterval: 5000,
   })
 
-  const allOperations: SelectItem[] = [{ label: 'Call' }, { label: 'Put' }]
+  const allOperations: SelectItem[] = [
+    { label: 'Call', value: 'Call', isDisabled: true },
+    { label: 'Put', value: 'Put', isDisabled: true },
+  ]
   const [operationFilter, setOperationFilter] =
     useState<SelectItem[]>(allOperations)
 
   const allTokens: SelectItem[] =
-    tokens?.map((item) => ({ label: item.symbol })) ?? []
+    tokens?.map((item) => ({
+      label: item.symbol,
+      value: item.symbol.toUpperCase(),
+      isDisabled: true,
+    })) ?? []
   const [tokensFilter, setTokensFilter] = useState<SelectItem[]>(allTokens)
 
-  const allStatuses: SelectItem[] = [{ label: 'Open' }, { label: 'Closed' }]
+  const allStatuses: SelectItem[] = [
+    { label: 'Open', value: 'Open', isDisabled: true },
+    { label: 'Closed', value: 'Closed', isDisabled: true },
+  ]
   const [statusFilter, setStatusFilter] = useState<SelectItem[]>(allStatuses)
 
   const filters: FilterType[] = [

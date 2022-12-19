@@ -3,10 +3,11 @@ import { OptionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
-import Select from '../shared/Form/Select'
+import Select, { SelectItem } from '../shared/Form/Select'
 import LineChart from './LineChart'
 
 type BuySellOptionsProps = {
@@ -18,10 +19,10 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
 
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
-  const coins = [{ label: 'USDC' }] //TODO: supported coins
+  const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
   const currentBalance = 12344 //TODO: should be replaced when user is set
   const feePercentage = 0.01
-  const [coinSelected, setCoinSelected] = useState<{ label: string }>(coins[0]!)
+  const [coinSelected, setCoinSelected] = useState<SelectItem>(coins[0]!)
   const [numContracts, setNumContracts] = useState<number>(1)
   const [fees, setFees] = useState<number>(1)
   /* TODO: insert real dates where 'Nov 4...' */

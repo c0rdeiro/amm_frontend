@@ -28,7 +28,7 @@ const MarketToken: React.FC<MarketTokenProps> = ({
           <div className="">{token.symbol}</div>
         </div>
         <div className="text-text-purple">
-          ${formatNumber(token.price, { decimalCases: 2, symbol: '$' })}
+          {formatNumber(token.price, { decimalCases: 2, symbol: '$' })}
         </div>
       </div>
     </button>
