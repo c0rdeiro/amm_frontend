@@ -32,6 +32,8 @@ export default function formatNumber(
     displayPositive = false,
   } = options || {}
 
+  if (symbol === '%') value = value * 100
+
   const parts = Math.abs(value).toString().split('.')
   const num = parts[0]!.replace(/\B(?=(\d{3})+(?!\d))/g, ',') // add commas
 

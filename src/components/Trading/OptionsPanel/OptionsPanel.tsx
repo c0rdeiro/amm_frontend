@@ -25,7 +25,12 @@ const OptionsPanel: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['options', token.symbol, expDate, isCall, isSell],
     queryFn: () =>
-      getTokenOptions(token.symbol, +expDate?.value!, isCall, isSell),
+      getTokenOptions(
+        token.symbol,
+        expDate ? +expDate.value : 0,
+        isCall,
+        isSell
+      ),
     enabled: !!expDate,
   })
 

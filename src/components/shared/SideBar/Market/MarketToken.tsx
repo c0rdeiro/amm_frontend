@@ -17,7 +17,6 @@ const MarketToken: React.FC<MarketTokenProps> = ({
     <button
       className="w-full"
       onClick={() => {
-        4
         setToken(token)
         push('/trading')
       }}

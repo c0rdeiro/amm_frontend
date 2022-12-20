@@ -14,41 +14,20 @@ import tailwindConfig from '../../../tailwind.config.cjs'
 import { useToken } from '@/store/tokenStore'
 import clsx from 'clsx'
 
-const LineChart = () => {
+type LineChartProps = {
+  data: { tokenPrice: number; payoff: number }[]
+}
+
+const LineChart: React.FC<LineChartProps> = ({ data }) => {
   // const fullConfig = resolveConfig(tailwindConfig)
   const token = useToken()
-  const tokenPrice = 1213
-  const strike = 1200
-  const pricePerOption = 124
-  const numContracts = 1
-
-  const calcPayoff = (
-    tokenPrice: number,
-    strike: number,
-    pricePerOption: number,
-    isCall: boolean
-  ) => {
-    if (isCall) {
-      return Math.max(0, tokenPrice - strike) - pricePerOption
-    } else {
-      return Math.max(0, strike - tokenPrice) - pricePerOption
-    }
-  }
-  const tokenName = 'ETH'
-  const data: { tokenPrice: number; payoff: number }[] = []
-  const maxRange = tokenPrice * 1.6
-  for (let index = 0; index < maxRange; index += 5) {
-    data.push({
-      tokenPrice: index,
-      payoff: calcPayoff(index, strike, pricePerOption, true) * numContracts,
-    })
-  }
+  console.log(data)
 
   const renderTooltip = (payload: { tokenPrice: number; payoff: number }) => {
     return (
       <div className=" ml-[-100%] flex flex-col items-center text-xs text-text-purple">
         <p>
-          {tokenName} Price at Exp{' '}
+          {token.symbol} Price at Exp{' '}
           {formatNumber(payload.tokenPrice, { decimalCases: 2, symbol: '$' })}
         </p>
         <p>

@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
-import Select from '../shared/Form/Select'
+import Select, { SelectItem } from '../shared/Form/Select'
 
 type ClosePositionDrawerContentProps = {
   position: PositionType
@@ -18,8 +18,10 @@ const ClosePositionDrawerContent: React.FC<ClosePositionDrawerContentProps> = ({
   //TODO: make form
   const [contractsToClose, setContractsToClose] = useState(0)
   const feePercentage = 0.01 //TODO fee percentage
-  const coins = [{ label: 'USDC' }] //TODO: supported coins
-  const [coinSelected, setCoinSelected] = useState<{ label: string }>(coins[0]!)
+  const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
+  const [coinSelected, setCoinSelected] = useState<SelectItem | null>(
+    coins[0] ?? null
+  )
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 font-medium">

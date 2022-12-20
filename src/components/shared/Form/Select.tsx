@@ -28,7 +28,6 @@ const Select: React.FC<SelectProps> = ({
   setSelectedItem,
 }) => {
   const multiple = Array.isArray(selectedItem)
-  document.addEventListener('scroll', (event) => {})
   return (
     <div className="relative">
       <Listbox

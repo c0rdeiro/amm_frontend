@@ -103,11 +103,11 @@ const PositionsTable = () => {
       header: () => <span>Strike</span>,
     }),
 
-    columnHelper.accessor('expDate', {
+    columnHelper.accessor('expiryTime', {
       id: 'expDate',
       cell: (info) => (
         <DataTableContentItem clickType="expand" row={info.row}>
-          {formatDateTime(info.getValue())}
+          {formatDateTime(new Date(info.getValue()))}
         </DataTableContentItem>
       ),
       header: () => <span>Exp Date</span>,

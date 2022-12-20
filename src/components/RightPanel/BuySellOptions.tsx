@@ -3,7 +3,7 @@ import { OptionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
@@ -16,6 +16,9 @@ type BuySellOptionsProps = {
 
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const token = useToken()
+  useEffect(() => {
+    console.log(token)
+  }, [token])
 
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
@@ -26,6 +29,29 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const [numContracts, setNumContracts] = useState<number>(1)
   const [fees, setFees] = useState<number>(1)
   /* TODO: insert real dates where 'Nov 4...' */
+
+  const calcPayoff = (
+    tokenPrice: number,
+    strike: number,
+    pricePerOption: number,
+    isCall: boolean
+  ) => {
+    if (isCall) {
+      return Math.max(0, tokenPrice - strike) - pricePerOption
+    } else {
+      return Math.max(0, strike - tokenPrice) - pricePerOption
+    }
+  }
+  const maxRange = token.price * 1.6
+
+  const data: { tokenPrice: number; payoff: number }[] = []
+  for (let index = 0; index < maxRange; index += 5) {
+    data.push({
+      tokenPrice: index,
+      payoff:
+        calcPayoff(index, option.strike, option.price, true) * numContracts,
+    })
+  }
 
   return (
     <>
@@ -40,7 +66,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
             decimalCases: 2,
             symbol: '$',
           })}
-          , Exp ${formatDateTime(option.date)}`}
+          , Exp ${formatDateTime(new Date(option.expiryTime))}`}
         </div>
       </div>
       <div className="flex items-start justify-center gap-1 overflow-visible pb-4 text-xs text-text-purple">
@@ -56,7 +82,9 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
             symbol: '$',
           })}`}
         </span>
-        {`on ${formatDateTime(option.date, { hideHours: false })}`}
+        {`on ${formatDateTime(new Date(option.expiryTime), {
+          hideHours: false,
+        })}`}
       </div>
       {/* row  */}
       <div className="flex  items-center justify-between ">
@@ -172,7 +200,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <LineChart />
+        <LineChart data={data} />
         <p className="flex justify-center text-xs text-text-purple">
           Break Even{' '}
           {formatNumber(option.breakEven, { decimalCases: 2, symbol: '$' })}
