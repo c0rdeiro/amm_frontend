@@ -2,9 +2,10 @@ import ChartHeader from './Header/ChartHeader'
 import dynamic from 'next/dynamic'
 import dummyData from '@/dummydata.json'
 import { useQuery } from '@tanstack/react-query'
-import { useGraphVisibleRange, useToken } from '@/store/tokenStore'
+import { useGraphVisibleRange } from '@/store/tokenStore'
 import { getTokenCandles } from '@/lib/getTokenCandles'
 import { OhlcData } from 'lightweight-charts'
+import { useRouter } from 'next/router'
 
 const ChartContainer: React.FC = () => {
   const CandleChart = dynamic(
@@ -17,12 +18,14 @@ const ChartContainer: React.FC = () => {
     }
   )
 
-  const token = useToken()
   const frequency = useGraphVisibleRange()
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop()
 
   const { data } = useQuery({
-    queryKey: ['tokenCandles', token.symbol],
-    queryFn: () => getTokenCandles(token.symbol, frequency.toString()), //TODO: check frequency
+    queryKey: ['tokenCandles', tokenSymbol],
+    queryFn: () => getTokenCandles(tokenSymbol ?? '', frequency.toString()), //TODO: check frequency
+    enabled: !!tokenSymbol,
     refetchInterval: 5000,
   })
 

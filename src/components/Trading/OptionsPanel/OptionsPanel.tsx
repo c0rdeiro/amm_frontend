@@ -12,26 +12,28 @@ import {
 import { DataTableContentItem } from '@/components/shared/DataTableContentItem'
 import { useQuery } from '@tanstack/react-query'
 import { getTokenOptions } from '@/lib/getTokenOptions'
-import { useToken } from '@/store/tokenStore'
+import { useRouter } from 'next/router'
 
 const OptionsPanel: React.FC = () => {
   const { setSelectedOption } = useOptionsActions()
 
-  const token = useToken()
   const expDate = useOptionExpDate()
   const isCall = useIsOptionCall()
   const isSell = useIsOptionSell()
 
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop()
+
   const { data } = useQuery({
-    queryKey: ['options', token.symbol, expDate, isCall, isSell],
+    queryKey: ['options', tokenSymbol, expDate, isCall, isSell],
     queryFn: () =>
       getTokenOptions(
-        token.symbol,
+        tokenSymbol ?? '',
         expDate ? +expDate.value : 0,
         isCall,
         isSell
       ),
-    enabled: !!expDate,
+    enabled: !!expDate && !!tokenSymbol,
   })
 
   const columnHelper = createColumnHelper<OptionType>()

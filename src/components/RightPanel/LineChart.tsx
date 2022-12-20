@@ -11,39 +11,18 @@ import formatNumber from '@/utils/formatNumber'
 
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../../tailwind.config.cjs'
-import { useToken } from '@/store/tokenStore'
 import clsx from 'clsx'
 
 type LineChartProps = {
   data: { tokenPrice: number; payoff: number }[]
+  renderTooltip: (payload: {
+    tokenPrice: number
+    payoff: number
+  }) => React.ReactNode
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
   // const fullConfig = resolveConfig(tailwindConfig)
-  const token = useToken()
-  console.log(data)
-
-  const renderTooltip = (payload: { tokenPrice: number; payoff: number }) => {
-    return (
-      <div className=" ml-[-100%] flex flex-col items-center text-xs text-text-purple">
-        <p>
-          {token.symbol} Price at Exp{' '}
-          {formatNumber(payload.tokenPrice, { decimalCases: 2, symbol: '$' })}
-        </p>
-        <p>
-          Payoff{' '}
-          <span
-            className={clsx({
-              'text-green': payload.payoff > 0,
-              'text-red': payload.payoff < 0,
-            })}
-          >
-            {formatNumber(payload.payoff, { decimalCases: 2, symbol: '$' })}
-          </span>
-        </p>
-      </div>
-    )
-  }
 
   return (
     <ResponsiveContainer width="100%" height={100}>

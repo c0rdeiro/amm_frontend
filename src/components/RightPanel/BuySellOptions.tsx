@@ -1,9 +1,11 @@
-import { useToken } from '@/store/tokenStore'
+import { getTokenBySymbol } from '@/lib/getTokenBySymbol'
 import { OptionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
@@ -15,11 +17,14 @@ type BuySellOptionsProps = {
 }
 
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
-  const token = useToken()
-  useEffect(() => {
-    console.log(token)
-  }, [token])
-
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop()
+  const { data: selectedToken } = useQuery({
+    queryKey: ['selectedToken', tokenSymbol],
+    queryFn: () => getTokenBySymbol(tokenSymbol ?? ''),
+    enabled: !!tokenSymbol,
+    refetchInterval: 5000,
+  })
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
   const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
@@ -42,7 +47,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
       return Math.max(0, strike - tokenPrice) - pricePerOption
     }
   }
-  const maxRange = token.price * 1.6
+  const maxRange = selectedToken?.price ?? 0 * 1.6
 
   const data: { tokenPrice: number; payoff: number }[] = []
   for (let index = 0; index < maxRange; index += 5) {
@@ -53,24 +58,51 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
     })
   }
 
+  const renderChartTooltip = (payload: {
+    tokenPrice: number
+    payoff: number
+  }) => {
+    return (
+      <div className=" ml-[-100%] flex flex-col items-center text-xs text-text-purple">
+        <p>
+          {selectedToken?.symbol} Price at Exp{' '}
+          {formatNumber(payload.tokenPrice, { decimalCases: 2, symbol: '$' })}
+        </p>
+        <p>
+          Payoff{' '}
+          <span
+            className={clsx({
+              'text-green': payload.payoff > 0,
+              'text-red': payload.payoff < 0,
+            })}
+          >
+            {formatNumber(payload.payoff, { decimalCases: 2, symbol: '$' })}
+          </span>
+        </p>
+      </div>
+    )
+  }
   return (
     <>
       <div className="flex flex-col items-center gap-1 overflow-y-auto">
         <div className="text-2.5xl font-semibold">
-          {`${option.isSell ? 'Sell' : 'Buy'} ${token.symbol} ${
+          {`${option.isSell ? 'Sell' : 'Buy'} ${selectedToken?.symbol} ${
             option.isCall ? 'Call' : 'Put'
           }`}
         </div>
         <div className="flex text-lg ">
-          {`Strike ${formatNumber(token.price, {
-            decimalCases: 2,
-            symbol: '$',
-          })}
+          {`Strike ${
+            selectedToken &&
+            formatNumber(selectedToken.price, {
+              decimalCases: 2,
+              symbol: '$',
+            })
+          }
           , Exp ${formatDateTime(new Date(option.expiryTime))}`}
         </div>
       </div>
       <div className="flex items-start justify-center gap-1 overflow-visible pb-4 text-xs text-text-purple">
-        {`You bet on ${token.symbol} being `}
+        {`You bet on ${selectedToken?.symbol} being `}
         <span
           className={clsx({
             'text-red': isBelow,
@@ -189,7 +221,9 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           type="submit"
           label={`${
             option.isSell ? 'SELL' : 'BUY'
-          } ${token.symbol.toUpperCase()} ${option.isCall ? 'CALL' : 'PUT'}`}
+          } ${selectedToken?.symbol.toUpperCase()} ${
+            option.isCall ? 'CALL' : 'PUT'
+          }`}
         />
         <div className="flex items-start gap-2 py-2 text-xs text-text-purple">
           {' '}
@@ -200,7 +234,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <LineChart data={data} />
+        <LineChart data={data} renderTooltip={renderChartTooltip} />
         <p className="flex justify-center text-xs text-text-purple">
           Break Even{' '}
           {formatNumber(option.breakEven, { decimalCases: 2, symbol: '$' })}

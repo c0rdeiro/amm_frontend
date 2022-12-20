@@ -8,6 +8,7 @@ export default function tokenIcon(
   token: string,
   size: number
 ): React.ReactNode {
+  if (!token) return
   switch (token?.toLowerCase()) {
     case 'eth':
       return <ETHIcon size={size} />
@@ -22,6 +23,6 @@ export default function tokenIcon(
     case 'link':
       return <LINKIcon size={size} />
     default:
-      break
+      return
   }
 }

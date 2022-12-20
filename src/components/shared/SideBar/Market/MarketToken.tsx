@@ -1,5 +1,4 @@
 import tokenIcon from '@/hooks/tokenIcon'
-import { useTokenActions } from '@/store/tokenStore'
 import { MarketTokenType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
 import { useRouter } from 'next/router'
@@ -11,14 +10,12 @@ type MarketTokenProps = {
 const MarketToken: React.FC<MarketTokenProps> = ({
   token,
 }: MarketTokenProps) => {
-  const { setToken } = useTokenActions()
   const { push } = useRouter()
   return (
     <button
       className="w-full"
       onClick={() => {
-        setToken(token)
-        push('/trading')
+        push(`/trading/${token.symbol.toLowerCase()}`)
       }}
     >
       <div className="flex w-full flex-row items-center justify-between gap-2 py-3 2xl:gap-4">

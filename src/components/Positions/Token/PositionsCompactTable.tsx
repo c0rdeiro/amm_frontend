@@ -1,10 +1,10 @@
-import { useToken } from '@/store/tokenStore'
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
 import { getPercentage } from '@/utils/getPercentage'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import clsx from 'clsx'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 import DataTable from '../../shared/DataTable'
@@ -19,7 +19,8 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
   statusToShow,
   showTableHeader = true,
 }) => {
-  const token = useToken()
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop() ?? ''
 
   const data: PositionType[] = [
     // {
@@ -195,7 +196,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
       data={data.filter(
         (position) =>
           (statusToShow === 'All' || position.status === statusToShow) &&
-          position.token.symbol === token.symbol
+          position.token.symbol === tokenSymbol
       )}
       columns={columns}
       getRowCanExpand={(row: Row<PositionType>) =>

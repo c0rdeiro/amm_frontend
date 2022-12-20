@@ -2,20 +2,22 @@ import Select, { SelectItem } from '@/components/shared/Form/Select'
 import Tabs from '@/components/shared/Tabs'
 import { getTokenOptionsExpiries } from '@/lib/getTokenOptionsExpiries'
 import { useOptionExpDate, useOptionsActions } from '@/store/optionsStore'
-import { useToken } from '@/store/tokenStore'
 import { TabType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from 'react-icons/hi2'
 import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 
 const OptionsHeader: React.FC = () => {
-  const token = useToken()
   const filterDate = useOptionExpDate()
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop()
   const { data: expiries } = useQuery({
-    queryKey: ['expiries', token.symbol],
-    queryFn: () => getTokenOptionsExpiries(token.symbol),
+    queryKey: ['expiries', tokenSymbol],
+    queryFn: () => getTokenOptionsExpiries(tokenSymbol ?? ''),
+    enabled: !!tokenSymbol,
   })
 
   useEffect(() => {
