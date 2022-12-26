@@ -7,13 +7,18 @@ import { createColumnHelper, Row } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useState } from 'react'
 import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
+
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
-import ClosePositionDrawerContent from './ClosePositionDrawerContent'
-import Drawer from './Drawer'
 import PositionsExpandedRow from './PositionsExpandedRow'
 
-const PositionsTable = () => {
+type PositionsTableProps = {
+  setPositionToClose: (position: PositionType) => void
+}
+
+const PositionsTable: React.FC<PositionsTableProps> = ({
+  setPositionToClose,
+}) => {
   const data: PositionType[] = [
     // {
     //   token: tokens[0],
@@ -113,35 +118,35 @@ const PositionsTable = () => {
       header: () => <span>Exp Date</span>,
     }),
 
-    columnHelper.accessor('value', {
-      id: 'value',
-      cell: (info) => (
-        <DataTableContentItem clickType="expand" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
-        </DataTableContentItem>
-      ),
-      header: () => <span>Value</span>,
-    }),
+    // columnHelper.accessor('value', {
+    //   id: 'value',
+    //   cell: (info) => (
+    //     <DataTableContentItem clickType="expand" row={info.row}>
+    //       {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
+    //     </DataTableContentItem>
+    //   ),
+    //   header: () => <span>Value</span>,
+    // }),
 
-    columnHelper.accessor('costPerOption', {
-      id: 'costPerOption',
-      cell: (info) => (
-        <DataTableContentItem clickType="expand" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
-        </DataTableContentItem>
-      ),
-      header: () => <span>Cost Per Option</span>,
-    }),
+    // columnHelper.accessor('costPerOption', {
+    //   id: 'costPerOption',
+    //   cell: (info) => (
+    //     <DataTableContentItem clickType="expand" row={info.row}>
+    //       {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
+    //     </DataTableContentItem>
+    //   ),
+    //   header: () => <span>Cost Per Option</span>,
+    // }),
 
-    columnHelper.accessor('price', {
-      id: 'price',
-      cell: (info) => (
-        <DataTableContentItem clickType="expand" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
-        </DataTableContentItem>
-      ),
-      header: () => <span>Price</span>,
-    }),
+    // columnHelper.accessor('price', {
+    //   id: 'price',
+    //   cell: (info) => (
+    //     <DataTableContentItem clickType="expand" row={info.row}>
+    //       {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
+    //     </DataTableContentItem>
+    //   ),
+    //   header: () => <span>Price</span>,
+    // }),
     columnHelper.accessor('profit', {
       id: 'profit',
       cell: (info) => (
@@ -187,22 +192,14 @@ const PositionsTable = () => {
       header: () => <span>Status</span>,
     }),
   ]
-  const [closePositionDrawerOpen, setClosePositionDrawerOpen] = useState(false)
 
   const renderSubComponent = ({ row }: { row: Row<PositionType> }) => {
     return (
       <>
         <PositionsExpandedRow
           row={row}
-          onClosePosition={() => setClosePositionDrawerOpen(true)}
+          onClosePosition={() => setPositionToClose(row.original)}
         />
-        <Drawer
-          open={closePositionDrawerOpen}
-          title={''}
-          setOpen={setClosePositionDrawerOpen}
-        >
-          <ClosePositionDrawerContent position={row.original} />
-        </Drawer>
       </>
     )
   }

@@ -2,9 +2,6 @@ import TokenPositionsPanel from '@/components/Positions/Token/TokenPositionsPane
 import RightPanel from '@/components/RightPanel/RightPanel'
 import ChartContainer from '@/components/Trading/Chart/ChartContainer'
 import OptionsPanel from '@/components/Trading/OptionsPanel/OptionsPanel'
-import { getTokens } from '@/lib/getTokens'
-import { CustomPage, MarketTokenType } from '@/types/next'
-import { useQuery } from '@tanstack/react-query'
 
 type TradingPageProps = {
   tokenName: string
@@ -39,7 +36,7 @@ const MarketTradingPage: React.FC<TradingPageProps> = ({ tokenName }) => {
         <OptionsPanel />
         <TokenPositionsPanel />
       </div>
-      <RightPanel />
+      <RightPanel isOption={true} />
     </div>
   )
 }

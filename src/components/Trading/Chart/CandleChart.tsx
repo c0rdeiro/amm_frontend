@@ -53,6 +53,8 @@ const CandleChart: React.FC<CandleChartProps> = ({
 
   const chartContainerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
+    console.log('candles', data)
+
     const handleResize = () => {
       if (chartContainerRef.current) {
         chart?.applyOptions({

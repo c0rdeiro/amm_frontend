@@ -5,5 +5,8 @@ export async function getTokenOptionsExpiries(
     `${process.env.NEXT_PUBLIC_API_URL}/expiries/${symbol.toUpperCase()}`
   )
 
-  return res.json().then((val) => val.output)
+  return res
+    .json()
+    .then((val) => val.output)
+    .then((exps) => exps.filter((i: string) => new Date(+i) > new Date()))
 }
