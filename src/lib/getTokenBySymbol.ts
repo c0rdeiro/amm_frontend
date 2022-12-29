@@ -5,7 +5,7 @@ export async function getTokenBySymbol(
 ): Promise<MarketTokenType> {
   if (!symbol) return Promise.reject('invalid token')
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/price/${symbol.toUpperCase()}`
+    `${process.env.NEXT_PUBLIC_API_URL}price/${symbol.toUpperCase()}`
   )
   return res.json()
 }

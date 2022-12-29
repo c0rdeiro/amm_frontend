@@ -7,7 +7,7 @@ export async function getTokenCandles(
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_API_URL
-    }/candles/%7Bsymbol,frequency%7D?symbol=${symbol.toUpperCase()}&frequency=${frequency}`
+    }candles/%7Bsymbol,frequency%7D?symbol=${symbol.toUpperCase()}&frequency=${frequency}`
   )
 
   return res

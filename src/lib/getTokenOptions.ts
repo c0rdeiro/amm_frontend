@@ -9,7 +9,7 @@ export async function getTokenOptions(
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_API_URL
-    }/board/{symbol,expiry,iscall,issell}?symbol=${symbol.toUpperCase()}&expiry=${
+    }board/{symbol,expiry,iscall,issell}?symbol=${symbol.toUpperCase()}&expiry=${
       expiryTime / 1000
     }&iscall=${isCall}&issell=${isSell}`
   )
