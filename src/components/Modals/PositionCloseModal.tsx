@@ -54,6 +54,7 @@ const PositionCloseModal: React.FC<PositionCloseModalProps> = ({
                 />
                 <div className="flex flex-col items-center gap-4">
                   {tokenIcon(position.token.symbol, 56)}
+
                   <div className="flex flex-col items-center justify-center">
                     <h3 className="text-2.5xl font-semibold ">
                       {position.token.symbol}
