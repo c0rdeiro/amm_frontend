@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Image from 'next/image'
-import { useToken } from '@/store/tokenStore'
 import tokenIcon from '@/hooks/tokenIcon'
 import formatDateTime from '@/utils/formatDateTime'
 import { PositionType } from '@/types/next'
@@ -18,7 +17,7 @@ const PositionCloseModal: React.FC<PositionCloseModalProps> = ({
   position,
 }) => {
   const closeModal = () => setIsOpen(false)
-  const token = useToken()
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-100" onClose={closeModal}>
@@ -54,9 +53,12 @@ const PositionCloseModal: React.FC<PositionCloseModalProps> = ({
                   quality={100}
                 />
                 <div className="flex flex-col items-center gap-4">
-                  {tokenIcon(token.label, 56)}
+                  {tokenIcon(position.token.symbol, 56)}
+
                   <div className="flex flex-col items-center justify-center">
-                    <h3 className="text-2.5xl font-semibold ">{token.label}</h3>
+                    <h3 className="text-2.5xl font-semibold ">
+                      {position.token.symbol}
+                    </h3>
                     <p className="text-text-purple">
                       Opened at{' '}
                       {position.openDate

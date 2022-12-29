@@ -8,14 +8,11 @@ import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
 import Select, { SelectItem } from '../shared/Form/Select'
 
-type ClosePositionDrawerContentProps = {
+type OptionRightPanelProps = {
   position: PositionType
 }
 
-const ClosePositionDrawerContent: React.FC<ClosePositionDrawerContentProps> = ({
-  position,
-}) => {
-  //TODO: make form
+const PositionRightPanel: React.FC<OptionRightPanelProps> = ({ position }) => {
   const [contractsToClose, setContractsToClose] = useState(0)
   const feePercentage = 0.01 //TODO fee percentage
   const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
@@ -115,4 +112,4 @@ const ClosePositionDrawerContent: React.FC<ClosePositionDrawerContentProps> = ({
   )
 }
 
-export default ClosePositionDrawerContent
+export default PositionRightPanel

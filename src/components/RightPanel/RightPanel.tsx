@@ -1,13 +1,21 @@
-import { useSelectedOption } from '@/store/optionsStore'
-import BuySellOptions from './BuySellOptions'
-import NoOptions from './NoOptions'
+import { PositionType } from '@/types/next'
+import OptionsRightPanel from './OptionRightPanel'
+import PositionRightPanel from './PositionRightPanel'
 
-const RightPanel: React.FC = () => {
-  const option = useSelectedOption()
+type RightPanelProps = {
+  position?: PositionType | undefined
+  isOption: boolean
+}
+
+const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
   return (
-    <div className="item-center flex min-h-full w-rightPanel flex-initial flex-col gap-4 bg-gray-400 pt-14 font-medium xl:px-2 2xl:px-15">
+    <div className="item-center 2xl:px-13 flex min-h-full w-rightPanel-min flex-initial flex-col gap-4 bg-gray-400 pt-14 font-medium xl:px-2 2xl:w-rightPanel">
       {/*  default no options selected */}
-      {option ? <BuySellOptions option={option} /> : <NoOptions />}
+      {isOption ? (
+        <OptionsRightPanel />
+      ) : (
+        position && <PositionRightPanel position={position} />
+      )}
     </div>
   )
 }

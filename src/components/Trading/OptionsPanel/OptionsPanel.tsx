@@ -3,55 +3,39 @@ import { OptionType } from '@/types/next'
 import OptionsHeader from './OptionsHeader'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import formatNumber from '@/utils/formatNumber'
-import { useOptionsActions } from '@/store/optionsStore'
+import {
+  useIsOptionCall,
+  useOptionExpDate,
+  useIsOptionSell,
+  useOptionsActions,
+} from '@/store/optionsStore'
 import { DataTableContentItem } from '@/components/shared/DataTableContentItem'
+import { useQuery } from '@tanstack/react-query'
+import { getTokenOptions } from '@/lib/getTokenOptions'
+import { useRouter } from 'next/router'
 
 const OptionsPanel: React.FC = () => {
   const { setSelectedOption } = useOptionsActions()
-  const data: OptionType[] = [
-    {
-      strike: 1100,
-      breakEven: 1224.03,
-      toBreakEven: 11.03,
-      impliedVolatility: 79.5,
-      price: 124.05,
-      isSell: false,
-      isCall: true,
-      date: new Date(),
-    },
-    {
-      strike: 1200,
-      breakEven: 1250.43,
-      toBreakEven: 37.43,
-      impliedVolatility: 70.2,
-      price: 50.43,
-      isSell: false,
-      isCall: true,
-      date: new Date(),
-    },
 
-    {
-      strike: 1300,
-      breakEven: 1313.46,
-      toBreakEven: 100.46,
-      impliedVolatility: 68.1,
-      price: 13.46,
-      isSell: false,
-      isCall: true,
-      date: new Date(),
-    },
+  const expDate = useOptionExpDate()
+  const isCall = useIsOptionCall()
+  const isSell = useIsOptionSell()
 
-    {
-      strike: 1400,
-      breakEven: 1403.48,
-      toBreakEven: 190.48,
-      impliedVolatility: 73.6,
-      price: 3.48,
-      isSell: false,
-      isCall: true,
-      date: new Date(),
-    },
-  ]
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop()
+
+  const { data } = useQuery({
+    queryKey: ['options', tokenSymbol, expDate, isCall, isSell],
+    queryFn: () =>
+      getTokenOptions(
+        tokenSymbol ?? '',
+        expDate ? +expDate.value : 0,
+        isCall,
+        isSell
+      ),
+    enabled: !!expDate && !!tokenSymbol,
+  })
+
   const columnHelper = createColumnHelper<OptionType>()
   const columns = [
     columnHelper.accessor('strike', {
@@ -109,7 +93,7 @@ const OptionsPanel: React.FC = () => {
       <OptionsHeader />
 
       <DataTable
-        data={data}
+        data={data ?? []}
         columns={columns}
         rowClickAction={(row: Row<OptionType>) =>
           setSelectedOption(row.original)

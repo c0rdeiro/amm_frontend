@@ -1,9 +1,4 @@
-import tokenIcon from '@/hooks/tokenIcon.jsx'
-import {
-  useGraphVisibleRange,
-  useToken,
-  useTokenActions,
-} from '@/store/tokenStore'
+import { useGraphVisibleRange, useTokenActions } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next.js'
 import { getPercentage } from '@/utils/getPercentage'
 import {

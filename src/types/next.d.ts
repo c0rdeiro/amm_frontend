@@ -14,10 +14,8 @@ type MenuLinkType = {
 }
 
 type MarketTokenType = {
-  label: string
-  iconPath: string
+  symbol: string
   price: number
-  priceCurrency: '$'
 }
 
 type TokenInfoType = {
@@ -41,7 +39,7 @@ type OptionType = {
   price: number
   isSell: boolean
   isCall: boolean
-  date: DateTime
+  expiryTime: number
 }
 
 type PositionType = {
@@ -49,7 +47,7 @@ type PositionType = {
   operation: 'Call' | 'Put'
   numContracts: number
   strike: number
-  expDate: Date
+  expiryTime: number
   value: number
   costPerOption: number
   price: number

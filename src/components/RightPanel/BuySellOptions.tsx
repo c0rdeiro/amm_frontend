@@ -1,12 +1,15 @@
-import { useToken } from '@/store/tokenStore'
+import { getTokenBySymbol } from '@/lib/getTokenBySymbol'
 import { OptionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
-import Select from '../shared/Form/Select'
+import Select, { SelectItem } from '../shared/Form/Select'
 import LineChart from './LineChart'
 
 type BuySellOptionsProps = {
@@ -14,36 +17,92 @@ type BuySellOptionsProps = {
 }
 
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
-  const token = useToken()
-
+  const router = useRouter()
+  const tokenSymbol = router.asPath.split('/').pop()
+  const { data: selectedToken } = useQuery({
+    queryKey: ['selectedToken', tokenSymbol],
+    queryFn: () => getTokenBySymbol(tokenSymbol ?? ''),
+    enabled: !!tokenSymbol,
+    refetchInterval: 5000,
+  })
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
-  const coins = [{ label: 'USDC' }] //TODO: supported coins
+  const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
   const currentBalance = 12344 //TODO: should be replaced when user is set
   const feePercentage = 0.01
-  const [coinSelected, setCoinSelected] = useState<{ label: string }>(coins[0]!)
+  const [coinSelected, setCoinSelected] = useState<SelectItem>(coins[0]!)
   const [numContracts, setNumContracts] = useState<number>(1)
   const [fees, setFees] = useState<number>(1)
   /* TODO: insert real dates where 'Nov 4...' */
 
+  const calcPayoff = (
+    tokenPrice: number,
+    strike: number,
+    pricePerOption: number,
+    isCall: boolean
+  ) => {
+    if (isCall) {
+      return Math.max(0, tokenPrice - strike) - pricePerOption
+    } else {
+      return Math.max(0, strike - tokenPrice) - pricePerOption
+    }
+  }
+  const maxRange = selectedToken?.price ?? 0 * 1.6
+
+  const data: { tokenPrice: number; payoff: number }[] = []
+  for (let index = 0; index < maxRange; index += 5) {
+    data.push({
+      tokenPrice: index,
+      payoff:
+        calcPayoff(index, option.strike, option.price, true) * numContracts,
+    })
+  }
+
+  const renderChartTooltip = (payload: {
+    tokenPrice: number
+    payoff: number
+  }) => {
+    return (
+      <div className=" ml-[-100%] flex flex-col items-center text-xs text-text-purple">
+        <p>
+          {selectedToken?.symbol} Price at Exp{' '}
+          {formatNumber(payload.tokenPrice, { decimalCases: 2, symbol: '$' })}
+        </p>
+        <p>
+          Payoff{' '}
+          <span
+            className={clsx({
+              'text-green': payload.payoff > 0,
+              'text-red': payload.payoff < 0,
+            })}
+          >
+            {formatNumber(payload.payoff, { decimalCases: 2, symbol: '$' })}
+          </span>
+        </p>
+      </div>
+    )
+  }
   return (
     <>
       <div className="flex flex-col items-center gap-1 overflow-y-auto">
         <div className="text-2.5xl font-semibold">
-          {`${option.isSell ? 'Sell' : 'Buy'} ${token.label} ${
+          {`${option.isSell ? 'Sell' : 'Buy'} ${selectedToken?.symbol} ${
             option.isCall ? 'Call' : 'Put'
           }`}
         </div>
         <div className="flex text-lg ">
-          {`Strike ${formatNumber(token.price, {
-            decimalCases: 2,
-            symbol: '$',
-          })}
-          , Exp ${formatDateTime(option.date)}`}
+          {`Strike ${
+            selectedToken &&
+            formatNumber(selectedToken.price, {
+              decimalCases: 2,
+              symbol: '$',
+            })
+          }
+          , Exp ${formatDateTime(new Date(option.expiryTime))}`}
         </div>
       </div>
       <div className="flex items-start justify-center gap-1 overflow-visible pb-4 text-xs text-text-purple">
-        {`You bet on ${token.label} being `}
+        {`You bet on ${selectedToken?.symbol} being `}
         <span
           className={clsx({
             'text-red': isBelow,
@@ -55,7 +114,9 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
             symbol: '$',
           })}`}
         </span>
-        {`on ${formatDateTime(option.date, { hideHours: false })}`}
+        {`on ${formatDateTime(new Date(option.expiryTime), {
+          hideHours: false,
+        })}`}
       </div>
       {/* row  */}
       <div className="flex  items-center justify-between ">
@@ -160,7 +221,9 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           type="submit"
           label={`${
             option.isSell ? 'SELL' : 'BUY'
-          } ${token.label.toUpperCase()} ${option.isCall ? 'CALL' : 'PUT'}`}
+          } ${selectedToken?.symbol.toUpperCase()} ${
+            option.isCall ? 'CALL' : 'PUT'
+          }`}
         />
         <div className="flex items-start gap-2 py-2 text-xs text-text-purple">
           {' '}
@@ -171,7 +234,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <LineChart />
+        <LineChart data={data} renderTooltip={renderChartTooltip} />
         <p className="flex justify-center text-xs text-text-purple">
           Break Even{' '}
           {formatNumber(option.breakEven, { decimalCases: 2, symbol: '$' })}
