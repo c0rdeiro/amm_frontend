@@ -2,6 +2,7 @@ import useBreakpoints from '@/hooks/useBreakpoints'
 import Head from 'next/head'
 import Header from './Header'
 import SideBar from './shared/SideBar/SideBar'
+import Image from 'next/image'
 
 interface LayoutProps {
   fullPage: boolean
@@ -27,8 +28,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </div>
       ) : (
-        <div className="flex h-screen w-screen items-center justify-center">
-          please open the application on a desktop, mobile coming soon
+        <div className="relative flex h-screen w-screen items-center justify-center">
+          <Image alt="logo" src="/noMobile.svg" fill quality={100} />
         </div>
       )}
     </>

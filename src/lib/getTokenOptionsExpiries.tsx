@@ -8,5 +8,5 @@ export async function getTokenOptionsExpiries(
   return res
     .json()
     .then((val) => val.output)
-    .then((exps) => exps.filter((i: string) => new Date(+i) > new Date()))
+    .then((exps) => exps.map((i:string) => +i*1000).filter((i: number) => new Date(i) > new Date()))
 }
