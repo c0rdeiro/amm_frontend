@@ -1,13 +1,8 @@
-import path from 'path'
-
 export async function getTokenOptionsExpiries(
   symbol: string
 ): Promise<string[]> {
   const res = await fetch(
-    path.join(
-      process.env.NEXT_PUBLIC_API_URL ?? '',
-      `expiries/${symbol.toUpperCase()}`
-    )
+    `${process.env.NEXT_PUBLIC_API_URL}/expiries/${symbol.toUpperCase()}`
   )
 
   return res

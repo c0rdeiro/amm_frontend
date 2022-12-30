@@ -1,5 +1,4 @@
 import { OptionType } from '@/types/next'
-import path from 'path'
 
 export async function getTokenOptions(
   symbol: string,
@@ -8,12 +7,11 @@ export async function getTokenOptions(
   isSell: boolean
 ): Promise<OptionType[]> {
   const res = await fetch(
-    path.join(
-      process.env.NEXT_PUBLIC_API_URL ?? '',
-      `board/{symbol,expiry,iscall,issell}?symbol=${symbol.toUpperCase()}&expiry=${
-        expiryTime / 1000
-      }&iscall=${isCall}&issell=${isSell}`
-    )
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/board/{symbol,expiry,iscall,issell}?symbol=${symbol.toUpperCase()}&expiry=${
+      expiryTime / 1000
+    }&iscall=${isCall}&issell=${isSell}`
   )
 
   return res
