@@ -15,6 +15,34 @@ import LineChart from './LineChart'
 type BuySellOptionsProps = {
   option: OptionType
 }
+const calcPayoff = (
+  tokenPrice: number,
+  strike: number,
+  pricePerOption: number,
+  isCall: boolean
+) => {
+  if (isCall) {
+    return Math.max(0, tokenPrice - strike) - pricePerOption
+  } else {
+    return Math.max(0, strike - tokenPrice) - pricePerOption
+  }
+}
+const calcChartData = (
+  maxRange: number,
+  numContracts: number,
+  option: OptionType
+) => {
+  const data: { tokenPrice: number; payoff: number }[] = []
+
+  for (let index = 0; index < maxRange; index += 5) {
+    data.push({
+      tokenPrice: index,
+      payoff:
+        calcPayoff(index, option.strike, option.price, true) * numContracts,
+    })
+  }
+  return data
+}
 
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const router = useRouter()
@@ -35,28 +63,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const [fees, setFees] = useState<number>(1)
   /* TODO: insert real dates where 'Nov 4...' */
 
-  const calcPayoff = (
-    tokenPrice: number,
-    strike: number,
-    pricePerOption: number,
-    isCall: boolean
-  ) => {
-    if (isCall) {
-      return Math.max(0, tokenPrice - strike) - pricePerOption
-    } else {
-      return Math.max(0, strike - tokenPrice) - pricePerOption
-    }
-  }
-  const maxRange = selectedToken?.price ?? 0 * 1.6
-
-  const data: { tokenPrice: number; payoff: number }[] = []
-  for (let index = 0; index < maxRange; index += 5) {
-    data.push({
-      tokenPrice: index,
-      payoff:
-        calcPayoff(index, option.strike, option.price, true) * numContracts,
-    })
-  }
+  const maxRange = (selectedToken?.price ?? 0) * 1.6
 
   const renderChartTooltip = (payload: {
     tokenPrice: number
@@ -215,7 +222,12 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
       )} */}
       </>
       <div className="flex flex-col items-center py-6 xl:gap-2 2xl:gap-4">
-        <div className="text-lg font-semibold text-primary">{`Total ${coinSelected.label} $ 148.78`}</div>
+        <div className="text-lg font-semibold text-primary">{`Total ${
+          coinSelected.label
+        } ${formatNumber((1 + feePercentage) * numContracts * option.price, {
+          decimalCases: 2,
+          symbol: '$',
+        })}`}</div>
         <Button
           styleType="shadow"
           type="submit"
@@ -234,7 +246,10 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <LineChart data={data} renderTooltip={renderChartTooltip} />
+        <LineChart
+          data={calcChartData(maxRange, numContracts, option)}
+          renderTooltip={renderChartTooltip}
+        />
         <p className="flex justify-center text-xs text-text-purple">
           Break Even{' '}
           {formatNumber(option.breakEven, { decimalCases: 2, symbol: '$' })}
