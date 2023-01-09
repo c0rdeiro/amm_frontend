@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 const Header: React.FC = () => {
   return (
@@ -10,7 +11,8 @@ const Header: React.FC = () => {
         height={40}
         quality={100}
       />
-      <div className="font-medium text-text-purple">Wallet</div>
+      {/* <div className="font-medium text-text-purple">Wallet</div> */}
+      <ConnectButton />
     </div>
   )
 }
