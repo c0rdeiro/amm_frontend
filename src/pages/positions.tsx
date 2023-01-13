@@ -7,9 +7,47 @@ import { SelectItem } from '@/components/shared/Form/Select'
 import { getTokens } from '@/lib/getTokens'
 import { CustomPage, PositionType } from '@/types/next'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { fetchBalance } from '@wagmi/core'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { getToken } from 'next-auth/jwt'
+import { getSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 
-const PositionsPage: CustomPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+  const token = await getToken({ req: context.req })
+
+  const address = token?.sub ?? null
+
+  return {
+    props: {
+      address,
+      session,
+    },
+  }
+}
+
+type AuthenticatedPageProps = InferGetServerSidePropsType<
+  typeof getServerSideProps
+>
+
+const PositionsPage: CustomPage = ({ ...props }: AuthenticatedPageProps) => {
+  // access address with props.address
+
+  const { data: currentBalance } = useQuery({
+    queryKey: ['currentBalance'], //TODO this will change on current address
+    queryFn: () =>
+      fetchBalance({
+        address: '0x8164a9014b87a3f696423a825c6f20b05e2d740c',
+        token: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', //id of USDC TODO: this will come from coinSelected
+      }),
+    // enabled: !!props.address,
+  })
+
+  useEffect(() => {
+    console.log(currentBalance)
+  }, [currentBalance])
+
   const { data: tokens } = useQuery({
     queryKey: ['tokens'],
     queryFn: getTokens,
