@@ -26,9 +26,9 @@ const ChartOptions: React.FC = () => {
       },
     },
     {
-      label: '1y',
+      label: '3m',
       action: () => {
-        setVisibleRange(getTimeRangeFromDays(365))
+        setVisibleRange(getTimeRangeFromDays(90))
       },
     },
   ]

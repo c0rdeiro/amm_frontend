@@ -1,11 +1,12 @@
 import ChartHeader from './Header/ChartHeader'
 import dynamic from 'next/dynamic'
-import dummyData from '@/dummydata.json'
 import { useQuery } from '@tanstack/react-query'
 import { useGraphVisibleRange } from '@/store/tokenStore'
 import { getTokenCandles } from '@/lib/getTokenCandles'
 import { OhlcData } from 'lightweight-charts'
 import { useRouter } from 'next/router'
+import lyra from '@/utils/getLyraSdk'
+import { useEffect } from 'react'
 
 const ChartContainer: React.FC = () => {
   const CandleChart = dynamic(
@@ -42,19 +43,33 @@ const ChartContainer: React.FC = () => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
 
-  const { data } = useQuery({
-    queryKey: ['tokenCandles', tokenSymbol],
-    queryFn: () => getTokenCandles(tokenSymbol ?? '', frequency.toString()), //TODO: check frequency
-    enabled: !!tokenSymbol,
+  useEffect(() => {
+    console.log(frequency)
+  }, [frequency])
+
+  const { data: market } = useQuery({
+    queryKey: ['market'],
+    queryFn: async () =>
+      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+  })
+
+  const { data: candles } = useQuery({
+    queryKey: ['candles'],
+    queryFn: () => getTokenCandles(market!!, frequency),
+    enabled: !!market,
     refetchInterval: 5000,
   })
 
+  useEffect(() => {
+    console.log(candles)
+  }, [candles])
+
   return (
     <div className="flex flex-col items-start gap-9 px-8 pb-8">
-      {data ? (
+      {candles ? (
         <>
           <ChartHeader />
-          <CandleChart data={data ?? []} />
+          <CandleChart data={candles ?? []} />
         </>
       ) : (
         <div>Loading...</div>
