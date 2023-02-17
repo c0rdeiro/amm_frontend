@@ -58,7 +58,9 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
   const currentBalance = 12344 //TODO: should be replaced when user is set
   const feePercentage = 0.01
-  const [coinSelected, setCoinSelected] = useState<SelectItem>(coins[0]!)
+  const [coinSelected, setCoinSelected] = useState<SelectItem<string>>(
+    coins[0]!
+  )
   const [numContracts, setNumContracts] = useState<number>(1)
   const [fees, setFees] = useState<number>(1)
   /* TODO: insert real dates where 'Nov 4...' */

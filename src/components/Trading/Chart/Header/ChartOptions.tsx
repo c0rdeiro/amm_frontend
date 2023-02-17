@@ -25,12 +25,12 @@ const ChartOptions: React.FC = () => {
         setVisibleRange(getTimeRangeFromDays(30))
       },
     },
-    {
-      label: '3m',
-      action: () => {
-        setVisibleRange(getTimeRangeFromDays(90))
-      },
-    },
+    // {
+    //   label: '3m',
+    //   action: () => {
+    //     setVisibleRange(getTimeRangeFromDays(90))
+    //   },
+    // },
   ]
 
   return <Tabs tabList={intervalOptions} defaultIndex={2} />

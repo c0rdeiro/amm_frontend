@@ -4,29 +4,25 @@ import { Fragment } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import Switch from './Switch'
 
-export type SelectItem = {
+export type SelectItem<T> = {
   label: string
-  value: string
+  value: T
   isDisabled?: boolean
 }
 
-type SelectProps =
+type SelectProps<T> =
   | {
-      items: SelectItem[]
-      selectedItem: SelectItem | undefined | null
-      setSelectedItem: (arg: SelectItem) => void
+      items: SelectItem<T>[]
+      selectedItem: SelectItem<T> | undefined | null
+      setSelectedItem: (arg: SelectItem<T>) => void
     }
   | {
-      items: SelectItem[]
-      selectedItem: SelectItem[] | undefined | null
-      setSelectedItem: (arg: SelectItem[]) => void
+      items: SelectItem<T>[]
+      selectedItem: SelectItem<T>[] | undefined | null
+      setSelectedItem: (arg: SelectItem<T>[]) => void
     }
 
-const Select: React.FC<SelectProps> = ({
-  items,
-  selectedItem,
-  setSelectedItem,
-}) => {
+function Select<T>({ items, selectedItem, setSelectedItem }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   return (
     <div className="relative">

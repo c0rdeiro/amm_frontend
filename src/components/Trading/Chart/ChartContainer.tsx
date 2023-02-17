@@ -43,10 +43,6 @@ const ChartContainer: React.FC = () => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
 
-  useEffect(() => {
-    console.log(frequency)
-  }, [frequency])
-
   const { data: market } = useQuery({
     queryKey: ['market'],
     queryFn: async () =>
@@ -57,12 +53,21 @@ const ChartContainer: React.FC = () => {
     queryKey: ['candles'],
     queryFn: () => getTokenCandles(market!!, frequency),
     enabled: !!market,
-    refetchInterval: 5000,
   })
 
-  useEffect(() => {
-    console.log(candles)
-  }, [candles])
+  // useEffect(() => {
+  //   console.log(
+  //     market?.liveBoards().map((board) => ({
+  //       id: board.id,
+  //       expiryTimestamp: board.expiryTimestamp,
+  //       // List all strikes
+  //       strikes: board.strikes().map((strike) => ({
+  //         id: strike.id,
+  //         strikePrice: strike.strikePrice,
+  //       })),
+  //     }))
+  //   )
+  // }, [candles])
 
   return (
     <div className="flex flex-col items-start gap-9 px-8 pb-8">
