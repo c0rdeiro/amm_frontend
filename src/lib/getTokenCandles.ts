@@ -1,14 +1,18 @@
-import { Market, MarketSpotCandle } from '@lyrafinance/lyra-js'
+import getDefaultPeriodFromRange from '@/utils/getDefaultPeriodFromRange'
+import { Market, MarketSpotCandle, SnapshotPeriod } from '@lyrafinance/lyra-js'
 import { formatEther } from 'ethers/lib/utils.js'
 import { OhlcData, TimeRange, UTCTimestamp } from 'lightweight-charts'
 
 export async function getTokenCandles(
   market: Market,
-  timeRange: TimeRange
+  timeRange: TimeRange,
+  _period?: SnapshotPeriod
 ): Promise<OhlcData[]> {
+  const period = _period ?? getDefaultPeriodFromRange(timeRange)
   const candles: MarketSpotCandle[] = await market?.spotPriceHistory({
     startTimestamp: parseInt(timeRange.from.toString()),
     endTimestamp: parseInt(timeRange.to.toString()),
+    period: period,
   })
 
   const res: OhlcData[] = candles.map((candle: MarketSpotCandle) => ({

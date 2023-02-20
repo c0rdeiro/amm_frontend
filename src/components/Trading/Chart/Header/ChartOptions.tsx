@@ -33,7 +33,7 @@ const ChartOptions: React.FC = () => {
     // },
   ]
 
-  return <Tabs tabList={intervalOptions} defaultIndex={2} />
+  return <Tabs tabList={intervalOptions} defaultIndex={0} />
 }
 
 export default ChartOptions

@@ -1,6 +1,5 @@
 import Select, { SelectItem } from '@/components/shared/Form/Select'
 import Tabs from '@/components/shared/Tabs'
-import { getTokenOptionsExpiries } from '@/lib/getTokenOptionsExpiries'
 import { useOptionExpDate, useOptionsActions } from '@/store/optionsStore'
 import { TabType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'

@@ -22,7 +22,7 @@ export default function resolveOptions(
   return {
     id: strikeId.toString(),
     breakEven: parseFloat(formatEther(quote.breakEven)),
-    expiryTime: quote.expiryTimestamp,
+    expiryTime: quote.expiryTimestamp * 1000,
     impliedVolatility: parseFloat(formatEther(quote.iv)),
     isCall,
     isSell,

@@ -15,14 +15,21 @@ type SelectProps<T> =
       items: SelectItem<T>[]
       selectedItem: SelectItem<T> | undefined | null
       setSelectedItem: (arg: SelectItem<T>) => void
+      isDisabled?: boolean
     }
   | {
       items: SelectItem<T>[]
       selectedItem: SelectItem<T>[] | undefined | null
       setSelectedItem: (arg: SelectItem<T>[]) => void
+      isDisabled?: boolean
     }
 
-function Select<T>({ items, selectedItem, setSelectedItem }: SelectProps<T>) {
+function Select<T>({
+  items,
+  selectedItem,
+  setSelectedItem,
+  isDisabled = false,
+}: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   return (
     <div className="relative">
@@ -30,8 +37,14 @@ function Select<T>({ items, selectedItem, setSelectedItem }: SelectProps<T>) {
         value={selectedItem}
         onChange={setSelectedItem}
         multiple={multiple}
+        disabled={isDisabled}
       >
-        <Listbox.Button className="relative flex h-9 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium text-primary">
+        <Listbox.Button
+          className={clsx(
+            'relative flex h-9 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium text-primary',
+            { 'bg-gray-300': isDisabled }
+          )}
+        >
           {Array.isArray(selectedItem)
             ? selectedItem.map((item) => item.label).join(', ')
             : selectedItem?.label}

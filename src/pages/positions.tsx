@@ -4,8 +4,10 @@ import PositionsHeader, {
 import PositionsTable from '@/components/Positions/PositionsTable'
 import RightPanel from '@/components/RightPanel/RightPanel'
 import { SelectItem } from '@/components/shared/Form/Select'
-import { getTokens } from '@/lib/getTokens'
 import { CustomPage, PositionType } from '@/types/next'
+import lyra from '@/utils/getLyraSdk'
+import getMarketName from '@/utils/getMarketName'
+import { Market } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { fetchBalance } from '@wagmi/core'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -44,10 +46,10 @@ const PositionsPage: CustomPage = ({ ...props }: AuthenticatedPageProps) => {
     // enabled: !!props.address,
   })
 
-  const { data: tokens } = useQuery({
-    queryKey: ['tokens'],
-    queryFn: getTokens,
-    refetchInterval: 5000,
+  const { data: markets } = useQuery({
+    queryKey: ['markets'],
+    queryFn: async () => await lyra.markets(),
+    refetchInterval: 10000,
   })
 
   const allOperations: SelectItem<string>[] = [
@@ -58,9 +60,9 @@ const PositionsPage: CustomPage = ({ ...props }: AuthenticatedPageProps) => {
     useState<SelectItem<string>[]>(allOperations)
 
   const allTokens: SelectItem<string>[] =
-    tokens?.map((item) => ({
-      label: item.symbol,
-      value: item.symbol.toUpperCase(),
+    markets?.map((item) => ({
+      label: getMarketName(item),
+      value: getMarketName(item),
       isDisabled: true,
     })) ?? []
   const [tokensFilter, setTokensFilter] =

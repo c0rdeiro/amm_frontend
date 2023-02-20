@@ -10,13 +10,10 @@ import {
 import { OptionType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
-import resolveOptions from '@/utils/resolveOptions'
-import { BigNumber } from '@ethersproject/bignumber'
-import { StrikeQuotes } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+
 import OptionsHeader from './OptionsHeader'
 
 const OptionsPanel: React.FC = () => {
@@ -35,40 +32,12 @@ const OptionsPanel: React.FC = () => {
       await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
   })
 
-  // let data: OptionType[] = []
-  // useEffect(() => {
-  //   if (expDate?.value) {
-  //     console.log(
-  //       market
-  //         ?.liveBoard(expDate?.value?.board.id)
-  //         .quoteAllSync(BigNumber.from(1).mul(BigNumber.from(10).pow(18)), {
-  //           iterations: 3,
-  //         })
-  //     )
-  //     data =
-  //       market
-  //         ?.liveBoard(expDate?.value?.board.id)
-  //         .quoteAllSync(BigNumber.from(1).mul(BigNumber.from(10).pow(18)), {
-  //           iterations: 3,
-  //         })
-  //         .strikes.map((item: StrikeQuotes) =>
-  //           resolveOptions(item, isCall, isSell)
-  //         ) ?? data
-  //   }
-
-  //   console.log('EXIT UE', data)
-  // }, [market])
-
   const { data } = useQuery({
     queryKey: ['options'],
     queryFn: () =>
       getTokenOptions(tokenSymbol, market, expDate?.value, isCall, isSell),
     enabled: !!expDate && !!tokenSymbol && !!market,
   })
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   const columnHelper = createColumnHelper<OptionType>()
   const columns = [

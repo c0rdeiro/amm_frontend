@@ -1,12 +1,10 @@
-import ChartHeader from './Header/ChartHeader'
-import dynamic from 'next/dynamic'
-import { useQuery } from '@tanstack/react-query'
-import { useGraphVisibleRange } from '@/store/tokenStore'
 import { getTokenCandles } from '@/lib/getTokenCandles'
-import { OhlcData } from 'lightweight-charts'
-import { useRouter } from 'next/router'
+import { useGraphVisibleRange } from '@/store/tokenStore'
 import lyra from '@/utils/getLyraSdk'
-import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import dynamic from 'next/dynamic'
+
+import ChartHeader from './Header/ChartHeader'
 
 const ChartContainer: React.FC = () => {
   const CandleChart = dynamic(
@@ -40,8 +38,6 @@ const ChartContainer: React.FC = () => {
   )
 
   const frequency = useGraphVisibleRange()
-  const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop()
 
   const { data: market } = useQuery({
     queryKey: ['market'],
@@ -53,21 +49,8 @@ const ChartContainer: React.FC = () => {
     queryKey: ['candles'],
     queryFn: () => getTokenCandles(market!!, frequency),
     enabled: !!market,
+    refetchInterval: 10000,
   })
-
-  // useEffect(() => {
-  //   console.log(
-  //     market?.liveBoards().map((board) => ({
-  //       id: board.id,
-  //       expiryTimestamp: board.expiryTimestamp,
-  //       // List all strikes
-  //       strikes: board.strikes().map((strike) => ({
-  //         id: strike.id,
-  //         strikePrice: strike.strikePrice,
-  //       })),
-  //     }))
-  //   )
-  // }, [candles])
 
   return (
     <div className="flex flex-col items-start gap-9 px-8 pb-8">
