@@ -4,8 +4,10 @@ import PositionsHeader, {
 import PositionsTable from '@/components/Positions/PositionsTable'
 import RightPanel from '@/components/RightPanel/RightPanel'
 import { SelectItem } from '@/components/shared/Form/Select'
-import { getTokens } from '@/lib/getTokens'
 import { CustomPage, PositionType } from '@/types/next'
+import lyra from '@/utils/getLyraSdk'
+import getMarketName from '@/utils/getMarketName'
+import { Market } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { fetchBalance } from '@wagmi/core'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -44,36 +46,34 @@ const PositionsPage: CustomPage = ({ ...props }: AuthenticatedPageProps) => {
     // enabled: !!props.address,
   })
 
-  useEffect(() => {
-    console.log(currentBalance)
-  }, [currentBalance])
-
-  const { data: tokens } = useQuery({
-    queryKey: ['tokens'],
-    queryFn: getTokens,
-    refetchInterval: 5000,
+  const { data: markets } = useQuery({
+    queryKey: ['markets'],
+    queryFn: async () => await lyra.markets(),
+    refetchInterval: 10000,
   })
 
-  const allOperations: SelectItem[] = [
+  const allOperations: SelectItem<string>[] = [
     { label: 'Call', value: 'Call', isDisabled: true },
     { label: 'Put', value: 'Put', isDisabled: true },
   ]
   const [operationFilter, setOperationFilter] =
-    useState<SelectItem[]>(allOperations)
+    useState<SelectItem<string>[]>(allOperations)
 
-  const allTokens: SelectItem[] =
-    tokens?.map((item) => ({
-      label: item.symbol,
-      value: item.symbol.toUpperCase(),
+  const allTokens: SelectItem<string>[] =
+    markets?.map((item) => ({
+      label: getMarketName(item),
+      value: getMarketName(item),
       isDisabled: true,
     })) ?? []
-  const [tokensFilter, setTokensFilter] = useState<SelectItem[]>(allTokens)
+  const [tokensFilter, setTokensFilter] =
+    useState<SelectItem<string>[]>(allTokens)
 
-  const allStatuses: SelectItem[] = [
+  const allStatuses: SelectItem<string>[] = [
     { label: 'Open', value: 'Open', isDisabled: true },
     { label: 'Closed', value: 'Closed', isDisabled: true },
   ]
-  const [statusFilter, setStatusFilter] = useState<SelectItem[]>(allStatuses)
+  const [statusFilter, setStatusFilter] =
+    useState<SelectItem<string>[]>(allStatuses)
   const [currentPosition, setCurrentPosition] = useState<
     PositionType | undefined
   >()
@@ -82,21 +82,21 @@ const PositionsPage: CustomPage = ({ ...props }: AuthenticatedPageProps) => {
     {
       options: allTokens,
       selectedItems: tokensFilter,
-      setSelectedItems(arg: SelectItem[]) {
+      setSelectedItems(arg: SelectItem<string>[]) {
         setTokensFilter(arg)
       },
     },
     {
       options: allOperations,
       selectedItems: operationFilter,
-      setSelectedItems(arg: SelectItem[]) {
+      setSelectedItems(arg: SelectItem<string>[]) {
         setOperationFilter(arg)
       },
     },
     {
       options: allStatuses,
       selectedItems: statusFilter,
-      setSelectedItems(arg: SelectItem[]) {
+      setSelectedItems(arg: SelectItem<string>[]) {
         setStatusFilter(arg)
       },
     },

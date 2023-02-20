@@ -1,9 +1,12 @@
-import { getTokenBySymbol } from '@/lib/getTokenBySymbol'
 import { OptionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
+import lyra from '@/utils/getLyraSdk'
+import getMarketName from '@/utils/getMarketName'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
+import { formatEther } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -47,23 +50,26 @@ const calcChartData = (
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
-  const { data: selectedToken } = useQuery({
-    queryKey: ['selectedToken', tokenSymbol],
-    queryFn: () => getTokenBySymbol(tokenSymbol ?? ''),
-    enabled: !!tokenSymbol,
-    refetchInterval: 5000,
-  })
+
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
   const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
-  const currentBalance = 12344 //TODO: should be replaced when user is set
+  const currentBalance = 0 //TODO: should be replaced when user is set
   const feePercentage = 0.01
-  const [coinSelected, setCoinSelected] = useState<SelectItem>(coins[0]!)
+  const [coinSelected, setCoinSelected] = useState<SelectItem<string>>(
+    coins[0]!
+  )
   const [numContracts, setNumContracts] = useState<number>(1)
   const [fees, setFees] = useState<number>(1)
-  /* TODO: insert real dates where 'Nov 4...' */
 
-  const maxRange = (selectedToken?.price ?? 0) * 1.6
+  const { data: market } = useQuery({
+    queryKey: ['market'],
+    queryFn: async () =>
+      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+  })
+
+  const maxRange =
+    (market ? parseFloat(formatEther(market?.spotPrice)) : 0) * 1.6
 
   const renderChartTooltip = (payload: {
     tokenPrice: number
@@ -72,7 +78,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
     return (
       <div className=" ml-[-100%] flex flex-col items-center text-xs text-text-purple">
         <p>
-          {selectedToken?.symbol} Price at Exp{' '}
+          {market ? getMarketName(market) : undefined} Price at Exp{' '}
           {formatNumber(payload.tokenPrice, { decimalCases: 2, symbol: '$' })}
         </p>
         <p>
@@ -89,27 +95,30 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
       </div>
     )
   }
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // console.log(e)
+  }
+
   return (
     <>
       <div className="flex flex-col items-center gap-1 overflow-y-auto">
         <div className="text-2.5xl font-semibold">
-          {`${option.isSell ? 'Sell' : 'Buy'} ${selectedToken?.symbol} ${
-            option.isCall ? 'Call' : 'Put'
-          }`}
+          {`${option.isSell ? 'Sell' : 'Buy'} ${
+            market ? getMarketName(market) : undefined
+          } ${option.isCall ? 'Call' : 'Put'}`}
         </div>
         <div className="flex text-lg ">
-          {`Strike ${
-            selectedToken &&
-            formatNumber(selectedToken.price, {
-              decimalCases: 2,
-              symbol: '$',
-            })
-          }
+          {`Strike ${formatNumber(option.strike, {
+            decimalCases: 2,
+            symbol: '$',
+          })}
           , Exp ${formatDateTime(new Date(option.expiryTime))}`}
         </div>
       </div>
       <div className="flex items-start justify-center gap-1 overflow-visible pb-4 text-xs text-text-purple">
-        {`You bet on ${selectedToken?.symbol} being `}
+        {`You bet on ${market ? getMarketName(market) : undefined} being `}
         <span
           className={clsx({
             'text-red': isBelow,
@@ -126,70 +135,72 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         })}`}
       </div>
       {/* row  */}
-      <div className="flex  items-center justify-between ">
-        <div>Contracts to buy</div>
-        <div className="w-28">
-          <Input
-            value={numContracts.toString()}
-            type="number"
-            onChange={(n: string) =>
-              +n > 0 ? setNumContracts(+n) : setNumContracts(0)
-            }
-          />
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+        <div className="flex  items-center justify-between ">
+          <div>Contracts to buy</div>
+          <div className="w-28">
+            <Input
+              value={numContracts.toString()}
+              type="number"
+              onChange={(n: string) =>
+                +n > 0 ? setNumContracts(+n) : setNumContracts(0)
+              }
+            />
+          </div>
         </div>
-      </div>
-      {/* row  */}
-      <div className="flex  items-center justify-between ">
-        <div>Buy with</div>
-        <div className="w-28">
-          <Select
-            items={coins}
-            selectedItem={coinSelected}
-            setSelectedItem={setCoinSelected}
-          />
+        {/* row  */}
+        <div className="flex  items-center justify-between ">
+          <div>Buy with</div>
+          <div className="w-28">
+            <Select
+              items={coins}
+              selectedItem={coinSelected}
+              setSelectedItem={setCoinSelected}
+              isDisabled={true}
+            />
+          </div>
         </div>
-      </div>
-      {/* row  */}
-      <div className="flex  items-center justify-between ">
-        <div>
-          <div className="text-sm text-text-purple">Price per option</div>
+        {/* row  */}
+        <div className="flex  items-center justify-between ">
           <div>
-            {formatNumber(option.price, { decimalCases: 2, symbol: '$' })}
+            <div className="text-sm text-text-purple">Price per option</div>
+            <div>
+              {formatNumber(option.price, { decimalCases: 2, symbol: '$' })}
+            </div>
+          </div>
+          <div className="flex flex-col items-end">
+            <div className="text-sm text-text-purple">
+              Fees {feePercentage * 100}%
+            </div>
+            <div>
+              {formatNumber(option.price * numContracts * feePercentage, {
+                decimalCases: 2,
+                symbol: '$',
+              })}
+            </div>
           </div>
         </div>
-        <div className="flex flex-col items-end">
-          <div className="text-sm text-text-purple">
-            Fees {feePercentage * 100}%
-          </div>
+        {/* row  */}
+        <div className="flex  items-center justify-between ">
           <div>
-            {formatNumber(option.price * numContracts * feePercentage, {
-              decimalCases: 2,
-              symbol: '$',
-            })}
+            <div className="text-sm text-text-purple">Max Profit</div>
+            <div>Infinity</div>
+          </div>
+          <div className="flex flex-col items-end">
+            <div className="text-sm text-text-purple">Max Loss</div>
+            <div>
+              {formatNumber((1 + feePercentage) * numContracts * option.price, {
+                decimalCases: 2,
+                symbol: '$',
+              })}
+            </div>
           </div>
         </div>
-      </div>
-      {/* row  */}
-      <div className="flex  items-center justify-between ">
-        <div>
-          <div className="text-sm text-text-purple">Max Profit</div>
-          <div>Infinity</div>
-        </div>
-        <div className="flex flex-col items-end">
-          <div className="text-sm text-text-purple">Max Loss</div>
-          <div>
-            {formatNumber((1 + feePercentage) * numContracts * option.price, {
-              decimalCases: 2,
-              symbol: '$',
-            })}
-          </div>
-        </div>
-      </div>
-      {/* divider */}
-      <div className="border border-solid border-input-border"></div>
-      <>
-        {/* selling secion  */}
-        {/* {option.isSell && (
+        {/* divider */}
+        <div className="border border-solid border-input-border"></div>
+        <>
+          {/* selling secion  */}
+          {/* {option.isSell && (
         <>
           <div className="flex  items-center justify-between ">
             <div>Covered Call</div>
@@ -220,31 +231,32 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           </div>
         </>
       )} */}
-      </>
-      <div className="flex flex-col items-center py-6 xl:gap-2 2xl:gap-4">
-        <div className="text-lg font-semibold text-primary">{`Total ${
-          coinSelected.label
-        } ${formatNumber((1 + feePercentage) * numContracts * option.price, {
-          decimalCases: 2,
-          symbol: '$',
-        })}`}</div>
-        <Button
-          styleType="shadow"
-          type="submit"
-          label={`${
-            option.isSell ? 'SELL' : 'BUY'
-          } ${selectedToken?.symbol.toUpperCase()} ${
-            option.isCall ? 'CALL' : 'PUT'
-          }`}
-        />
-        <div className="flex items-start gap-2 py-2 text-xs text-text-purple">
-          {' '}
-          {`Current Balance ${formatNumber(currentBalance, {
+        </>
+        <div className="flex flex-col items-center py-6 xl:gap-2 2xl:gap-4">
+          <div className="text-lg font-semibold text-primary">{`Total ${
+            coinSelected.label
+          } ${formatNumber((1 + feePercentage) * numContracts * option.price, {
             decimalCases: 2,
             symbol: '$',
-          })}`}
+          })}`}</div>
+          <Button
+            isDisabled
+            styleType="shadow"
+            type="submit"
+            label={`${option.isSell ? 'SELL' : 'BUY'} ${
+              market ? getMarketName(market) : undefined
+            } ${option.isCall ? 'CALL' : 'PUT'}`}
+          />
+
+          <div className="flex items-start gap-2 py-2 text-xs text-text-purple">
+            {' '}
+            {`Current Balance ${formatNumber(currentBalance, {
+              decimalCases: 2,
+              symbol: '$',
+            })}`}
+          </div>
         </div>
-      </div>
+      </form>
       <div className="flex flex-col gap-5">
         <LineChart
           data={calcChartData(maxRange, numContracts, option)}

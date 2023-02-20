@@ -9,8 +9,6 @@ type TokenInfoItemProps = {
 const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
   tokenInfo,
 }: TokenInfoItemProps) => {
-  const { label, value, type, colorMode = 'default' } = tokenInfo
-
   return (
     <div className="flex flex-col items-start gap-0.5">
       <div className="text-xs font-medium text-text-purple">

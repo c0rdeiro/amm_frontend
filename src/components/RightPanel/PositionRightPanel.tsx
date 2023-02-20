@@ -16,7 +16,7 @@ const PositionRightPanel: React.FC<OptionRightPanelProps> = ({ position }) => {
   const [contractsToClose, setContractsToClose] = useState(0)
   const feePercentage = 0.01 //TODO fee percentage
   const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
-  const [coinSelected, setCoinSelected] = useState<SelectItem | null>(
+  const [coinSelected, setCoinSelected] = useState<SelectItem<string> | null>(
     coins[0] ?? null
   )
 
