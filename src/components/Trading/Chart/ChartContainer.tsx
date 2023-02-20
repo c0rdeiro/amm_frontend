@@ -47,7 +47,7 @@ const ChartContainer: React.FC = () => {
 
   const { data: candles } = useQuery({
     queryKey: ['candles'],
-    queryFn: () => getTokenCandles(market!!, frequency),
+    queryFn: () => getTokenCandles(frequency, market),
     enabled: !!market,
     refetchInterval: 10000,
   })

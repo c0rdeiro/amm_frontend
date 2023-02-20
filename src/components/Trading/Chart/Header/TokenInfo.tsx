@@ -21,8 +21,8 @@ const TokenInfo: React.FC = () => {
     queryKey: ['lastCandle'],
     queryFn: () =>
       getTokenCandles(
-        market!!,
         getTimeRangeFromDays(1),
+        market,
         SnapshotPeriod.EightHours
       ),
     enabled: !!market,

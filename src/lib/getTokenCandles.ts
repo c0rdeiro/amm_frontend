@@ -4,10 +4,12 @@ import { formatEther } from 'ethers/lib/utils.js'
 import { OhlcData, TimeRange, UTCTimestamp } from 'lightweight-charts'
 
 export async function getTokenCandles(
-  market: Market,
   timeRange: TimeRange,
+  market?: Market,
   _period?: SnapshotPeriod
 ): Promise<OhlcData[]> {
+  if (!market) return []
+
   const period = _period ?? getDefaultPeriodFromRange(timeRange)
   const candles: MarketSpotCandle[] = await market?.spotPriceHistory({
     startTimestamp: parseInt(timeRange.from.toString()),
