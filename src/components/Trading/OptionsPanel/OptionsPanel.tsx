@@ -13,6 +13,7 @@ import lyra from '@/utils/getLyraSdk'
 import { useQuery } from '@tanstack/react-query'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import OptionsHeader from './OptionsHeader'
 
@@ -33,10 +34,11 @@ const OptionsPanel: React.FC = () => {
   })
 
   const { data } = useQuery({
-    queryKey: ['options'],
+    queryKey: ['options', tokenSymbol, expDate?.value.board.expiryTimestamp],
     queryFn: () =>
       getTokenOptions(tokenSymbol, market, expDate?.value, isCall, isSell),
     enabled: !!expDate && !!tokenSymbol && !!market,
+    keepPreviousData: true,
   })
 
   const columnHelper = createColumnHelper<OptionType>()
