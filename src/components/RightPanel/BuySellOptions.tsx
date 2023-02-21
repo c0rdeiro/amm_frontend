@@ -41,7 +41,10 @@ const calcChartData = (
     data.push({
       tokenPrice: index,
       payoff:
-        calcPayoff(index, option.strike, option.price, true) * numContracts,
+        (option.isSell
+          ? -1 * calcPayoff(index, option.strike, option.price, option.isCall)
+          : calcPayoff(index, option.strike, option.price, option.isCall)) *
+        numContracts,
     })
   }
   return data
