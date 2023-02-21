@@ -1,0 +1,14 @@
+diff --git a/node_modules/@lyrafinance/lyra-js/dist/cjs/contracts/newport/addresses/arbitrum.addresses.json b/node_modules/@lyrafinance/lyra-js/dist/cjs/contracts/newport/addresses/arbitrum.addresses.json
+index d2c533a..9e7f2f8 100644
+--- a/node_modules/@lyrafinance/lyra-js/dist/cjs/contracts/newport/addresses/arbitrum.addresses.json
++++ b/node_modules/@lyrafinance/lyra-js/dist/cjs/contracts/newport/addresses/arbitrum.addresses.json
+@@ -1,6 +1,6 @@
+ {
+-    "OptionMarketViewer": "0x0527A05c3CEBc9Ef8171FeD29DE5900A7ea093a4",
+-    "ExchangeAdapter": "0x7D135662818d3540bd6f23294bFDB6946c52C9AB",
+-    "LyraRegistry": "0x6c87e4364Fd44B0D425ADfD0328e56b89b201329",
++    "OptionMarketViewer": "0xeA95a8dF8E43dD23cBC6F891b1eEBa7c9FaC9575",
++    "ExchangeAdapter": "0xBe314De8062b9C7C6BD1713f771FAFC97f5D65B7",
++    "LyraRegistry": "0xd2C528EC81b50b8fadDe0B6A91CEDE1f8Af50773",
+     "TestFaucet": ""
+ }
