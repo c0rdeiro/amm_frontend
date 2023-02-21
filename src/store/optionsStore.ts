@@ -23,7 +23,11 @@ const useOptionsStore = create<OptionsStore>((set) => ({
   isCall: true,
   expDate: null,
   actions: {
-    setSelectedOption: (option: OptionType) => set(() => ({ option })),
+    setSelectedOption: (option: OptionType) => {
+      if (useOptionsStore.getState().option?.id === option.id)
+        set(() => ({ option: null }))
+      else set(() => ({ option }))
+    },
     clearOption: () => set(() => ({ option: null })),
     setIsSell: (isSell: boolean) => set(() => ({ isSell, option: null })),
     setIsCall: (isCall: boolean) => set(() => ({ isCall, option: null })),

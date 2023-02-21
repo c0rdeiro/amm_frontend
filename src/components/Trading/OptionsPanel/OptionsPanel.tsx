@@ -1,5 +1,6 @@
 import DataTable from '@/components/shared/DataTable'
 import { DataTableContentItem } from '@/components/shared/DataTableContentItem'
+import Spinner from '@/components/shared/Spinner'
 import { getTokenOptions } from '@/lib/getTokenOptions'
 import {
   useIsOptionCall,
@@ -13,7 +14,6 @@ import lyra from '@/utils/getLyraSdk'
 import { useQuery } from '@tanstack/react-query'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 import OptionsHeader from './OptionsHeader'
 
@@ -34,8 +34,14 @@ const OptionsPanel: React.FC = () => {
     refetchInterval: 10000,
   })
 
-  const { data } = useQuery({
-    queryKey: ['options', tokenSymbol, expDate?.value.board.expiryTimestamp],
+  const { data, isFetching } = useQuery({
+    queryKey: [
+      'options',
+      tokenSymbol,
+      expDate?.value.board.expiryTimestamp,
+      isCall,
+      isSell,
+    ],
     queryFn: () =>
       getTokenOptions(tokenSymbol, market, expDate?.value, isCall, isSell),
     enabled: !!expDate && !!tokenSymbol && !!market,
@@ -97,14 +103,17 @@ const OptionsPanel: React.FC = () => {
   return (
     <div className="flex flex-col items-start gap-6 rounded-lg bg-white px-6 py-8 shadow-dark">
       <OptionsHeader />
-
-      <DataTable
-        data={data ?? [{} as OptionType]}
-        columns={columns}
-        rowClickAction={(row: Row<OptionType>) =>
-          setSelectedOption(row.original)
-        }
-      />
+      {!isFetching ? (
+        <DataTable
+          data={data ?? [{} as OptionType]}
+          columns={columns}
+          rowClickAction={(row: Row<OptionType>) =>
+            setSelectedOption(row.original)
+          }
+        />
+      ) : (
+        <Spinner />
+      )}
     </div>
   )
 }

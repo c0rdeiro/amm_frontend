@@ -5,9 +5,8 @@ import { TabType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import lyra from '@/utils/getLyraSdk'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Board, BoardQuotes, Quote, StrikeQuotes } from '@lyrafinance/lyra-js'
+import { Board, BoardQuotes } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from 'react-icons/hi2'
 import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
@@ -15,9 +14,6 @@ import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 const OptionsHeader: React.FC = () => {
   const filterDate = useOptionExpDate()
   const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
-
-  const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop()
 
   const { data: market } = useQuery({
     queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],

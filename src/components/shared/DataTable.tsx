@@ -48,7 +48,7 @@ function DataTable<T>({
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="pl-6 text-left text-2xs text-text-purple"
+                  className="pl-6 text-left text-xs text-text-purple"
                 >
                   {header.isPlaceholder
                     ? null

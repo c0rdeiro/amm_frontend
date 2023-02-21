@@ -6,7 +6,7 @@ import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import { SnapshotPeriod } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { formatEther } from 'ethers/lib/utils.js'
-import { useEffect } from 'react'
+
 import TokenInfoItem from './TokenInfoItem'
 
 const TokenInfo: React.FC = () => {
