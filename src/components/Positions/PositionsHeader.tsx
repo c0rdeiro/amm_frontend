@@ -3,9 +3,9 @@ import Button from '../shared/Button'
 import Select, { SelectItem } from '../shared/Form/Select'
 
 export type FilterType = {
-  selectedItems: SelectItem[]
-  setSelectedItems: (arg: SelectItem[]) => void
-  options: SelectItem[]
+  selectedItems: SelectItem<string>[]
+  setSelectedItems: (arg: SelectItem<string>[]) => void
+  options: SelectItem<string>[]
 }
 
 type PositionsHeaderProps = {

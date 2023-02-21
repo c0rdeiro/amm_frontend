@@ -1,18 +1,21 @@
 import DataTable from '@/components/shared/DataTable'
-import { OptionType } from '@/types/next'
-import OptionsHeader from './OptionsHeader'
-import { createColumnHelper, Row } from '@tanstack/react-table'
-import formatNumber from '@/utils/formatNumber'
+import { DataTableContentItem } from '@/components/shared/DataTableContentItem'
+import Spinner from '@/components/shared/Spinner'
+import { getTokenOptions } from '@/lib/getTokenOptions'
 import {
   useIsOptionCall,
-  useOptionExpDate,
   useIsOptionSell,
+  useOptionExpDate,
   useOptionsActions,
 } from '@/store/optionsStore'
-import { DataTableContentItem } from '@/components/shared/DataTableContentItem'
+import { OptionType } from '@/types/next'
+import formatNumber from '@/utils/formatNumber'
+import lyra from '@/utils/getLyraSdk'
 import { useQuery } from '@tanstack/react-query'
-import { getTokenOptions } from '@/lib/getTokenOptions'
+import { createColumnHelper, Row } from '@tanstack/react-table'
 import { useRouter } from 'next/router'
+
+import OptionsHeader from './OptionsHeader'
 
 const OptionsPanel: React.FC = () => {
   const { setSelectedOption } = useOptionsActions()
@@ -24,16 +27,25 @@ const OptionsPanel: React.FC = () => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
 
-  const { data } = useQuery({
-    queryKey: ['options', tokenSymbol, expDate, isCall, isSell],
+  const { data: market } = useQuery({
+    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
+    queryFn: async () =>
+      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    refetchInterval: 10000,
+  })
+
+  const { data, isFetching } = useQuery({
+    queryKey: [
+      'options',
+      tokenSymbol,
+      expDate?.value.board.expiryTimestamp,
+      isCall,
+      isSell,
+    ],
     queryFn: () =>
-      getTokenOptions(
-        tokenSymbol ?? '',
-        expDate ? +expDate.value : 0,
-        isCall,
-        isSell
-      ),
-    enabled: !!expDate && !!tokenSymbol,
+      getTokenOptions(tokenSymbol, market, expDate?.value, isCall, isSell),
+    enabled: !!expDate && !!tokenSymbol && !!market,
+    keepPreviousData: true,
   })
 
   const columnHelper = createColumnHelper<OptionType>()
@@ -91,14 +103,17 @@ const OptionsPanel: React.FC = () => {
   return (
     <div className="flex flex-col items-start gap-6 rounded-lg bg-white px-6 py-8 shadow-dark">
       <OptionsHeader />
-
-      <DataTable
-        data={data ?? []}
-        columns={columns}
-        rowClickAction={(row: Row<OptionType>) =>
-          setSelectedOption(row.original)
-        }
-      />
+      {!isFetching ? (
+        <DataTable
+          data={data ?? [{} as OptionType]}
+          columns={columns}
+          rowClickAction={(row: Row<OptionType>) =>
+            setSelectedOption(row.original)
+          }
+        />
+      ) : (
+        <Spinner />
+      )}
     </div>
   )
 }

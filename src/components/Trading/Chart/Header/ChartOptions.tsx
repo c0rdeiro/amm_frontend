@@ -8,32 +8,26 @@ const ChartOptions: React.FC = () => {
 
   const intervalOptions: TabType[] = [
     {
-      label: '1d',
+      label: '15min',
       action: () => {
         setVisibleRange(getTimeRangeFromDays(1))
       },
     },
     {
-      label: '1w',
+      label: '1h',
       action: () => {
-        setVisibleRange(getTimeRangeFromDays(7))
+        setVisibleRange(getTimeRangeFromDays(4))
       },
     },
     {
-      label: '1m',
+      label: '4h',
       action: () => {
-        setVisibleRange(getTimeRangeFromDays(30))
-      },
-    },
-    {
-      label: '1y',
-      action: () => {
-        setVisibleRange(getTimeRangeFromDays(365))
+        setVisibleRange(getTimeRangeFromDays(16))
       },
     },
   ]
 
-  return <Tabs tabList={intervalOptions} defaultIndex={2} />
+  return <Tabs tabList={intervalOptions} defaultIndex={0} />
 }
 
 export default ChartOptions

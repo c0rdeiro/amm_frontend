@@ -11,6 +11,7 @@ export default function tokenIcon(
   if (!token) return
   switch (token?.toLowerCase()) {
     case 'eth':
+    case 'weth':
       return <ETHIcon size={size} />
 
     case 'btc':

@@ -32,6 +32,7 @@ type TabType = {
 }
 
 type OptionType = {
+  id: string
   strike: number
   breakEven: number
   toBreakEven: number

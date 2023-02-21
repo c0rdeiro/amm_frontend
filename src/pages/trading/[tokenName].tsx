@@ -2,33 +2,28 @@ import TokenPositionsPanel from '@/components/Positions/Token/TokenPositionsPane
 import RightPanel from '@/components/RightPanel/RightPanel'
 import ChartContainer from '@/components/Trading/Chart/ChartContainer'
 import OptionsPanel from '@/components/Trading/OptionsPanel/OptionsPanel'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { getToken } from 'next-auth/jwt'
+import { getSession } from 'next-auth/react'
 
-type TradingPageProps = {
-  tokenName: string
-}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+  const token = await getToken({ req: context.req })
 
-export async function getStaticPaths() {
-  const paths: { params: { tokenName: string } }[] = [
-    { params: { tokenName: 'eth' } },
-    { params: { tokenName: 'btc' } },
-  ]
+  const address = token?.sub ?? null
 
   return {
-    paths,
-    fallback: false, // can also be true or 'blocking'
+    props: {
+      address,
+      session,
+    },
   }
 }
 
-// `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps = async ({
-  params: { tokenName },
-}: {
-  params: { tokenName: string }
-}) => {
-  return { props: { tokenName } }
-}
-
-const MarketTradingPage: React.FC<TradingPageProps> = ({ tokenName }) => {
+type AuthenticatedPageProps = InferGetServerSidePropsType<
+  typeof getServerSideProps
+>
+const MarketTradingPage = ({ ...props }: AuthenticatedPageProps) => {
   return (
     <div className="flex h-full">
       <div className="w-full overflow-y-auto pt-14 pb-28 xl:px-2 2xl:shrink 2xl:px-20">

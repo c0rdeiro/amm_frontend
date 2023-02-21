@@ -1,47 +1,63 @@
 import Select, { SelectItem } from '@/components/shared/Form/Select'
 import Tabs from '@/components/shared/Tabs'
-import { getTokenOptionsExpiries } from '@/lib/getTokenOptionsExpiries'
 import { useOptionExpDate, useOptionsActions } from '@/store/optionsStore'
 import { TabType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
+import lyra from '@/utils/getLyraSdk'
+import { BigNumber } from '@ethersproject/bignumber'
+import { Board, BoardQuotes } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from 'react-icons/hi2'
 import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 
 const OptionsHeader: React.FC = () => {
   const filterDate = useOptionExpDate()
-  const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop()
-  const { data: expiries } = useQuery({
-    queryKey: ['expiries', tokenSymbol],
-    queryFn: () => getTokenOptionsExpiries(tokenSymbol ?? ''),
-    enabled: !!tokenSymbol,
+  const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
+
+  const { data: market } = useQuery({
+    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
+    queryFn: async () =>
+      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    refetchInterval: 10000,
   })
 
   useEffect(() => {
-    if (!filterDate && expiries?.length) {
+    const firstBoard: Board | undefined = market?.liveBoards()[0]
+
+    if (!filterDate && firstBoard) {
       setExpDate({
-        value: expiries[0]!,
-        label: `Exp ${formatDateTime(new Date(+expiries[0]!), {
-          hideHours: false,
-          hideMinutes: false,
-        })}`,
+        value: firstBoard.quoteAllSync(
+          BigNumber.from(1).mul(BigNumber.from(10).pow(18)),
+          {
+            iterations: 3,
+          }
+        ),
+        label: `Exp ${formatDateTime(
+          new Date(firstBoard.expiryTimestamp * 1000),
+          {
+            hideHours: false,
+            hideMinutes: false,
+          }
+        )}`,
       })
     }
-  }, [expiries])
+  }, [market])
 
-  const dates: SelectItem[] =
-    expiries?.map((item) => ({
-      value: item,
-      label: `Exp ${formatDateTime(new Date(+item), {
+  const dates: SelectItem<BoardQuotes>[] =
+    market?.liveBoards().map((board: Board) => ({
+      value: board.quoteAllSync(
+        BigNumber.from(1).mul(BigNumber.from(10).pow(18)),
+        {
+          iterations: 3,
+        }
+      ),
+      label: `Exp ${formatDateTime(new Date(board.expiryTimestamp * 1000), {
         hideHours: false,
         hideMinutes: false,
       })}`,
     })) ?? []
-  // const [filterDate, setFilterDate] = useState<SelectItem | undefined>(dates[0])
-  const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
+
   const buyOrSellTabs: TabType[] = [
     {
       label: 'Buy',
