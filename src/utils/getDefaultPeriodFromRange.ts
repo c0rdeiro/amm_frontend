@@ -13,10 +13,10 @@ export default function getDefaultPeriodFromRange(
   switch (hours) {
     case 24: //1d
       return SnapshotPeriod.FifteenMinutes
-    case 168: //1w
+    case 96: //4d
+      return SnapshotPeriod.OneHour
+    case 384: //16d
       return SnapshotPeriod.FourHours
-    case 720: //1m
-      return SnapshotPeriod.EightHours
     default:
       return SnapshotPeriod.FifteenMinutes
   }
