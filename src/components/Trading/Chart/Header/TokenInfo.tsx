@@ -47,7 +47,7 @@ const TokenInfo: React.FC = () => {
     {
       label: '24h Low',
       value:
-        lastCandle?.reduce((prev, curr) => (prev.low < curr.low ? curr : prev))
+        lastCandle?.reduce((prev, curr) => (prev.low > curr.low ? curr : prev))
           .low ?? 0,
       type: '$',
     },
