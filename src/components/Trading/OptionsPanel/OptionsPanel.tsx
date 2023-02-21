@@ -28,9 +28,10 @@ const OptionsPanel: React.FC = () => {
   const tokenSymbol = router.asPath.split('/').pop()
 
   const { data: market } = useQuery({
-    queryKey: ['market'],
+    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
     queryFn: async () =>
       await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    refetchInterval: 10000,
   })
 
   const { data } = useQuery({
