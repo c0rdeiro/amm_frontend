@@ -17,7 +17,6 @@ const OptionsHeader: React.FC = () => {
   const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
 
   const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop()
 
   const { data: market } = useQuery({
     queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],

@@ -69,7 +69,11 @@ function Select<T>({
                     className={clsx(
                       'pointer-events-none flex items-center gap-2',
                       {
-                        'text-primary': selected,
+                        'text-primary': Array.isArray(selectedItem)
+                          ? selectedItem
+                              .map((x) => x.label)
+                              .includes(item.label)
+                          : item.label === selectedItem?.label,
                       }
                     )}
                   >
