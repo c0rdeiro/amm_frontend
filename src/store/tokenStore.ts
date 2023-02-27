@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { TimeRange } from 'lightweight-charts'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
-import { MarketTokenType, TokenInfoType } from '@/types/next'
+import { TokenInfoType } from '@/types/next'
 
 type TokenStore = {
   graphVisibleRange: TimeRange

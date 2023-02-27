@@ -4,7 +4,11 @@ import ChartContainer from '@/components/Trading/Chart/ChartContainer'
 import OptionsPanel from '@/components/Trading/OptionsPanel/OptionsPanel'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-const MarketTradingPage = () => {
+type TradingPageProps = {
+  tokenName: string
+}
+
+const MarketTradingPage: React.FC<TradingPageProps> = ({ tokenName }) => {
   return (
     <div className="flex h-full">
       <div className="w-full overflow-y-auto pt-14 pb-28 xl:px-2 2xl:shrink 2xl:px-20">

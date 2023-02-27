@@ -7,7 +7,7 @@ import '@/styles/globals.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import WalletSessionProvider from '@/providers/WalletSessionProvider'
 
-interface CustomAppProps extends Omit<AppProps<{}>, 'Component'> {
+interface CustomAppProps extends Omit<AppProps, 'Component'> {
   Component: CustomPage
 }
 const queryClient = new QueryClient()

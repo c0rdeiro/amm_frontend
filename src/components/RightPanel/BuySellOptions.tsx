@@ -36,12 +36,6 @@ const calcChartData = (
   numContracts: number,
   option: OptionType
 ) => {
-  const { address, isConnecting, isDisconnected } = useAccount()
-
-  useEffect(() => {
-    console.log({ address, isConnecting, isDisconnected })
-  }, [address])
-
   const data: { tokenPrice: number; payoff: number }[] = []
 
   for (let index = 0; index < maxRange; index += 5) {
@@ -60,6 +54,7 @@ const calcChartData = (
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
+  const { address, isConnecting, isDisconnected } = useAccount()
 
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
