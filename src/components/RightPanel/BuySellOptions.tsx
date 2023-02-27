@@ -8,7 +8,8 @@ import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { formatEther } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
@@ -35,6 +36,12 @@ const calcChartData = (
   numContracts: number,
   option: OptionType
 ) => {
+  const { address, isConnecting, isDisconnected } = useAccount()
+
+  useEffect(() => {
+    console.log({ address, isConnecting, isDisconnected })
+  }, [address])
+
   const data: { tokenPrice: number; payoff: number }[] = []
 
   for (let index = 0; index < maxRange; index += 5) {

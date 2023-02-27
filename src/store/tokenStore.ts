@@ -1,4 +1,4 @@
-import create from 'zustand'
+import { create } from 'zustand'
 import { TimeRange } from 'lightweight-charts'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import { MarketTokenType, TokenInfoType } from '@/types/next'
