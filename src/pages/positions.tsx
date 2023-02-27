@@ -11,29 +11,9 @@ import { Market } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { fetchBalance } from '@wagmi/core'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getToken } from 'next-auth/jwt'
-import { getSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-  const token = await getToken({ req: context.req })
-
-  const address = token?.sub ?? null
-
-  return {
-    props: {
-      address,
-      session,
-    },
-  }
-}
-
-type AuthenticatedPageProps = InferGetServerSidePropsType<
-  typeof getServerSideProps
->
-
-const PositionsPage: CustomPage = ({ ...props }: AuthenticatedPageProps) => {
+const PositionsPage: CustomPage = () => {
   // access address with props.address
 
   const { data: currentBalance } = useQuery({

@@ -1,7 +1,7 @@
 import { SelectItem } from '@/components/shared/Form/Select'
 import { OptionType } from '@/types/next'
 import { BoardQuotes } from '@lyrafinance/lyra-js'
-import create from 'zustand'
+import { create } from 'zustand'
 
 type OptionsStore = {
   option: OptionType | null

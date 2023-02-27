@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <>
       <Head>
         <title>{`IVX`}</title>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
+        <link rel="icon" href="/IVX_Gradient.svg" type="image/svg+xml"></link>
       </Head>
       {isXl ? (
         <div className="flex h-screen min-h-screen flex-col overflow-hidden">

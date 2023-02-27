@@ -8,7 +8,8 @@ import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { formatEther } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
@@ -53,6 +54,7 @@ const calcChartData = (
 const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
+  const { address, isConnecting, isDisconnected } = useAccount()
 
   const isBelow: boolean =
     (option.isSell && option.isCall) || (!option.isSell && !option.isCall)

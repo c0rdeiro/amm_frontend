@@ -8,23 +8,16 @@ import { arbitrum } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
-import { SessionProvider } from 'next-auth/react'
-import { Session } from 'next-auth'
-import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth'
 
 type WalletProviderProps = {
   children: React.ReactNode
-  session: Session
 }
 
 const throwError = (message: string) => {
   throw new Error(message)
 }
 
-const WalletSessionProvider: React.FC<WalletProviderProps> = ({
-  session,
-  children,
-}) => {
+const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const { chains, provider } = configureChains(
     [arbitrum],
     [
@@ -49,13 +42,9 @@ const WalletSessionProvider: React.FC<WalletProviderProps> = ({
   })
   return (
     <WagmiConfig client={wagmiClient}>
-      <SessionProvider session={session} refetchInterval={0}>
-        <RainbowKitSiweNextAuthProvider>
-          <RainbowKitProvider coolMode chains={chains}>
-            {children}
-          </RainbowKitProvider>
-        </RainbowKitSiweNextAuthProvider>
-      </SessionProvider>
+      <RainbowKitProvider coolMode chains={chains}>
+        {children}
+      </RainbowKitProvider>
     </WagmiConfig>
   )
 }
