@@ -14,7 +14,7 @@ import lyra from '@/utils/getLyraSdk'
 import { useQuery } from '@tanstack/react-query'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import { useRouter } from 'next/router'
-import market from '@lyrafinance/lyra-js/scripts/market'
+
 import OptionsHeader from './OptionsHeader'
 
 const OptionsPanel: React.FC = () => {
@@ -27,9 +27,26 @@ const OptionsPanel: React.FC = () => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
 
-  const markets = market(["0x58a2e35cAe4a5e6FE18967034078189c885A13b0"]);
+  const { data: market } = useQuery({
+    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
+    queryFn: async () =>
+      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    refetchInterval: 10000,
+  })
 
-  
+  const { data, isFetching } = useQuery({
+    queryKey: [
+      'options',
+      tokenSymbol,
+      expDate?.value.board.expiryTimestamp,
+      isCall,
+      isSell,
+    ],
+    queryFn: () =>
+      getTokenOptions(tokenSymbol, market, expDate?.value, isCall, isSell),
+    enabled: !!expDate && !!tokenSymbol && !!market,
+    keepPreviousData: true,
+  })
 
   const columnHelper = createColumnHelper<OptionType>()
   const columns = [
