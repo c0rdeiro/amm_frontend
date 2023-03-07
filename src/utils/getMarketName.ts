@@ -6,6 +6,7 @@ export default function getMarketName(market: Market): string {
     case 'weth':
       return 'ETH'
     case 'btc':
+    case 'wbtc':
       return 'BTC'
     default:
       return ''

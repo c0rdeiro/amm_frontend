@@ -2,7 +2,9 @@ import TokenPositionsPanel from '@/components/Positions/Token/TokenPositionsPane
 import RightPanel from '@/components/RightPanel/RightPanel'
 import ChartContainer from '@/components/Trading/Chart/ChartContainer'
 import OptionsPanel from '@/components/Trading/OptionsPanel/OptionsPanel'
+import Lyra, { Chain } from '@lyrafinance/lyra-js'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useQuery } from 'wagmi'
 
 type TradingPageProps = {
   tokenName: string

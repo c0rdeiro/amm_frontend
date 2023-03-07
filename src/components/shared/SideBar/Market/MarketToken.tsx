@@ -1,4 +1,5 @@
 import tokenIcon from '@/hooks/tokenIcon'
+import { useTokenActions } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import getMarketName from '@/utils/getMarketName'
 import { Market } from '@lyrafinance/lyra-js'
@@ -13,6 +14,8 @@ const MarketToken: React.FC<MarketTokenProps> = ({
   market,
 }: MarketTokenProps) => {
   const { push } = useRouter()
+  const { setTokenAddress: setToken } = useTokenActions()
+
   return (
     <button
       className="w-full"
