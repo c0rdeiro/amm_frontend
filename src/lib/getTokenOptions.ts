@@ -3,7 +3,7 @@ import filterNulls from '@/utils/filterNulls'
 import getIsQuoteHidden from '@/utils/getIsQuoteHidden'
 import resolveOptions from '@/utils/resolveOptions'
 import { BigNumber } from '@ethersproject/bignumber'
-import { BoardQuotes, Market, StrikeQuotes } from '@lyrafinance/lyra-js'
+import { BoardQuotes, Market } from '@lyrafinance/lyra-js'
 import { formatEther } from 'ethers/lib/utils.js'
 
 export async function getTokenOptions(
