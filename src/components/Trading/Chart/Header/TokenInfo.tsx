@@ -1,5 +1,5 @@
 import { getTokenCandles } from '@/lib/getTokenCandles'
-import { useTokenChartHoverInfo } from '@/store/tokenStore'
+import { useTokenAddress, useTokenChartHoverInfo } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next'
 import lyra from '@/utils/getLyraSdk'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
@@ -10,12 +10,14 @@ import { formatEther } from 'ethers/lib/utils.js'
 import TokenInfoItem from './TokenInfoItem'
 
 const TokenInfo: React.FC = () => {
+  const tokenAddress = useTokenAddress()
   const { data: market } = useQuery({
-    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
-    queryFn: async () =>
-      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    queryKey: ['market', tokenAddress],
+    queryFn: async () => await lyra.market(tokenAddress),
     refetchInterval: 10000,
   })
+
+  console.log(market)
 
   const { data: lastCandle } = useQuery({
     queryKey: ['lastCandle'],
