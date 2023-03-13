@@ -57,10 +57,10 @@ const OptionsExchange = () => {
   const cost = 3 //TODO
 
   return (
-    <div className="flex h-full flex-col items-center gap-8 px-8">
+    <div className="flex h-full flex-col items-center gap-8">
       <div className="flex w-full justify-between text-lg">
         <div>Available Margin:</div>
-        <div>{margin}</div>
+        <div>{margin} ETH</div>
       </div>
       <Tabs tabList={callOrPutTabs} size="lg" />
       <div className="flex w-full grow-0 flex-col gap-1 text-text-purple">
