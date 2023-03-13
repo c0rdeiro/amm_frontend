@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     colors: {
       'white': '#FFF',
+      'darkBg': "#282c35",
       'gray': {
         100: '#FAFAFC', //header, sidebar
         300: '#f8f8fa', //main
@@ -17,7 +18,7 @@ module.exports = {
         'purple': '#9A9AAF',
         'DEFAULT': '#2E2E3A',
       },
-      'primary': '#0062ff',
+      'primary': '#6580e7',
       'primary-light': '#287BFF',
       'primary-dark': '#1D59B8',
       'green': '#24ca49',
@@ -78,5 +79,6 @@ module.exports = {
       }
     },
   },
+  darkMode: "class",
   plugins: [require('@headlessui/tailwindcss')({ prefix: 'ui' })],
 }
