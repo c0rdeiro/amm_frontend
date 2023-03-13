@@ -41,7 +41,7 @@ function Select<T>({
       >
         <Listbox.Button
           className={clsx(
-            'relative flex h-9 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium text-primary',
+            'relative flex h-12 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium text-primary',
             { 'bg-gray-300': isDisabled }
           )}
         >

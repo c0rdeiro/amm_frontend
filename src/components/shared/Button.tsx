@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
           'h-7 w-29 gap-1.5 py-1.5 px-2': size === 'xs',
           'h-10.5 w-35': size === 'sm',
           'h-13 w-44 py-4 px-6': size === 'md',
-          'h-15 w-50': size === 'lg',
+          'h-15 w-full text-lg': size === 'lg',
           'bg-primary text-white hover:bg-primary-light active:bg-primary-dark':
             styleType !== 'outline',
           'shadow-blue': styleType === 'shadow',

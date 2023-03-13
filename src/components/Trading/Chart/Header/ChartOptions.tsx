@@ -27,7 +27,11 @@ const ChartOptions: React.FC = () => {
     },
   ]
 
-  return <Tabs tabList={intervalOptions} defaultIndex={0} />
+  return (
+    <div className="flex">
+      <Tabs tabList={intervalOptions} defaultIndex={0} />
+    </div>
+  )
 }
 
 export default ChartOptions

@@ -76,9 +76,9 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({}) => {
   const breakEven = 1450
 
   const isBelow: boolean = (isSell && isCall) || (!isSell && !isCall)
-  const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
   const currentBalance = 0 //TODO: should be replaced when user is set
   const feePercentage = 0.01
+  const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
   const [coinSelected, setCoinSelected] = useState<SelectItem<string>>(
     coins[0]!
   )
@@ -263,7 +263,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({}) => {
           </div>
         </div>
         {/* divider */}
-        <div className="border border-solid border-input-border"></div>
+        <div className="border border-solid border-input-border" />
         <>
           {/* selling secion  */}
           {/* {isSell && (
@@ -325,7 +325,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({}) => {
           </div>
         </div>
       </form>
-      <div className="flex flex-col gap-5 px-5">
+      {/* <div className="flex flex-col gap-5 px-5">
         <LineChart
           data={calcChartData(
             maxRange,
@@ -340,7 +340,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({}) => {
         <p className="flex justify-center text-xs text-text-purple">
           Break Even {formatNumber(breakEven, { decimalCases: 2, symbol: '$' })}
         </p>
-      </div>
+      </div> */}
     </>
   )
 }
