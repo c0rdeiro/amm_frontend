@@ -25,7 +25,6 @@ import Select, { SelectItem } from '../shared/Form/Select'
 import Tabs from '../shared/Tabs'
 import LineChart from './LineChart'
 
-type BuySellOptionsProps = {}
 const calcPayoff = (
   tokenPrice: number,
   strike: number,
@@ -61,7 +60,7 @@ const calcChartData = (
   return data
 }
 
-const BuySellOptions: React.FC<BuySellOptionsProps> = ({}) => {
+const BuySellOptions: React.FC = ({}) => {
   const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
 
   const router = useRouter()
