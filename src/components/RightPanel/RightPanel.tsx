@@ -1,5 +1,5 @@
 import { PositionType } from '@/types/next'
-import OptionsRightPanel from './OptionRightPanel'
+import BuySellOptions from './BuySellOptions'
 import PositionRightPanel from './PositionRightPanel'
 
 type RightPanelProps = {
@@ -9,10 +9,10 @@ type RightPanelProps = {
 
 const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
   return (
-    <div className="item-center 2xl:px-13 flex min-h-full w-rightPanel-min flex-initial flex-col gap-4 bg-gray-400 pt-14 font-medium xl:px-2 2xl:w-rightPanel">
+    <div className="item-center px-13 flex min-h-full w-rightPanel flex-col gap-4 bg-gray-400 pt-14 font-medium ">
       {/*  default no options selected */}
       {isOption ? (
-        <OptionsRightPanel />
+        <BuySellOptions />
       ) : (
         position && <PositionRightPanel position={position} />
       )}

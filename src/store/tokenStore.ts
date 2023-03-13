@@ -5,7 +5,7 @@ import { TokenInfoType } from '@/types/next'
 import { Market } from '@lyrafinance/lyra-js'
 
 type TokenStore = {
-  tokenAddress: string | null
+  tokenAddress: string
   graphVisibleRange: TimeRange
   chartHoverInfo: TokenInfoType[] | null
   actions: {
@@ -30,7 +30,8 @@ const useTokenStore = create<TokenStore>((set) => ({
   },
 }))
 
-export const useToken = () => useTokenStore((state) => state.tokenAddress)
+export const useTokenAddress = () =>
+  useTokenStore((state) => state.tokenAddress)
 export const useTokenChartHoverInfo = () =>
   useTokenStore((state) => state.chartHoverInfo)
 export const useGraphVisibleRange = () =>

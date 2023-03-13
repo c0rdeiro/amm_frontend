@@ -1,5 +1,5 @@
 import tokenIcon from '@/hooks/tokenIcon'
-import { useToken } from '@/store/tokenStore'
+import { useTokenAddress } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
 import getMarketName from '@/utils/getMarketName'
@@ -18,7 +18,7 @@ const TokenSelect: React.FC = () => {
   })
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
-  const tokenAddress = useToken()
+  const tokenAddress = useTokenAddress()
   const { data: market } = useQuery({
     queryKey: ['market', tokenAddress],
     queryFn: async () =>

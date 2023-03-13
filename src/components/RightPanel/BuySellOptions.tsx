@@ -1,4 +1,10 @@
-import { OptionType } from '@/types/next'
+import {
+  useIsOptionCall,
+  useIsOptionSell,
+  useOptionsActions,
+} from '@/store/optionsStore'
+import { useTokenAddress } from '@/store/tokenStore'
+import { OptionType, TabType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
@@ -9,16 +15,17 @@ import clsx from 'clsx'
 import { formatEther } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { HiOutlineArrowDownTray, HiOutlineArrowUpTray } from 'react-icons/hi2'
+import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 import { useAccount } from 'wagmi'
 
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
 import Select, { SelectItem } from '../shared/Form/Select'
+import Tabs from '../shared/Tabs'
 import LineChart from './LineChart'
 
-type BuySellOptionsProps = {
-  option: OptionType
-}
+type BuySellOptionsProps = {}
 const calcPayoff = (
   tokenPrice: number,
   strike: number,
@@ -34,7 +41,10 @@ const calcPayoff = (
 const calcChartData = (
   maxRange: number,
   numContracts: number,
-  option: OptionType
+  isSell: boolean,
+  isCall: boolean,
+  strikePrice: number,
+  pricePerOption: number
 ) => {
   const data: { tokenPrice: number; payoff: number }[] = []
 
@@ -42,35 +52,43 @@ const calcChartData = (
     data.push({
       tokenPrice: index,
       payoff:
-        (option.isSell
-          ? -1 * calcPayoff(index, option.strike, option.price, option.isCall)
-          : calcPayoff(index, option.strike, option.price, option.isCall)) *
+        (isSell
+          ? -1 * calcPayoff(index, strikePrice, pricePerOption, isCall)
+          : calcPayoff(index, strikePrice, pricePerOption, isCall)) *
         numContracts,
     })
   }
   return data
 }
 
-const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
+const BuySellOptions: React.FC<BuySellOptionsProps> = ({}) => {
+  const { setIsCall, setIsSell, setExpDate } = useOptionsActions()
+
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
   const { address, isConnecting, isDisconnected } = useAccount()
+  const isCall = useIsOptionCall()
+  const isSell = useIsOptionSell()
 
-  const isBelow: boolean =
-    (option.isSell && option.isCall) || (!option.isSell && !option.isCall)
+  const pricePerOption = 100
+  const strikePrice = 1400
+  const expiryTime = new Date().setDate(new Date().getDate() + 1)
+  const breakEven = 1450
+
+  const isBelow: boolean = (isSell && isCall) || (!isSell && !isCall)
   const coins = [{ label: 'USDC', value: 'USDC' }] //TODO: supported coins
   const currentBalance = 0 //TODO: should be replaced when user is set
   const feePercentage = 0.01
   const [coinSelected, setCoinSelected] = useState<SelectItem<string>>(
     coins[0]!
   )
+  const tokenAddress = useTokenAddress()
   const [numContracts, setNumContracts] = useState<number>(1)
   const [fees, setFees] = useState<number>(1)
 
   const { data: market } = useQuery({
-    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
-    queryFn: async () =>
-      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    queryKey: ['market', tokenAddress],
+    queryFn: async () => await lyra.market(tokenAddress),
     refetchInterval: 10000,
   })
 
@@ -107,20 +125,59 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
     // console.log(e)
   }
 
+  const buyOrSellTabs: TabType[] = [
+    {
+      label: 'Buy',
+      icon: <HiOutlineArrowDownTray size="1.125rem" />,
+      action: () => {
+        setIsSell(false)
+      },
+    },
+    {
+      label: 'Sell',
+      icon: <HiOutlineArrowUpTray size="1.125rem" />,
+      action: () => {
+        setIsSell(true)
+      },
+    },
+  ]
+
+  const callOrPutTabs: TabType[] = [
+    {
+      label: 'Call',
+
+      icon: <IoTrendingUpSharp size="1.125rem" />,
+      action: () => {
+        setIsCall(true)
+      },
+    },
+    {
+      label: 'Put',
+      icon: <IoTrendingDownSharp size="1.125rem" />,
+      action: () => {
+        setIsCall(false)
+      },
+    },
+  ]
+
   return (
     <>
-      <div className="flex flex-col items-center gap-1 overflow-y-auto">
+      <div className="flex flex-col items-center gap-1 overflow-y-auto ">
+        <div className="mb-8 flex items-start gap-6">
+          <Tabs tabList={buyOrSellTabs} />
+          <Tabs tabList={callOrPutTabs} />
+        </div>
         <div className="text-2.5xl font-semibold">
-          {`${option.isSell ? 'Sell' : 'Buy'} ${
+          {`${isSell ? 'Sell' : 'Buy'} ${
             market ? getMarketName(market) : undefined
-          } ${option.isCall ? 'Call' : 'Put'}`}
+          } ${isCall ? 'Call' : 'Put'}`}
         </div>
         <div className="flex text-lg ">
-          {`Strike ${formatNumber(option.strike, {
+          {`Strike ${formatNumber(strikePrice, {
             decimalCases: 2,
             symbol: '$',
           })}
-          , Exp ${formatDateTime(new Date(option.expiryTime))}`}
+          , Exp ${formatDateTime(new Date(expiryTime))}`}
         </div>
       </div>
       <div className="flex items-start justify-center gap-1 overflow-visible pb-4 text-xs text-text-purple">
@@ -131,17 +188,17 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
             'text-green': !isBelow,
           })}
         >
-          {`${isBelow ? ' below' : ' above'} ${formatNumber(option.strike, {
+          {`${isBelow ? ' below' : ' above'} ${formatNumber(strikePrice, {
             decimalCases: 2,
             symbol: '$',
           })}`}
         </span>
-        {`on ${formatDateTime(new Date(option.expiryTime), {
+        {`on ${formatDateTime(new Date(expiryTime), {
           hideHours: false,
         })}`}
       </div>
       {/* row  */}
-      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+      <form className="flex flex-col gap-4  px-10" onSubmit={onSubmit}>
         <div className="flex  items-center justify-between ">
           <div>Contracts to buy</div>
           <div className="w-28">
@@ -171,7 +228,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           <div>
             <div className="text-sm text-text-purple">Price per option</div>
             <div>
-              {formatNumber(option.price, { decimalCases: 2, symbol: '$' })}
+              {formatNumber(pricePerOption, { decimalCases: 2, symbol: '$' })}
             </div>
           </div>
           <div className="flex flex-col items-end">
@@ -179,7 +236,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
               Fees {feePercentage * 100}%
             </div>
             <div>
-              {formatNumber(option.price * numContracts * feePercentage, {
+              {formatNumber(pricePerOption * numContracts * feePercentage, {
                 decimalCases: 2,
                 symbol: '$',
               })}
@@ -195,10 +252,13 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           <div className="flex flex-col items-end">
             <div className="text-sm text-text-purple">Max Loss</div>
             <div>
-              {formatNumber((1 + feePercentage) * numContracts * option.price, {
-                decimalCases: 2,
-                symbol: '$',
-              })}
+              {formatNumber(
+                (1 + feePercentage) * numContracts * pricePerOption,
+                {
+                  decimalCases: 2,
+                  symbol: '$',
+                }
+              )}
             </div>
           </div>
         </div>
@@ -206,7 +266,7 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         <div className="border border-solid border-input-border"></div>
         <>
           {/* selling secion  */}
-          {/* {option.isSell && (
+          {/* {isSell && (
         <>
           <div className="flex  items-center justify-between ">
             <div>Covered Call</div>
@@ -241,21 +301,23 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
         <div className="flex flex-col items-center py-6 xl:gap-2 2xl:gap-4">
           <div className="text-lg font-semibold text-primary">{`Total ${
             coinSelected.label
-          } ${formatNumber((1 + feePercentage) * numContracts * option.price, {
-            decimalCases: 2,
-            symbol: '$',
-          })}`}</div>
+          } ${formatNumber(
+            (1 + feePercentage) * numContracts * pricePerOption,
+            {
+              decimalCases: 2,
+              symbol: '$',
+            }
+          )}`}</div>
           <Button
             isDisabled
             styleType="shadow"
             type="submit"
-            label={`${option.isSell ? 'SELL' : 'BUY'} ${
+            label={`${isSell ? 'SELL' : 'BUY'} ${
               market ? getMarketName(market) : undefined
-            } ${option.isCall ? 'CALL' : 'PUT'}`}
+            } ${isCall ? 'CALL' : 'PUT'}`}
           />
 
           <div className="flex items-start gap-2 py-2 text-xs text-text-purple">
-            {' '}
             {`Current Balance ${formatNumber(currentBalance, {
               decimalCases: 2,
               symbol: '$',
@@ -263,14 +325,20 @@ const BuySellOptions: React.FC<BuySellOptionsProps> = ({ option }) => {
           </div>
         </div>
       </form>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 px-5">
         <LineChart
-          data={calcChartData(maxRange, numContracts, option)}
+          data={calcChartData(
+            maxRange,
+            numContracts,
+            isSell,
+            isCall,
+            strikePrice,
+            pricePerOption
+          )}
           renderTooltip={renderChartTooltip}
         />
         <p className="flex justify-center text-xs text-text-purple">
-          Break Even{' '}
-          {formatNumber(option.breakEven, { decimalCases: 2, symbol: '$' })}
+          Break Even {formatNumber(breakEven, { decimalCases: 2, symbol: '$' })}
         </p>
       </div>
     </>

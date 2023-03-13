@@ -8,7 +8,7 @@ const Header: React.FC = () => {
         alt="logo"
         src="/IVX_Gradient.svg"
         width={94.12}
-        height={40}
+        height={20}
         quality={100}
       />
       <ConnectButton showBalance={false} />

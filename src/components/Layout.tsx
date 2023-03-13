@@ -19,19 +19,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <title>{`IVX`}</title>
         <link rel="icon" href="/IVX_Gradient.svg" type="image/svg+xml"></link>
       </Head>
-      {isXl ? (
-        <div className="flex h-screen min-h-screen flex-col overflow-hidden">
-          <Header />
-          <div className="flex h-full w-full  flex-row bg-gray-400">
-            <SideBar />
-            <main className="w-[85%] grow  bg-gray-100">{children}</main>
-          </div>
+      {/* {isXl ? ( */}
+      <div className="flex h-screen min-h-screen flex-col overflow-hidden">
+        <Header />
+        <div className="flex h-full w-full  flex-row bg-gray-400">
+          {/* <SideBar /> */}
+          <main className="w-[85%] grow  bg-gray-100">{children}</main>
         </div>
-      ) : (
+      </div>
+      {/* ) : (
         <div className="relative flex h-screen w-screen items-center justify-center">
           <Image alt="logo" src="/noMobile.svg" fill quality={100} />
         </div>
-      )}
+      )} */}
     </>
   )
 }

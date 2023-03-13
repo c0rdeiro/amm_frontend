@@ -3,7 +3,7 @@ import TokenSelect from './TokenSelect'
 
 const ChartHeader: React.FC = () => {
   return (
-    <div className="z-40 flex w-full flex-col items-start gap-6">
+    <div className="z-40 flex w-full items-start gap-6">
       <TokenSelect />
       <InfoRow />
     </div>

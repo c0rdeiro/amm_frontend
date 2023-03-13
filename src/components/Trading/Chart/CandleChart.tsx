@@ -1,16 +1,25 @@
 import { useGraphVisibleRange, useTokenActions } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next.js'
 import { getPercentage } from '@/utils/getPercentage'
+import dateFormat from 'dateformat'
 import {
   ChartOptions,
   ColorType,
   createChart,
   DeepPartial,
   OhlcData,
+  SeriesMarker,
+  SeriesMarkerPosition,
+  Time,
+  UTCTimestamp,
 } from 'lightweight-charts'
 import { useEffect, useRef } from 'react'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../../../tailwind.config.cjs'
+
+const formatTickDates = (time: UTCTimestamp) => {
+  return dateFormat(new Date(time * 1000), `mmm d, h TT`)
+}
 
 const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
   grid: {
@@ -22,12 +31,13 @@ const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
     },
   },
   timeScale: {
-    timeVisible: false,
+    timeVisible: true,
     secondsVisible: false,
     fixLeftEdge: true,
     fixRightEdge: true,
     borderVisible: false,
-    barSpacing: 26,
+    barSpacing: 10,
+    // tickMarkFormatter: formatTickDates,
   },
   rightPriceScale: {
     scaleMargins: {
@@ -36,7 +46,7 @@ const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
     },
     entireTextOnly: true,
     borderVisible: false,
-    drawTicks: false,
+    // drawTicks: false,
   },
 }
 
@@ -63,6 +73,7 @@ const CandleChart: React.FC<CandleChartProps> = ({
 
     const chart = chartContainerRef.current
       ? createChart(chartContainerRef.current, {
+          width: chartContainerRef.current.clientWidth,
           layout: {
             background: {
               type: ColorType.Solid,
@@ -88,20 +99,87 @@ const CandleChart: React.FC<CandleChartProps> = ({
         })
       : null
 
-    const newSeries = chart?.addCandlestickSeries({
-      upColor: '#24ca49',
-      downColor: '#fd4438',
-      wickUpColor: '#24ca49',
-      wickDownColor: '#fd4438',
+    // Get the current users primary locale
+    const currentLocale = window.navigator.languages[0]
+    // Create a number format using Intl.NumberFormat
+    const myPriceFormatter = (number: number) =>
+      Intl.NumberFormat(currentLocale, {
+        style: 'currency',
+        currency: 'USD', // Currency for data points
+        minimumFractionDigits: number % 1 ? 2 : 0,
+      }).format(number)
+
+    // const myTimeFormatter = Intl.NumberFormat(currentLocale, {
+    //   style: 'time',
+    // })
+
+    chart?.applyOptions({
+      localization: {
+        priceFormatter: myPriceFormatter,
+        // timeFormatter: (time: Time) => '9AM',
+      },
+    })
+
+    const candleSeries = chart?.addCandlestickSeries({
+      upColor: '#11952d',
+      downColor: '#d90909',
+      wickUpColor: '#11952d',
+      wickDownColor: '#d90909',
       borderVisible: false,
     })
-    newSeries?.setData(data)
+    candleSeries?.setData(data)
+
+    const markers: SeriesMarker<Time>[] = [
+      {
+        time: data[data.length - 6]!!.time,
+        position: 'aboveBar',
+        color: '#d90909',
+        shape: 'arrowDown',
+      },
+      {
+        time: data[data.length - 10]!!.time,
+        position: 'belowBar',
+        color: '#11952d',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 10]!!.time,
+        position: 'belowBar',
+        color: '#11952d',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#11952d',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#11952d',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#11952d',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#11952d',
+        shape: 'arrowUp',
+      },
+    ]
+    candleSeries?.setMarkers(markers)
 
     visibleRange
       ? chart?.timeScale().setVisibleRange(visibleRange)
       : chart?.timeScale().fitContent()
 
-    window.addEventListener('resizeChart', handleResize)
+    window.addEventListener('resize', handleResize)
 
     chart?.subscribeCrosshairMove((param) => {
       if (param.time && param.seriesPrices.size) {
@@ -133,12 +211,12 @@ const CandleChart: React.FC<CandleChartProps> = ({
     })
 
     return () => {
-      window.removeEventListener('resizeChart', handleResize)
+      window.removeEventListener('resize', handleResize)
       chart?.remove()
     }
   }, [data, visibleRange])
   return (
-    <div className="h-56 w-full overflow-auto" ref={chartContainerRef}></div>
+    <div className="h-full w-full overflow-auto" ref={chartContainerRef}></div>
   )
 }
 
