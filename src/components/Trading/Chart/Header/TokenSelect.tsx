@@ -1,5 +1,5 @@
 import tokenIcon from '@/hooks/tokenIcon'
-import { useTokenAddress } from '@/store/tokenStore'
+import { useTokenActions, useTokenAddress } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
 import getMarketName from '@/utils/getMarketName'
@@ -16,6 +16,7 @@ const TokenSelect: React.FC = () => {
     queryFn: async () => await lyra.markets(),
     refetchInterval: 10000,
   })
+  const { setTokenAddress } = useTokenActions()
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
   const tokenAddress = useTokenAddress()
@@ -47,9 +48,10 @@ const TokenSelect: React.FC = () => {
                 <Listbox.Option
                   key={idx}
                   value={item}
-                  onClick={() =>
+                  onClick={() => {
                     router.push(`/trading/${getMarketName(item).toLowerCase()}`)
-                  }
+                    setTokenAddress(item.address)
+                  }}
                   className="flex gap-2 px-2 py-2 hover:cursor-pointer"
                 >
                   {tokenIcon(getMarketName(item), 20)}

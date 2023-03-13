@@ -13,7 +13,7 @@ export default function tokenIcon(
     case 'eth':
     case 'weth':
       return <ETHIcon size={size} />
-
+    case 'wbtc':
     case 'btc':
       return <BTCIcon size={size} />
     case 'avax':

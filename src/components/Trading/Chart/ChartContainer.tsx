@@ -1,6 +1,6 @@
 import Spinner from '@/components/shared/Spinner'
 import { getTokenCandles } from '@/lib/getTokenCandles'
-import { useGraphVisibleRange } from '@/store/tokenStore'
+import { useGraphVisibleRange, useTokenAddress } from '@/store/tokenStore'
 import lyra from '@/utils/getLyraSdk'
 import { useQuery } from '@tanstack/react-query'
 import { formatEther } from 'ethers/lib/utils.js'
@@ -18,11 +18,11 @@ const ChartContainer: React.FC = () => {
   )
 
   const frequency = useGraphVisibleRange()
+  const tokenAddress = useTokenAddress()
 
   const { data: market } = useQuery({
-    queryKey: ['market', '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'],
-    queryFn: async () =>
-      await lyra.market('0x919E5e0C096002cb8a21397D724C4e3EbE77bC15'), //TODO: change::::this should be a constant
+    queryKey: ['market', tokenAddress],
+    queryFn: async () => await lyra.market(tokenAddress),
     refetchInterval: 10000,
   })
 
