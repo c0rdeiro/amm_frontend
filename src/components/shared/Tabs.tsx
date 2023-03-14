@@ -16,7 +16,7 @@ const Tabs: React.FC<TabsProps> = ({
 }: TabsProps) => {
   return (
     <Tab.Group defaultIndex={defaultIndex}>
-      <Tab.List className="flex w-full rounded-lg bg-gray-400">
+      <Tab.List className="flex w-full rounded-lg bg-gray-400 dark:bg-darkSecondary">
         {tabList.map((item) => (
           <Tab as={Fragment} key={item.label}>
             {({ selected }) => (

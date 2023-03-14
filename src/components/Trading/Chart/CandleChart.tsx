@@ -121,9 +121,9 @@ const CandleChart: React.FC<CandleChartProps> = ({
     })
 
     const candleSeries = chart?.addCandlestickSeries({
-      upColor: '#11952d',
+      upColor: '#20b26c',
       downColor: '#d90909',
-      wickUpColor: '#11952d',
+      wickUpColor: '#20b26c',
       wickDownColor: '#d90909',
       borderVisible: false,
     })
@@ -139,37 +139,37 @@ const CandleChart: React.FC<CandleChartProps> = ({
       {
         time: data[data.length - 10]!!.time,
         position: 'belowBar',
-        color: '#11952d',
+        color: '#20b26c',
         shape: 'arrowUp',
       },
       {
         time: data[data.length - 10]!!.time,
         position: 'belowBar',
-        color: '#11952d',
+        color: '#20b26c',
         shape: 'arrowUp',
       },
       {
         time: data[data.length - 51]!!.time,
         position: 'belowBar',
-        color: '#11952d',
+        color: '#20b26c',
         shape: 'arrowUp',
       },
       {
         time: data[data.length - 51]!!.time,
         position: 'belowBar',
-        color: '#11952d',
+        color: '#20b26c',
         shape: 'arrowUp',
       },
       {
         time: data[data.length - 51]!!.time,
         position: 'belowBar',
-        color: '#11952d',
+        color: '#20b26c',
         shape: 'arrowUp',
       },
       {
         time: data[data.length - 51]!!.time,
         position: 'belowBar',
-        color: '#11952d',
+        color: '#20b26c',
         shape: 'arrowUp',
       },
     ]

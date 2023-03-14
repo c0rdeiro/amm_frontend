@@ -24,3 +24,7 @@
 .recharts-wrapper {
   cursor: none !important;
 }
+
+.display-none {
+  @apply hidden;
+}

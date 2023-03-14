@@ -41,7 +41,7 @@ function Select<T>({
       >
         <Listbox.Button
           className={clsx(
-            'relative flex h-12 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium text-primary',
+            'text-black relative flex h-12 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium dark:bg-darkSecondary dark:text-white',
             { 'bg-gray-300': isDisabled }
           )}
         >
@@ -56,7 +56,7 @@ function Select<T>({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="text-text-default absolute mt-1 max-h-60 gap-4 overflow-auto rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium shadow-dark focus:outline-none">
+          <Listbox.Options className="text-text-default absolute mt-1 max-h-60 gap-4 overflow-auto rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium shadow-dark focus:outline-none dark:bg-darkSecondary">
             {items.map((item) => (
               <Listbox.Option
                 key={item.label}

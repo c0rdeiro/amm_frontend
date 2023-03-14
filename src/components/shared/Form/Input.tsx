@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({
           'h-9 w-29': size === 'md',
           'h-12 w-full': size === 'lg',
         },
-        ' items-center gap-6 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium text-primary'
+        ' text-black items-center gap-6 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium dark:bg-darkSecondary dark:text-white'
       )}
       value={value}
       type={type}
