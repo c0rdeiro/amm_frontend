@@ -22,9 +22,9 @@ const TableButton: React.FC<TableButtonProps> = ({
       onClick={onClick}
       className={clsx(
         {
-          'bg-primary text-white hover:bg-primary-light active:bg-primary-dark':
+          'bg-primary text-white hover:bg-primary-light active:bg-primary-dark dark:bg-sectionsBGDark':
             styleType !== 'outline',
-          'border border-primary bg-white text-primary hover:border-primary-light active:border active:border-primary-dark':
+          'border border-primary bg-white text-primary hover:border-primary-light active:border active:border-primary-dark dark:bg-darkSecondary':
             styleType === 'outline',
         },
         'flex items-center justify-center gap-2 rounded-lg px-6 py-2 text-xs font-medium disabled:opacity-30'

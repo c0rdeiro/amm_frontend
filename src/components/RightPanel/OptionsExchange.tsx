@@ -1,5 +1,6 @@
 import { useOptionsActions } from '@/store/optionsStore'
 import { TabType } from '@/types/next'
+import formatNumber from '@/utils/formatNumber'
 import { useState } from 'react'
 import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
 import Button from '../shared/Button'
@@ -48,6 +49,7 @@ const OptionsExchange = () => {
   const coins = [
     { label: 'USDC', value: 'USDC' },
     { label: 'USDT', value: 'USDT' },
+    { label: 'ETH', value: 'ETH' },
   ] //TODO: supported coins
   const [coinSelected, setCoinSelected] = useState<SelectItem<string>>(
     coins[0]!
@@ -60,7 +62,7 @@ const OptionsExchange = () => {
     <div className="flex h-full flex-col items-center gap-8">
       <div className="flex w-full justify-between text-lg">
         <div>Available Margin:</div>
-        <div>{margin} ETH</div>
+        <div>{formatNumber(margin, { decimalCases: 2, symbol: '$' })}</div>
       </div>
       <Tabs tabList={callOrPutTabs} size="lg" />
       <div className="flex w-full grow-0 flex-col gap-1 text-text-purple">

@@ -1,7 +1,7 @@
 import {
   RainbowKitProvider,
   connectorsForWallets,
-  Wallet,
+  darkTheme,
 } from '@rainbow-me/rainbowkit'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { arbitrum } from 'wagmi/chains'
@@ -42,7 +42,7 @@ const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
   })
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider coolMode chains={chains}>
+      <RainbowKitProvider coolMode chains={chains} theme={darkTheme()}>
         {children}
       </RainbowKitProvider>
     </WagmiConfig>

@@ -18,14 +18,17 @@ module.exports = {
         'purple': '#9A9AAF',
         'DEFAULT': '#2E2E3A',
       },
-      'primary': '#6580e7',
-      'primary-light': '#287BFF',
-      'primary-dark': '#1D59B8',
+      'primary': '#2e979a',
+      'primary-light': '#329496',
+      'primary-dark': '#1c5547',
       'green': '#24ca49',
       'red': '#fd4438',
       'dark-red': '#c33f3d',
       'input-border': 'rgba(154, 154, 175, 0.2)',
       'select': '#2E2E3A',
+      headerDark: '#17181e',
+      sectionsBGDark: '#101014',
+      darkSecondary: '#202124'
     },
 
     extend: {

@@ -17,8 +17,6 @@ const TokenInfo: React.FC = () => {
     refetchInterval: 10000,
   })
 
-  console.log(market)
-
   const { data: lastCandle } = useQuery({
     queryKey: ['lastCandle'],
     queryFn: () =>
