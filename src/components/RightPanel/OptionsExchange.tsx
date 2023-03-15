@@ -61,7 +61,7 @@ const OptionsExchange = () => {
   return (
     <div className="flex h-full flex-col items-center gap-8">
       <div className="flex w-full justify-between text-lg">
-        <div>Available Margin:</div>
+        <div>Available Margin</div>
         <div>{formatNumber(margin, { decimalCases: 2, symbol: '$' })}</div>
       </div>
       <Tabs tabList={callOrPutTabs} size="lg" />
@@ -89,11 +89,11 @@ const OptionsExchange = () => {
       </div>
       <div className="flex w-full flex-col">
         <div className="flex w-full justify-between text-lg">
-          <div>Value:</div>
+          <div>Value</div>
           <div>{`${value} ${coinSelected.label}`}</div>
         </div>
         <div className="flex w-full justify-between text-lg">
-          <div>Cost:</div>
+          <div>Cost</div>
           <div>{`${cost} ${coinSelected.label}`}</div>
         </div>
       </div>
