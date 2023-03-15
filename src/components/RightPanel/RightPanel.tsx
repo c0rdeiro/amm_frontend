@@ -1,5 +1,4 @@
 import { PositionType } from '@/types/next'
-import BuySellOptions from './BuySellOptions'
 import OptionsExchange from './OptionsExchange'
 import PositionRightPanel from './PositionRightPanel'
 
