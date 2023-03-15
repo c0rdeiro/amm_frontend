@@ -1,3 +1,5 @@
+import useEthUsdPriceQuery from '@/hooks/useEthUsdPriceQuery'
+import LINKIcon from '@/Icons/tokens/link'
 import { getTokenCandles } from '@/lib/getTokenCandles'
 import { useTokenAddress, useTokenChartHoverInfo } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next'
@@ -5,7 +7,8 @@ import lyra from '@/utils/getLyraSdk'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import { SnapshotPeriod } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
-import { formatEther } from 'ethers/lib/utils.js'
+import { formatEther as formatEtherETH } from 'ethers/lib/utils.js'
+import { formatEther } from 'viem'
 
 import TokenInfoItem from './TokenInfoItem'
 
@@ -28,14 +31,26 @@ const TokenInfo: React.FC = () => {
     enabled: !!market,
     refetchInterval: 10000,
   })
+  const { data } = useEthUsdPriceQuery()
 
+  const x = data?.price ? parseFloat(formatEther(data.price)) : 0
+  console.log({ data: data?.id, x })
   const prev = lastCandle ? lastCandle[0]?.open : 0
   const change =
     market && prev
-      ? (parseFloat(formatEther(market.spotPrice)) - prev) / prev
+      ? (parseFloat(formatEtherETH(market.spotPrice)) - prev) / prev
       : 0
   const items: TokenInfoType[] = [
     { label: '24h Change', value: change, type: '%', colorMode: 'redgreen' },
+    {
+      label: (
+        <div className="flex gap-1">
+          <LINKIcon size={15} /> Price
+        </div>
+      ),
+      value: x,
+      type: '$',
+    },
     {
       label: '24h High',
       value:
@@ -53,7 +68,7 @@ const TokenInfo: React.FC = () => {
     },
     {
       label: 'Open Interest',
-      value: market ? parseFloat(formatEther(market.openInterest)) : 0,
+      value: market ? parseFloat(formatEtherETH(market.openInterest)) : 0,
       type: '$',
     },
   ]

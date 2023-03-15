@@ -4,14 +4,14 @@ import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
 import getMarketName from '@/utils/getMarketName'
 import { Listbox, Transition } from '@headlessui/react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery as useTSQuery } from '@tanstack/react-query'
 import { formatEther } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
 import { Fragment, Suspense } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 
 const TokenSelect: React.FC = () => {
-  const { data: markets } = useQuery({
+  const { data: markets } = useTSQuery({
     queryKey: ['markets'],
     queryFn: async () => await lyra.markets(),
     refetchInterval: 10000,
@@ -20,7 +20,7 @@ const TokenSelect: React.FC = () => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
   const tokenAddress = useTokenAddress()
-  const { data: market } = useQuery({
+  const { data: market } = useTSQuery({
     queryKey: ['market', tokenAddress],
     queryFn: async () =>
       tokenAddress ? await lyra.market(tokenAddress) : undefined,
