@@ -5,7 +5,7 @@ import CustomConnectButton from './CustomConnectButton'
 
 const Header: React.FC = () => {
   return (
-    <div className="z-50 flex h-16 w-full flex-none items-center justify-between gap-2.5 bg-headerDark pr-24 pl-16  ">
+    <div className="z-50 flex h-16 w-full flex-none items-center justify-between gap-2.5 bg-headerDark pr-8 pl-16  ">
       <Image
         alt="logo"
         src="/IVX_Gradient.svg"
