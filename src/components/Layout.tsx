@@ -1,8 +1,6 @@
-import useBreakpoints from '@/hooks/useBreakpoints'
 import Head from 'next/head'
 import Header from './Header'
 import SideBar from './shared/SideBar/SideBar'
-import Image from 'next/image'
 
 interface LayoutProps {
   fullPage: boolean
@@ -11,8 +9,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isXl } = useBreakpoints()
-
   return (
     <>
       <Head>
@@ -21,7 +17,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Head>
 
       <>
-        {/* {isXl ? ( */}
         <div className="flex h-screen min-h-screen flex-col overflow-hidden">
           <Header />
           <div className="flex h-full w-full  flex-row bg-gray-400 dark:bg-darkBg dark:text-white">
@@ -31,11 +26,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </main>
           </div>
         </div>
-        {/* ) : (
-        <div className="relative flex h-screen w-screen items-center justify-center">
-        <Image alt="logo" src="/noMobile.svg" fill quality={100} />
-        </div>
-      )} */}
       </>
     </>
   )

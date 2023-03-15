@@ -1,4 +1,3 @@
-import useTheme from '@/hooks/useTheme'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { HiMoon, HiOutlineMoon, HiOutlineSun, HiSun } from 'react-icons/hi2'

@@ -5,13 +5,15 @@ import { Fragment } from 'react'
 
 type TabsProps = {
   tabList: TabType[]
-  size?: 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
+  style?: 'normal' | 'monochromatic'
   defaultIndex?: number
 }
 
 const Tabs: React.FC<TabsProps> = ({
   tabList,
   size = 'md',
+  style = 'normal',
   defaultIndex = 0,
 }: TabsProps) => {
   return (
@@ -23,11 +25,21 @@ const Tabs: React.FC<TabsProps> = ({
               <button
                 onClick={item.action}
                 className={clsx(
-                  { 'px-3 py-1.5': size === 'md', 'px-6 py-3': size === 'lg' },
+                  {
+                    'px-3 py-1.5 text-sm': size === 'sm',
+                    'px-3 py-1.5': size === 'md',
+                    'px-6 py-3': size === 'lg',
+                  },
+                  {
+                    'ui-selected:bg-primary ui-selected:shadow-blue':
+                      style === 'normal',
+                    'ui-selected:bg-text-gray dark:ui-selected:bg-darkBg':
+                      style === 'monochromatic',
+                  },
                   'w-full rounded-lg font-medium',
-                  'ui-selected:bg-primary ui-selected:text-white ui-selected:shadow-blue',
+                  ' ui-selected:text-white ',
                   'ui-not-selected:bg-transparent ui-not-selected:text-text-purple ui-not-selected:hover:text-primary/[.6]',
-                  ' ring-white  focus:outline-none'
+                  'ring-white  focus:outline-none'
                 )}
               >
                 <span className="flex w-full items-center justify-center gap-1 ">
