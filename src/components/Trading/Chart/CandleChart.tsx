@@ -192,6 +192,12 @@ const CandleChart: React.FC<CandleChartProps> = ({
             colorMode: 'redgreen',
           },
           {
+            label: 'Open',
+            type: '$',
+            value: val.open,
+            colorMode: 'blue',
+          },
+          {
             label: 'High',
             type: '$',
             value: val.high,
@@ -201,6 +207,12 @@ const CandleChart: React.FC<CandleChartProps> = ({
             label: 'Low',
             type: '$',
             value: val.low,
+            colorMode: 'blue',
+          },
+          {
+            label: 'Close',
+            type: '$',
+            value: val.close,
             colorMode: 'blue',
           },
         ]
