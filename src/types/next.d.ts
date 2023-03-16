@@ -19,7 +19,7 @@ type MarketTokenType = {
 }
 
 type TokenInfoType = {
-  label: string
+  label: string | React.ReactNode
   value: number
   type: '$' | '%'
   colorMode?: 'default' | 'redgreen' | 'blue'
