@@ -5,7 +5,7 @@ import CustomConnectButton from './CustomConnectButton'
 
 const Header: React.FC = () => {
   return (
-    <div className="z-50 flex h-16 w-full flex-none items-center justify-between gap-2.5 bg-headerDark pr-8 pl-16  ">
+    <div className="z-50 flex h-16 w-full flex-none items-center justify-between gap-2.5 bg-gray-100 pr-8 pl-16 shadow-header dark:bg-headerDark dark:shadow-none  ">
       <div className="flex pt-3">
         <Image
           alt="logo"

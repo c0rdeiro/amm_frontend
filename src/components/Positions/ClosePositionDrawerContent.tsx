@@ -89,8 +89,8 @@ const ClosePositionDrawerContent: React.FC<ClosePositionDrawerContentProps> = ({
           <p className="text-sm text-text-purple">Profit</p>
           <h1
             className={clsx('text-2.5xl font-semibold', {
-              'text-green': position.profit > 0,
-              'text-red': position.profit < 0,
+              'text-green-500': position.profit > 0,
+              'text-red-500': position.profit < 0,
             })}
           >
             {formatNumber(position.profit, {

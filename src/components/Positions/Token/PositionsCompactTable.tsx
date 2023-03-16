@@ -137,8 +137,8 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
       cell: (info) => (
         <span
           className={clsx({
-            'text-green': info.getValue() > 0,
-            'text-red': info.getValue() < 0,
+            'text-green-500': info.getValue() > 0,
+            'text-red-500': info.getValue() < 0,
             'text-text-default': info.getValue() === 0,
           })}
         >
