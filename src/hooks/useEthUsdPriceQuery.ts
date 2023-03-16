@@ -8,7 +8,7 @@ const useEthUsdPriceQuery = () => {
     error,
   } = useQuery<{ priceFeeds: { id: number; price: bigint }[] }>(
     GET_ETH_USD_PRICE,
-    { pollInterval: 1000 }
+    { pollInterval: 5000 }
   )
 
   const data = raw_data?.priceFeeds[0]

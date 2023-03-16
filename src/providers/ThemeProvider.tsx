@@ -15,6 +15,7 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   if (typeof window === 'object') {
     const root = window.document.documentElement
     root.classList.add(!isDarkTheme ? 'light' : 'dark')
+    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light')
   }
   const toggleDarkTheme = () => {
     setisDarkTheme(!isDarkTheme)

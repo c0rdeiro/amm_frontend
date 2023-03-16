@@ -33,8 +33,6 @@ const TokenInfo: React.FC = () => {
   })
   const { data } = useEthUsdPriceQuery()
 
-  const x = data?.price ? parseFloat(formatEther(data.price)) : 0
-  console.log({ data: data?.id, x })
   const prev = lastCandle ? lastCandle[0]?.open : 0
   const change =
     market && prev
@@ -48,7 +46,7 @@ const TokenInfo: React.FC = () => {
           <LINKIcon size={15} /> Price
         </div>
       ),
-      value: x,
+      value: data?.price ? parseFloat(formatEther(data.price)) : 0,
       type: '$',
     },
     {
