@@ -64,10 +64,10 @@ const OptionsExchange = () => {
         <div>Available Margin</div>
         <div>{formatNumber(margin, { decimalCases: 2, symbol: '$' })}</div>
       </div>
-      <Tabs tabList={callOrPutTabs} size="lg" />
+      <Tabs tabList={callOrPutTabs} size="lg" style="monochromatic" />
       <div className="flex w-full grow-0 flex-col gap-1 text-text-purple">
         <div>Strike Price</div>
-        <Tabs tabList={strikePrices} size="lg" />
+        <Tabs tabList={strikePrices} size="lg" style="monochromatic" />
       </div>
       <div className="flex w-full flex-col gap-1 text-text-purple">
         <div>Quantity</div>
@@ -98,8 +98,8 @@ const OptionsExchange = () => {
         </div>
       </div>
       <div className="flex w-full flex-col gap-2">
-        <Button label={'Buy / Long'} size="lg" />
-        <Button label={'Sell / Short'} size="lg" />
+        <Button label={'Buy / Long'} size="lg" styleType="green" />
+        <Button label={'Sell / Short'} size="lg" styleType="red" />
       </div>
     </div>
   )

@@ -16,9 +16,10 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
       </div>
       <div
         className={clsx('font-medium ', {
-          'text-green':
+          'text-green-500':
             tokenInfo.colorMode === 'redgreen' && tokenInfo.value > 0,
-          'text-red': tokenInfo.colorMode === 'redgreen' && tokenInfo.value < 0,
+          'text-red-500':
+            tokenInfo.colorMode === 'redgreen' && tokenInfo.value < 0,
           'text-primary': tokenInfo.colorMode === 'blue',
         })}
       >

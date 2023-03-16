@@ -28,6 +28,7 @@ const CustomConnectButton = () => {
                     onClick={openConnectModal}
                     label={'Connect Wallet'}
                     size="sm"
+                    styleType="monochromatic"
                   />
                 )
               }
@@ -38,6 +39,7 @@ const CustomConnectButton = () => {
                     onClick={openChainModal}
                     size="sm"
                     label="Wrong network"
+                    styleType="red"
                   />
                 )
               }

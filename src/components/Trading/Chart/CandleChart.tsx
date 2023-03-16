@@ -122,9 +122,9 @@ const CandleChart: React.FC<CandleChartProps> = ({
 
     const candleSeries = chart?.addCandlestickSeries({
       upColor: '#20b26c',
-      downColor: '#d90909',
+      downColor: '#ef454a',
       wickUpColor: '#20b26c',
-      wickDownColor: '#d90909',
+      wickDownColor: '#ef454a',
       borderVisible: false,
     })
     candleSeries?.setData(data)
@@ -133,7 +133,7 @@ const CandleChart: React.FC<CandleChartProps> = ({
       {
         time: data[data.length - 6]!!.time,
         position: 'aboveBar',
-        color: '#d90909',
+        color: '#ef454a',
         shape: 'arrowDown',
       },
       {
