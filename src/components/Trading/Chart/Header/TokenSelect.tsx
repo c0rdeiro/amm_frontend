@@ -52,7 +52,7 @@ const TokenSelect: React.FC = () => {
                     router.push(`/trading/${getMarketName(item).toLowerCase()}`)
                     setTokenAddress(item.address)
                   }}
-                  className="flex gap-2 px-2 py-2 hover:cursor-pointer"
+                  className="flex items-center gap-2 px-2 py-2 hover:cursor-pointer"
                 >
                   {tokenIcon(getMarketName(item), 20)}
                   {getMarketName(item)}
