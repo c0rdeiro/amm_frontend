@@ -16,9 +16,9 @@ type WalletProviderProps = {
   children: React.ReactNode
 }
 
-const throwError = (message: string) => {
-  throw new Error(message)
-}
+// const throwError = (message: string) => {
+//   throw new Error(message)
+// }
 
 const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const { chains, provider } = configureChains(

@@ -3,7 +3,7 @@ import { createContext, useState } from 'react'
 const ThemeContext = createContext<{
   isDarkTheme: boolean
   toggleDarkTheme: () => void
-}>({ isDarkTheme: true, toggleDarkTheme: () => {} })
+}>({ isDarkTheme: true, toggleDarkTheme: () => {} }) // eslint-disable-line @typescript-eslint/no-empty-function
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -26,10 +26,9 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }
 
   return (
-    <ThemeContext.Provider
-      value={{ isDarkTheme, toggleDarkTheme }}
-      children={children}
-    />
+    <ThemeContext.Provider value={{ isDarkTheme, toggleDarkTheme }}>
+      {children}
+    </ThemeContext.Provider>
   )
 }
 export { ThemeProvider, ThemeContext }
