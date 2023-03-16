@@ -7,10 +7,9 @@ const TokenPositionsPanel = () => {
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop() ?? ''
   return (
-    <div className="flex w-full items-start gap-8 overflow-y-auto pt-6 pb-14">
+    <div className="flex w-full items-start gap-8 overflow-y-auto pb-14">
       <div className="flex w-full flex-col items-start rounded-lg bg-gray-400 py-8 px-6 dark:bg-sectionsBGDark">
         <div className="flex items-center gap-4 px-6 pb-4 text-lg font-semibold">
-          {tokenIcon(tokenSymbol, 36)} {tokenSymbol.toUpperCase()} Open
           Positions
         </div>
         <PositionsCompactTable statusToShow="Open" />

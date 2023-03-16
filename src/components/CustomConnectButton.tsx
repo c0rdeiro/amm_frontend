@@ -4,14 +4,7 @@ import Button from './shared/Button'
 const CustomConnectButton = () => {
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        mounted,
-      }) => {
+      {({ account, chain, openChainModal, openConnectModal, mounted }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
         const ready = mounted
@@ -35,15 +28,19 @@ const CustomConnectButton = () => {
                     onClick={openConnectModal}
                     label={'Connect Wallet'}
                     size="sm"
+                    styleType="monochromatic"
                   />
                 )
               }
 
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button">
-                    Wrong network
-                  </button>
+                  <Button
+                    onClick={openChainModal}
+                    size="sm"
+                    label="Wrong network"
+                    styleType="red"
+                  />
                 )
               }
 

@@ -1,39 +1,23 @@
-import useTheme from '@/hooks/useTheme'
+import { ThemeContext } from '@/providers/ThemeProvider'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { HiMoon, HiOutlineMoon, HiOutlineSun, HiSun } from 'react-icons/hi2'
 
 const ThemeSwitch = () => {
-  const [theme, setTheme] = useState<string>('dark')
-  const colorTheme = theme === 'dark' ? 'light' : 'dark'
-
-  useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.remove(colorTheme)
-    root.classList.add(theme)
-
-    localStorage.setItem('theme', theme)
-  }, [theme, colorTheme])
-
-  const switchTheme = () =>
-    colorTheme === 'dark' ? setTheme('dark') : setTheme('light')
+  const { isDarkTheme, toggleDarkTheme } = useContext(ThemeContext)
 
   return (
     <>
       <button
-        onClick={switchTheme}
+        onClick={toggleDarkTheme}
         className={clsx(
-          {
-            'border-white': colorTheme === 'light',
-            'border-primary': colorTheme === 'dark',
-          },
-          'rounded-lg border  p-2'
+          'rounded-lg border border-primary p-2 dark:border-white'
         )}
       >
-        {colorTheme === 'dark' ? (
-          <HiSun color="#2e979a" size="1.5em" />
-        ) : (
+        {isDarkTheme ? (
           <HiMoon color="white" size="1.5em" />
+        ) : (
+          <HiSun color="#2e979a" size="1.5em" />
         )}
       </button>
     </>

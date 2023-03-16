@@ -7,6 +7,7 @@ import '@/styles/globals.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import WalletSessionProvider from '@/providers/WalletSessionProvider'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ThemeProvider } from '@/providers/ThemeProvider'
 
 interface CustomAppProps extends Omit<AppProps, 'Component'> {
   Component: CustomPage
@@ -22,11 +23,13 @@ const IVX = ({ Component, pageProps: { ...pageProps } }: CustomAppProps) => {
   return (
     <ApolloProvider client={apolloClient}>
       <QueryClientProvider client={queryClient}>
-        <WalletSessionProvider>
-          <Layout fullPage={Component.fullPage} title={Component.title}>
-            <Component {...pageProps} />
-          </Layout>
-        </WalletSessionProvider>
+        <ThemeProvider>
+          <WalletSessionProvider>
+            <Layout fullPage={Component.fullPage} title={Component.title}>
+              <Component {...pageProps} />
+            </Layout>
+          </WalletSessionProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </ApolloProvider>
   )
