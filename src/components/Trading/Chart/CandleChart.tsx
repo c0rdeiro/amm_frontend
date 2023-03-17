@@ -187,7 +187,7 @@ const CandleChart: React.FC<CandleChartProps> = ({
           {
             label: 'Change',
             type: '%',
-            value: getPercentage(val.close - val.open, val.close),
+            value: getPercentage(val.close - val.open, val.open),
             colorMode: 'redgreen',
           },
           {

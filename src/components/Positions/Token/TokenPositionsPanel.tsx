@@ -9,7 +9,7 @@ const TokenPositionsPanel = () => {
       action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },
     {
-      label: 'Closed (0)',
+      label: 'Closed',
       action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },
   ]
