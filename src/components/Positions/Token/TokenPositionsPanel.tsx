@@ -1,17 +1,16 @@
 import Tabs from '@/components/shared/Tabs'
 import { TabType } from '@/types/next'
 import PositionsCompactTable from './PositionsCompactTable'
-import TokenClosedPositionsPanel from './TokenClosedPositionsPanel'
 
 const TokenPositionsPanel = () => {
   const tableTabs: TabType[] = [
     {
       label: 'Open (0)',
-      action: () => {},
+      action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },
     {
       label: 'Closed (0)',
-      action: () => {},
+      action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },
   ]
 
