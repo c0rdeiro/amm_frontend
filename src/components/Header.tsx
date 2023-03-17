@@ -10,8 +10,8 @@ const Header: React.FC = () => {
         <Image
           alt="logo"
           src="/IVX_Gradient.svg"
-          width={94.12}
-          height={20}
+          width={84.7}
+          height={18}
           quality={100}
         />
       </div>
