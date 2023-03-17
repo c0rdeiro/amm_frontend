@@ -12,56 +12,53 @@ import { DataTableContentItem } from '../../shared/DataTableContentItem'
 import PositionsExpandedRow from '../PositionsExpandedRow'
 
 type PositionsCompactTableProps = {
-  statusToShow: 'All' | 'Open' | 'Closed'
+  data: PositionType[]
   showTableHeader?: boolean
 }
 const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
-  statusToShow,
+  data,
   showTableHeader = true,
 }) => {
-  const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop() ?? ''
-
-  const data: PositionType[] = [
-    // {
-    //   token: tokens[0]!,
-    //   operation: 'Call',
-    //   numContracts: 0.546,
-    //   strike: 1300.0,
-    //   expDate: new Date('2022-11-4'),
-    //   value: 7.45,
-    //   costPerOption: 1375.21,
-    //   price: 1456.09,
-    //   profit: 44.16,
-    //   status: 'Closed',
-    //   impliedVolatility: 88.74,
-    //   delta: 4.45,
-    //   vega: 12.12,
-    //   gamma: 21.32,
-    //   theta: 14.14,
-    //   openInterest: 3800,
-    //   openDate: new Date(),
-    // },
-    // {
-    //   token: tokens[0]!,
-    //   operation: 'Put',
-    //   numContracts: 0.546,
-    //   strike: 1300.0,
-    //   expDate: new Date('2022-11-4'),
-    //   value: 7.45,
-    //   costPerOption: 1456.09,
-    //   price: 1375.21,
-    //   profit: -44.16,
-    //   status: 'Open',
-    //   impliedVolatility: 88.74,
-    //   delta: 4.45,
-    //   vega: 12.12,
-    //   gamma: 21.32,
-    //   theta: 14.14,
-    //   openInterest: 3800,
-    //   openDate: new Date(),
-    // },
-  ]
+  // const data: PositionType[] = [
+  //   // {
+  //   //   token: tokens[0]!,
+  //   //   operation: 'Call',
+  //   //   numContracts: 0.546,
+  //   //   strike: 1300.0,
+  //   //   expDate: new Date('2022-11-4'),
+  //   //   value: 7.45,
+  //   //   costPerOption: 1375.21,
+  //   //   price: 1456.09,
+  //   //   profit: 44.16,
+  //   //   status: 'Closed',
+  //   //   impliedVolatility: 88.74,
+  //   //   delta: 4.45,
+  //   //   vega: 12.12,
+  //   //   gamma: 21.32,
+  //   //   theta: 14.14,
+  //   //   openInterest: 3800,
+  //   //   openDate: new Date(),
+  //   // },
+  //   // {
+  //   //   token: tokens[0]!,
+  //   //   operation: 'Put',
+  //   //   numContracts: 0.546,
+  //   //   strike: 1300.0,
+  //   //   expDate: new Date('2022-11-4'),
+  //   //   value: 7.45,
+  //   //   costPerOption: 1456.09,
+  //   //   price: 1375.21,
+  //   //   profit: -44.16,
+  //   //   status: 'Open',
+  //   //   impliedVolatility: 88.74,
+  //   //   delta: 4.45,
+  //   //   vega: 12.12,
+  //   //   gamma: 21.32,
+  //   //   theta: 14.14,
+  //   //   openInterest: 3800,
+  //   //   openDate: new Date(),
+  //   // },
+  // ]
 
   const columnHelper = createColumnHelper<PositionType>()
   const columns = [
@@ -193,11 +190,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
   return (
     <DataTable
       colorScheme="white"
-      data={data.filter(
-        (position) =>
-          (statusToShow === 'All' || position.status === statusToShow) &&
-          position.token.symbol === tokenSymbol
-      )}
+      data={data}
       columns={columns}
       getRowCanExpand={(row: Row<PositionType>) =>
         row.original.status === 'Open'

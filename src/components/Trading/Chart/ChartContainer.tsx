@@ -47,7 +47,7 @@ const ChartContainer: React.FC = () => {
   })
 
   return (
-    <div className="flex h-[65dvh] flex-col items-start px-8 ">
+    <div className="flex h-[65dvh] flex-col items-start pl-8 ">
       <>
         <ChartHeader />
         {candles ? <CandleChart data={candles ?? []} /> : <Spinner />}

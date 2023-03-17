@@ -100,10 +100,9 @@ const CandleChart: React.FC<CandleChartProps> = ({
       : null
 
     // Get the current users primary locale
-    const currentLocale = window.navigator.languages[0]
     // Create a number format using Intl.NumberFormat
     const myPriceFormatter = (number: number) =>
-      Intl.NumberFormat(currentLocale, {
+      Intl.NumberFormat('en-EN', {
         style: 'currency',
         currency: 'USD', // Currency for data points
         minimumFractionDigits: number % 1 ? 2 : 0,
