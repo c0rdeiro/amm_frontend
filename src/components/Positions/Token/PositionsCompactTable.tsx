@@ -19,47 +19,6 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
   data,
   showTableHeader = true,
 }) => {
-  // const data: PositionType[] = [
-  //   // {
-  //   //   token: tokens[0]!,
-  //   //   operation: 'Call',
-  //   //   numContracts: 0.546,
-  //   //   strike: 1300.0,
-  //   //   expDate: new Date('2022-11-4'),
-  //   //   value: 7.45,
-  //   //   costPerOption: 1375.21,
-  //   //   price: 1456.09,
-  //   //   profit: 44.16,
-  //   //   status: 'Closed',
-  //   //   impliedVolatility: 88.74,
-  //   //   delta: 4.45,
-  //   //   vega: 12.12,
-  //   //   gamma: 21.32,
-  //   //   theta: 14.14,
-  //   //   openInterest: 3800,
-  //   //   openDate: new Date(),
-  //   // },
-  //   // {
-  //   //   token: tokens[0]!,
-  //   //   operation: 'Put',
-  //   //   numContracts: 0.546,
-  //   //   strike: 1300.0,
-  //   //   expDate: new Date('2022-11-4'),
-  //   //   value: 7.45,
-  //   //   costPerOption: 1456.09,
-  //   //   price: 1375.21,
-  //   //   profit: -44.16,
-  //   //   status: 'Open',
-  //   //   impliedVolatility: 88.74,
-  //   //   delta: 4.45,
-  //   //   vega: 12.12,
-  //   //   gamma: 21.32,
-  //   //   theta: 14.14,
-  //   //   openInterest: 3800,
-  //   //   openDate: new Date(),
-  //   // },
-  // ]
-
   const columnHelper = createColumnHelper<PositionType>()
   const columns = [
     columnHelper.accessor('numContracts', {
@@ -89,6 +48,25 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
       ),
       header: () => <span>Strike</span>,
     }),
+    columnHelper.accessor('size', {
+      id: 'size',
+      cell: (info) => (
+        <DataTableContentItem clickType="expand" row={info.row}>
+          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
+        </DataTableContentItem>
+      ),
+      header: () => <span>Size</span>,
+    }),
+
+    columnHelper.accessor('pnl', {
+      id: 'pnl',
+      cell: (info) => (
+        <DataTableContentItem clickType="expand" row={info.row}>
+          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
+        </DataTableContentItem>
+      ),
+      header: () => <span>P&L</span>,
+    }),
 
     columnHelper.accessor('expiryTime', {
       id: 'expDate',
@@ -97,67 +75,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
           {formatDateTime(new Date(info.getValue()))}
         </DataTableContentItem>
       ),
-      header: () => <span>Exp Date</span>,
-    }),
-
-    columnHelper.accessor('value', {
-      id: 'value',
-      cell: (info) => (
-        <DataTableContentItem clickType="expand" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
-        </DataTableContentItem>
-      ),
-      header: () => <span>Value</span>,
-    }),
-
-    columnHelper.accessor('costPerOption', {
-      id: 'costPerOption',
-      cell: (info) => (
-        <DataTableContentItem clickType="expand" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
-        </DataTableContentItem>
-      ),
-      header: () => <span>Cost Per Option</span>,
-    }),
-
-    columnHelper.accessor('price', {
-      id: 'price',
-      cell: (info) => (
-        <DataTableContentItem clickType="expand" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2, symbol: '$' })}
-        </DataTableContentItem>
-      ),
-      header: () => <span>Price</span>,
-    }),
-    columnHelper.accessor('profit', {
-      id: 'profit',
-      cell: (info) => (
-        <span
-          className={clsx({
-            'text-green-500': info.getValue() > 0,
-            'text-red-500': info.getValue() < 0,
-            'text-text-default': info.getValue() === 0,
-          })}
-        >
-          <DataTableContentItem clickType="expand" row={info.row}>
-            {formatNumber(info.getValue(), {
-              decimalCases: 2,
-              symbol: '$',
-              displayPositive: true,
-            })}
-            (
-            {formatNumber(
-              getPercentage(
-                info.getValue(),
-                info.row.original.costPerOption * info.row.original.numContracts
-              ),
-              { decimalCases: 2, symbol: '%', isSymbolEnd: true }
-            )}
-            )
-          </DataTableContentItem>
-        </span>
-      ),
-      header: () => <span>Profit</span>,
+      header: () => <span>Seconds to Expiry</span>,
     }),
 
     columnHelper.accessor('status', {

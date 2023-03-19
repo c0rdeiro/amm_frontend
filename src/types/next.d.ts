@@ -50,6 +50,8 @@ type PositionType = {
   strike: number
   expiryTime: number
   value: number
+  size: number
+  pnl: number
   costPerOption: number
   price: number
   profit: number
