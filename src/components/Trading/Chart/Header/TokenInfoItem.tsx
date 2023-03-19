@@ -15,7 +15,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
         {tokenInfo.label}
       </div>
       <div
-        className={clsx('font-medium ', {
+        className={clsx('w-16 font-medium', {
           'text-green-500':
             tokenInfo.colorMode === 'redgreen' && tokenInfo.value > 0,
           'text-red-500':
