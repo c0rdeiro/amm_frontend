@@ -38,7 +38,7 @@ const Tabs: React.FC<TabsProps> = ({
                   },
                   'w-full rounded-lg font-medium',
                   ' ui-selected:text-white ',
-                  'ui-not-selected:bg-transparent ui-not-selected:text-text-purple ui-not-selected:hover:text-primary/[.6]',
+                  'ui-not-selected:bg-transparent ui-not-selected:text-text-purple ui-not-selected:hover:text-text-gray',
                   'ring-white  focus:outline-none'
                 )}
               >

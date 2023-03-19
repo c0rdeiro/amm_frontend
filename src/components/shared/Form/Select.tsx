@@ -62,18 +62,19 @@ function Select<T>({
                 key={item.label}
                 value={item}
                 disabled={!!item.isDisabled}
-                className="text-text-purple hover:text-primary/[.6] active:text-primary"
+                className=" text-text-purple hover:text-text-gray dark:active:text-white"
               >
                 {({ selected }) => (
                   <span
                     className={clsx(
                       'pointer-events-none flex items-center gap-2',
                       {
-                        'text-primary': Array.isArray(selectedItem)
-                          ? selectedItem
-                              .map((x) => x.label)
-                              .includes(item.label)
-                          : item.label === selectedItem?.label,
+                        'text-black hover:text-black dark:text-white dark:hover:text-white':
+                          Array.isArray(selectedItem)
+                            ? selectedItem
+                                .map((x) => x.label)
+                                .includes(item.label)
+                            : item.label === selectedItem?.label,
                       }
                     )}
                   >
