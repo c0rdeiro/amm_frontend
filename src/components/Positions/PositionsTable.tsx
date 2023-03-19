@@ -2,7 +2,6 @@ import tokenIcon from '@/hooks/tokenIcon'
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
-import { getPercentage } from '@/utils/getPercentage'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useState } from 'react'
@@ -165,10 +164,9 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
             })}{' '}
             (
             {formatNumber(
-              getPercentage(
-                info.getValue(),
-                info.row.original.costPerOption * info.row.original.numContracts
-              ),
+              info.getValue() /
+                (info.row.original.costPerOption *
+                  info.row.original.numContracts),
               { decimalCases: 2, symbol: '%', isSymbolEnd: true }
             )}
             )

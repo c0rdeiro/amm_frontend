@@ -22,7 +22,7 @@ type TokenInfoType = {
   label: string | React.ReactNode
   value: number
   type: '$' | '%'
-  colorMode?: 'default' | 'redgreen' | 'blue'
+  colorMode?: 'default' | 'redgreen' | 'blue' | 'gray'
 }
 
 type TabType = {

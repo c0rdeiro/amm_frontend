@@ -21,6 +21,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
           'text-red-500':
             tokenInfo.colorMode === 'redgreen' && tokenInfo.value < 0,
           'text-primary': tokenInfo.colorMode === 'blue',
+          'text-text-gray': tokenInfo.colorMode === 'gray',
         })}
       >
         {formatNumber(tokenInfo.value, {

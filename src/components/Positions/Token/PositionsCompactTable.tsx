@@ -1,7 +1,6 @@
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
-import { getPercentage } from '@/utils/getPercentage'
 import { createColumnHelper, Row } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'

@@ -1,6 +1,5 @@
 import { useGraphVisibleRange, useTokenActions } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next.js'
-import { getPercentage } from '@/utils/getPercentage'
 import dateFormat from 'dateformat'
 import {
   ChartOptions,
@@ -187,32 +186,32 @@ const CandleChart: React.FC<CandleChartProps> = ({
           {
             label: 'Change',
             type: '%',
-            value: getPercentage(val.close - val.open, val.open),
+            value: (val.close - val.open) / val.open,
             colorMode: 'redgreen',
           },
           {
             label: 'Open',
             type: '$',
             value: val.open,
-            colorMode: 'blue',
+            colorMode: 'gray',
           },
           {
             label: 'High',
             type: '$',
             value: val.high,
-            colorMode: 'blue',
+            colorMode: 'gray',
           },
           {
             label: 'Low',
             type: '$',
             value: val.low,
-            colorMode: 'blue',
+            colorMode: 'gray',
           },
           {
             label: 'Close',
             type: '$',
             value: val.close,
-            colorMode: 'blue',
+            colorMode: 'gray',
           },
         ]
         setChartHoverInfo(items)

@@ -1,7 +1,6 @@
 import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
-import { getPercentage } from '@/utils/getPercentage'
 import clsx from 'clsx'
 import { useState } from 'react'
 import Button from '../shared/Button'
@@ -100,10 +99,8 @@ const ClosePositionDrawerContent: React.FC<ClosePositionDrawerContentProps> = ({
             })}
             {' ('}
             {formatNumber(
-              getPercentage(
-                position.profit,
-                position.costPerOption * position.numContracts
-              ),
+              position.profit /
+                (position.costPerOption * position.numContracts),
               { decimalCases: 2, symbol: '%', isSymbolEnd: true }
             )}
             )
