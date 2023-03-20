@@ -22,7 +22,7 @@ type TokenInfoType = {
   label: string | React.ReactNode
   value: number
   type: '$' | '%'
-  colorMode?: 'default' | 'redgreen' | 'blue'
+  colorMode?: 'default' | 'redgreen' | 'blue' | 'gray'
 }
 
 type TabType = {
@@ -50,6 +50,8 @@ type PositionType = {
   strike: number
   expiryTime: number
   value: number
+  size: number
+  pnl: number
   costPerOption: number
   price: number
   profit: number

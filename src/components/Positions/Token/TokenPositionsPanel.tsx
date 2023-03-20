@@ -16,9 +16,9 @@ const TokenPositionsPanel = () => {
 
   return (
     <div className="flex w-full items-start gap-8 overflow-y-auto pb-14">
-      <div className="flex w-full flex-col items-start rounded-lg  py-8 px-6 ">
-        <div className="flex w-64 items-center px-6 pb-4 ">
-          <Tabs tabList={tableTabs} size="md" style="monochromatic" />
+      <div className="flex w-full flex-col items-start rounded-lg py-2 px-6 ">
+        <div className="flex w-64 items-center  pb-4 ">
+          <Tabs tabList={tableTabs} size="sm" style="monochromatic" />
         </div>
         <PositionsCompactTable data={[]} />
       </div>
