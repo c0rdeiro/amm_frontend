@@ -1,7 +1,4 @@
-import {
-  useBtcPriceQuery,
-  useEthPriceQuery,
-} from '@/hooks/useChainlinkPriceQuery'
+import useChainlinkPricesQuery from '@/hooks/useChainlinkPriceQuery'
 import LINKIcon from '@/Icons/tokens/link'
 import { getTokenCandles } from '@/lib/getTokenCandles'
 import { useTokenAddress, useTokenChartHoverInfo } from '@/store/tokenStore'
@@ -39,18 +36,7 @@ const TokenInfo: React.FC = () => {
     refetchInterval: 10000,
   })
 
-  // const { data } = useChainlinkPricesQuery(tokenSymbol)
-  const { data: ethData } = useEthPriceQuery()
-  const { data: btcData } = useBtcPriceQuery() //TODO: improve this
-  let data = undefined
-  switch (marketName) {
-    case 'eth':
-      data = ethData
-      break
-    case 'btc':
-      data = btcData
-      break
-  }
+  const { data } = useChainlinkPricesQuery(marketName)
 
   const prev = lastCandle ? lastCandle[0]?.open : 0
   const change =

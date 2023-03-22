@@ -4,19 +4,18 @@ import { useQuery } from '@apollo/client'
 
 type ChainlinkMarketPrice = { id: number; price: bigint }
 
-const SUPPORTED_MARKETS = ['eth', 'btc']
-
 const useChainlinkPricesQuery = (marketName?: string) => {
-  if (!marketName || !SUPPORTED_MARKETS.includes(marketName))
-    return { data: undefined }
+  //TODO: IMPROVE THIS
+  const { data: ethData } = useEthPriceQuery()
+  const { data: btcData } = useBtcPriceQuery()
 
   switch (marketName) {
     case 'eth':
-      return useEthPriceQuery()
+      return { data: ethData }
     case 'btc':
-      return useBtcPriceQuery()
+      return { data: btcData }
     default:
-      return useEthPriceQuery()
+      return { data: undefined }
   }
 }
 
@@ -40,4 +39,4 @@ const useBtcPriceQuery = () => {
   return { data: data?.btcPrices[0], loading, error }
 }
 
-export { useChainlinkPricesQuery, useBtcPriceQuery, useEthPriceQuery }
+export default useChainlinkPricesQuery
