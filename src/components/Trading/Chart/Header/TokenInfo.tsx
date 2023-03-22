@@ -1,4 +1,7 @@
-import useEthUsdPriceQuery from '@/hooks/useEthUsdPriceQuery'
+import {
+  useBtcPriceQuery,
+  useEthPriceQuery,
+} from '@/hooks/useChainlinkPriceQuery'
 import LINKIcon from '@/Icons/tokens/link'
 import { getTokenCandles } from '@/lib/getTokenCandles'
 import { useTokenAddress, useTokenChartHoverInfo } from '@/store/tokenStore'
@@ -8,11 +11,15 @@ import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import { SnapshotPeriod } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { formatEther as formatEtherETH } from 'ethers/lib/utils.js'
+import { useRouter } from 'next/router'
 import { formatEther } from 'viem'
 
 import TokenInfoItem from './TokenInfoItem'
 
 const TokenInfo: React.FC = () => {
+  const router = useRouter()
+  const marketName = router.asPath.split('/').pop()
+
   const tokenAddress = useTokenAddress()
   const { data: market } = useQuery({
     queryKey: ['market', tokenAddress],
@@ -31,7 +38,19 @@ const TokenInfo: React.FC = () => {
     enabled: !!market,
     refetchInterval: 10000,
   })
-  const { data } = useEthUsdPriceQuery()
+
+  // const { data } = useChainlinkPricesQuery(tokenSymbol)
+  const { data: ethData } = useEthPriceQuery()
+  const { data: btcData } = useBtcPriceQuery() //TODO: improve this
+  let data = undefined
+  switch (marketName) {
+    case 'eth':
+      data = ethData
+      break
+    case 'btc':
+      data = btcData
+      break
+  }
 
   const prev = lastCandle ? lastCandle[0]?.open : 0
   const change =
