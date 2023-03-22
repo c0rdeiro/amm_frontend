@@ -41,7 +41,7 @@ const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
   rightPriceScale: {
     scaleMargins: {
       top: 0.1,
-      bottom: 0.05,
+      bottom: 0.2,
     },
     entireTextOnly: true,
     borderVisible: false,
@@ -172,6 +172,31 @@ const CandleChart: React.FC<CandleChartProps> = ({
       },
     ]
     candleSeries?.setMarkers(markers)
+
+    const volumeSeries = chart?.addHistogramSeries({
+      priceFormat: {
+        type: 'volume',
+      },
+      priceScaleId: '', // set as an overlay by setting a blank priceScaleId
+      // set the positioning of the volume series
+      scaleMargins: {
+        top: 0.7, // highest point of the series will be 70% away from the top
+        bottom: 0,
+      },
+    })
+    volumeSeries?.priceScale().applyOptions({
+      scaleMargins: {
+        top: 0.9, // highest point of the series will be 70% away from the top
+        bottom: 0,
+      },
+    })
+    volumeSeries?.setData(
+      data.map((i) => ({
+        time: i.time,
+        value: i.close,
+        color: Math.random() < 0.2 ? '#952f34' : '#197148',
+      }))
+    )
 
     visibleRange
       ? chart?.timeScale().setVisibleRange(visibleRange)
