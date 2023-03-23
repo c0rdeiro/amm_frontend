@@ -26,6 +26,7 @@ type TokenInfoType = {
 }
 
 type TabType = {
+  key: number
   label: string
   action: () => void
   icon?: React.ReactNode

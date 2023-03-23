@@ -5,10 +5,12 @@ import PositionsCompactTable from './PositionsCompactTable'
 const TokenPositionsPanel = () => {
   const tableTabs: TabType[] = [
     {
+      key: 0,
       label: 'Open (0)',
       action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },
     {
+      key: 1,
       label: 'Closed',
       action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },

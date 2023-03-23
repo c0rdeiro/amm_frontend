@@ -7,6 +7,7 @@ type TabsProps = {
   tabList: TabType[]
   size?: 'sm' | 'md' | 'lg'
   style?: 'normal' | 'monochromatic'
+  roundStyle?: 'round' | 'straight'
   defaultIndex?: number
 }
 
@@ -14,13 +15,22 @@ const Tabs: React.FC<TabsProps> = ({
   tabList,
   size = 'md',
   style = 'normal',
+  roundStyle = 'round',
   defaultIndex = 0,
 }: TabsProps) => {
   return (
     <Tab.Group defaultIndex={defaultIndex}>
-      <Tab.List className="flex w-full rounded-lg bg-gray-400 dark:bg-darkSecondary">
+      <Tab.List
+        className={clsx(
+          {
+            'rounded-lg': roundStyle === 'round',
+            'rounded-none': roundStyle === 'straight',
+          },
+          'flex w-full bg-gray-400 dark:bg-darkSecondary'
+        )}
+      >
         {tabList.map((item) => (
-          <Tab as={Fragment} key={item.label}>
+          <Tab as={Fragment} key={item.key}>
             {({ selected }) => (
               <button
                 onClick={item.action}

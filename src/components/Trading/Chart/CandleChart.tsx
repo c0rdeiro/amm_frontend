@@ -194,7 +194,7 @@ const CandleChart: React.FC<CandleChartProps> = ({
       data.map((i) => ({
         time: i.time,
         value: i.close,
-        color: Math.random() < 0.2 ? '#952f34' : '#197148',
+        color: i.open > i.close ? '#952f34' : '#197148',
       }))
     )
 
