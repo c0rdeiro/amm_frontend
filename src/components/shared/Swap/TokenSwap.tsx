@@ -22,7 +22,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ isLong }) => {
   const [secondToken, setSecondToken] = useState(tokens[0])
 
   return (
-    <div className="relative flex flex-col gap-3">
+    <div className="relative flex flex-col gap-2">
       <TokenSwapItem
         label={'Pay'}
         value={0}
