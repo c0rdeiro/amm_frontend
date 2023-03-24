@@ -36,7 +36,6 @@ const OptionsExchange = () => {
   const strikePrices: TabType[] = [
     {
       key: 0,
-
       label: '1100',
       action: () => setStrikePrice(1300),
     },

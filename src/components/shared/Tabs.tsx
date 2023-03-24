@@ -6,7 +6,7 @@ import { Fragment } from 'react'
 type TabsProps = {
   tabList: TabType[]
   size?: 'sm' | 'md' | 'lg'
-  style?: 'normal' | 'monochromatic'
+  style?: 'normal' | 'monochromatic' | 'no-style'
   roundStyle?: 'round' | 'straight'
   defaultIndex?: number
 }
@@ -25,8 +25,10 @@ const Tabs: React.FC<TabsProps> = ({
           {
             'rounded-lg': roundStyle === 'round',
             'rounded-none': roundStyle === 'straight',
+            'bg-inherit': style === 'no-style',
+            'bg-gray-400 dark:bg-darkSecondary': style !== 'no-style',
           },
-          'flex w-full bg-gray-400 dark:bg-darkSecondary'
+          'flex w-full'
         )}
       >
         {tabList.map((item) => (
