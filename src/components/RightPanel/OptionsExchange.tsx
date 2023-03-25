@@ -15,6 +15,7 @@ const OptionsExchange = () => {
 
   const callOrPutTabs: TabType[] = [
     {
+      key: 0,
       label: 'Call',
 
       icon: <IoTrendingUpSharp size="1.125rem" />,
@@ -23,6 +24,7 @@ const OptionsExchange = () => {
       },
     },
     {
+      key: 1,
       label: 'Put',
       icon: <IoTrendingDownSharp size="1.125rem" />,
       action: () => {
@@ -33,14 +35,17 @@ const OptionsExchange = () => {
 
   const strikePrices: TabType[] = [
     {
+      key: 0,
       label: '1100',
       action: () => setStrikePrice(1300),
     },
     {
+      key: 1,
       label: '1300',
       action: () => setStrikePrice(1300),
     },
     {
+      key: 2,
       label: '1500',
       action: () => setStrikePrice(1300),
     },
@@ -74,11 +79,9 @@ const OptionsExchange = () => {
         <div className="flex w-full">
           <Input
             value={quantity.toString()}
-            type="string"
+            type="number"
             size="lg"
-            onChange={(n: string) =>
-              +n > 0 ? setQuantity(+n) : setQuantity(0)
-            }
+            onChange={(n: string) => setQuantity(+n)}
           />
           <Select
             items={coins}

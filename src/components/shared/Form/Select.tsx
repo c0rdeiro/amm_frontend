@@ -16,12 +16,14 @@ type SelectProps<T> =
       selectedItem: SelectItem<T> | undefined | null
       setSelectedItem: (arg: SelectItem<T>) => void
       isDisabled?: boolean
+      style?: 'normal' | 'no-style'
     }
   | {
       items: SelectItem<T>[]
       selectedItem: SelectItem<T>[] | undefined | null
       setSelectedItem: (arg: SelectItem<T>[]) => void
       isDisabled?: boolean
+      style?: 'normal' | 'no-style'
     }
 
 function Select<T>({
@@ -29,6 +31,7 @@ function Select<T>({
   selectedItem,
   setSelectedItem,
   isDisabled = false,
+  style = 'normal',
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   return (
@@ -41,8 +44,13 @@ function Select<T>({
       >
         <Listbox.Button
           className={clsx(
-            'text-black relative flex h-12 items-center gap-2 rounded-lg border border-solid border-input-border bg-white px-4 py-2 font-medium dark:bg-darkSecondary dark:text-white',
-            { 'bg-gray-300': isDisabled }
+            'relative flex h-12 items-center gap-2 font-medium text-black  dark:text-white',
+            {
+              'bg-gray-300': isDisabled,
+              'rounded-lg border border-solid border-input-border bg-white px-4 py-2 dark:bg-darkSecondary':
+                style === 'normal',
+              'bg-inherit': style === 'no-style',
+            }
           )}
         >
           {Array.isArray(selectedItem)
@@ -56,7 +64,7 @@ function Select<T>({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="text-text-default absolute mt-1 max-h-60 gap-4 overflow-auto rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium shadow-dark focus:outline-none dark:bg-darkSecondary">
+          <Listbox.Options className="text-text-default absolute z-50 mt-1 max-h-60 gap-4 overflow-auto rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium focus:outline-none dark:bg-darkSecondary">
             {items.map((item) => (
               <Listbox.Option
                 key={item.label}

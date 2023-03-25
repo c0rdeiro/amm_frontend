@@ -3,24 +3,47 @@ import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import { Fragment } from 'react'
 
+type ControllingTab = {
+  currentTab: number
+  setCurrentTab: (tab: number) => void
+}
+
 type TabsProps = {
   tabList: TabType[]
   size?: 'sm' | 'md' | 'lg'
-  style?: 'normal' | 'monochromatic'
+  style?: 'normal' | 'monochromatic' | 'no-style'
+  roundStyle?: 'round' | 'straight'
   defaultIndex?: number
+  controllingTab?: ControllingTab
 }
 
 const Tabs: React.FC<TabsProps> = ({
   tabList,
   size = 'md',
   style = 'normal',
+  roundStyle = 'round',
   defaultIndex = 0,
+  controllingTab,
 }: TabsProps) => {
   return (
-    <Tab.Group defaultIndex={defaultIndex}>
-      <Tab.List className="flex w-full rounded-lg bg-gray-400 dark:bg-darkSecondary">
+    <Tab.Group
+      defaultIndex={defaultIndex}
+      selectedIndex={controllingTab ? controllingTab.currentTab : undefined}
+      onChange={controllingTab ? controllingTab.setCurrentTab : undefined}
+    >
+      <Tab.List
+        className={clsx(
+          {
+            'rounded-lg': roundStyle === 'round',
+            'rounded-none': roundStyle === 'straight',
+            'bg-inherit': style === 'no-style',
+            'bg-gray-400 dark:bg-darkSecondary': style !== 'no-style',
+          },
+          'flex w-full'
+        )}
+      >
         {tabList.map((item) => (
-          <Tab as={Fragment} key={item.label}>
+          <Tab as={Fragment} key={item.key}>
             {({ selected }) => (
               <button
                 onClick={item.action}

@@ -28,3 +28,23 @@
 .display-none {
   @apply hidden;
 }
+
+.rc-slider-dot.rc-slider-dot-active {
+  background-color: '#2e979a' !important;
+}
+
+/* .rc-slider-mark-text-active {
+  color: white !important;
+} */
+
+.rc-slider-handle-dragging {
+  box-shadow: 0 0 0.4rem 0.6rem rgba(11, 55, 56, 0.2) !important;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button,
+input[type='number'] {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield !important;
+}
