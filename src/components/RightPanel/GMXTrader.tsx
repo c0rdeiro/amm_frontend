@@ -9,23 +9,9 @@ import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
 import 'rc-slider/assets/index.css'
 import { ThemeContext } from '@/providers/ThemeProvider'
-
-const leverageMarks = {
-  2: { label: '2x' },
-  5: { label: '5x' },
-  10: { label: '10x' },
-  15: { label: '15x' },
-  20: { label: '20x' },
-  25: { label: '25x' },
-  30: { label: '30x' },
-  35: { label: '35x' },
-  40: { label: '40x' },
-  45: { label: '45x' },
-  50: { label: '50x' },
-}
+import LeverageSlider from '../shared/LeverageSlider'
 
 const GMXTrader = () => {
-  const { isDarkTheme } = useContext(ThemeContext)
   const [isLong, setIsLong] = useState<boolean>(true)
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
   const [exchangeType, setExchangeType] = useState<
@@ -86,14 +72,18 @@ const GMXTrader = () => {
       value: formatNumber(15.12, { symbol: '$', decimalCases: 2 }),
     },
   ]
-
+  const [limitPrice, setLimitPrice] = useState<number>(0)
   const tokens = [
     { label: 'USDC', value: 'USDC' },
     { label: 'USDT', value: 'USDT' },
     { label: 'ETH', value: 'ETH' },
     { label: 'BTC', value: 'BTC' },
   ]
-  const [firstToken, setFirstToken] = useState(tokens[0])
+  const [token, setToken] = useState<{
+    label: string
+    value: string
+    quantity: number
+  }>({ quantity: 0, ...tokens[0]! })
 
   return (
     <div className="flex flex-col gap-2">
@@ -105,12 +95,21 @@ const GMXTrader = () => {
         {exchangeType !== 'trigger' && (
           <TokenSwapItem
             label={'Pay'}
-            value={0}
+            value={token.quantity}
+            onValueChange={(qt) =>
+              setToken((prev) => ({ ...prev, quantity: qt }))
+            }
             tokenSelect={
               <Select
                 items={tokens}
-                selectedItem={firstToken}
-                setSelectedItem={setFirstToken}
+                selectedItem={token}
+                setSelectedItem={(token: { label: string; value: string }) =>
+                  setToken({
+                    label: token.label,
+                    value: token.value,
+                    quantity: 0,
+                  })
+                }
                 style="no-style"
               />
             }
@@ -120,7 +119,8 @@ const GMXTrader = () => {
         {exchangeType === 'limit' && (
           <TokenSwapItem
             label={'Price'}
-            value={0}
+            value={limitPrice}
+            onValueChange={setLimitPrice}
             secondaryText={'Mark: 1,564.21'}
             tokenSelect={<span>USD</span>}
           />
@@ -128,28 +128,9 @@ const GMXTrader = () => {
       </div>
       <div className="mb-4 flex flex-col gap-2 pb-8 text-sm">
         <div>Leverage slider</div>
-        <Slider
-          min={1.1}
-          max={50}
-          step={0.1}
-          marks={leverageMarks}
-          onChange={(value) => setLeverageOption(value)}
-          defaultValue={leverageOption}
-          trackStyle={{
-            background: '#2e979a',
-          }}
-          handleStyle={{
-            background: isDarkTheme ? '#2E2E3A' : '#AEAEBE',
-            border: 'solid 2px #2e979a',
-          }}
-          railStyle={{
-            background: isDarkTheme ? '#2E2E3A' : '#AEAEBE',
-          }}
-          dotStyle={{
-            border: 'none',
-            width: '2px',
-            backgroundColor: '#2e979a', //isDarkTheme ? '#2E2E3A' : '#AEAEBE',
-          }}
+        <LeverageSlider
+          leverageOption={leverageOption}
+          setLeverageOption={setLeverageOption}
         />
       </div>
       <div className="flex flex-col gap-2">

@@ -79,11 +79,9 @@ const OptionsExchange = () => {
         <div className="flex w-full">
           <Input
             value={quantity.toString()}
-            type="string"
+            type="number"
             size="lg"
-            onChange={(n: string) =>
-              +n > 0 ? setQuantity(+n) : setQuantity(0)
-            }
+            onChange={(n: string) => setQuantity(+n)}
           />
           <Select
             items={coins}

@@ -3,6 +3,7 @@ import Input from '../Form/Input'
 type TokenSwapItemProps = {
   label: string
   value: number
+  onValueChange: (qt: number) => void
   tokenSelect: React.ReactNode
   secondaryText?: string
 }
@@ -10,6 +11,7 @@ type TokenSwapItemProps = {
 const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
   label,
   value,
+  onValueChange,
   tokenSelect,
   secondaryText,
 }) => {
@@ -22,7 +24,8 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
       <div className="flex items-center justify-between">
         <Input
           value={value.toString()}
-          onChange={() => {}}
+          onChange={(e) => onValueChange(+e)}
+          type="number"
           styleType="discrete"
         />
         {tokenSelect}
