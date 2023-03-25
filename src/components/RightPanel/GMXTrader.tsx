@@ -1,22 +1,20 @@
+import 'rc-slider/assets/index.css'
+
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
-import Slider from 'rc-slider'
 import { useContext, useState } from 'react'
-import { IoTrendingUpSharp, IoTrendingDownSharp } from 'react-icons/io5'
+import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
+
 import Button from '../shared/Button'
 import Select from '../shared/Form/Select'
+import LeverageSlider from '../shared/LeverageSlider'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
-import 'rc-slider/assets/index.css'
-import { ThemeContext } from '@/providers/ThemeProvider'
-import LeverageSlider from '../shared/LeverageSlider'
 
 const GMXTrader = () => {
   const [isLong, setIsLong] = useState<boolean>(true)
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
-  const [exchangeType, setExchangeType] = useState<
-    'market' | 'limit' | 'trigger'
-  >('market')
+  const [exchangeType, setExchangeType] = useState<number>(0)
   const tabsLongShort: TabType[] = [
     {
       key: 0,
@@ -41,17 +39,17 @@ const GMXTrader = () => {
     {
       key: 0,
       label: 'Market',
-      action: () => setExchangeType('market'),
+      action: () => setExchangeType(0),
     },
     {
       key: 1,
       label: 'Limit',
-      action: () => setExchangeType('limit'),
+      action: () => setExchangeType(1),
     },
     {
       key: 2,
       label: 'Trigger',
-      action: () => setExchangeType('trigger'),
+      action: () => setExchangeType(2),
     },
   ]
 
@@ -90,10 +88,18 @@ const GMXTrader = () => {
       <div className="flex flex-col gap-2">
         <Tabs tabList={tabsLongShort} style="monochromatic" />
         <div className="flex w-min">
-          <Tabs tabList={tabsExchangeType} style="no-style" size="sm" />
+          <Tabs
+            tabList={tabsExchangeType}
+            style="no-style"
+            size="sm"
+            controllingTab={{
+              currentTab: exchangeType,
+              setCurrentTab: setExchangeType,
+            }}
+          />
         </div>
       </div>
-      {!(exchangeType === 'trigger') && (
+      {!(exchangeType === 2) && (
         <>
           <TokenSwapItem
             label={'Pay'}
@@ -118,7 +124,7 @@ const GMXTrader = () => {
             secondaryText={`Balance 0.000`}
           />
 
-          {exchangeType === 'limit' && (
+          {exchangeType === 1 && (
             <TokenSwapItem
               label={'Price'}
               value={limitPrice}
@@ -148,7 +154,7 @@ const GMXTrader = () => {
             label={
               token.quantity <= 0
                 ? 'Enter an amount'
-                : exchangeType === 'market'
+                : exchangeType === 0
                 ? 'Enable Leverage'
                 : 'Enable Orders'
             }
@@ -156,11 +162,11 @@ const GMXTrader = () => {
           />
         </>
       )}
-      {exchangeType === 'trigger' && (
+      {exchangeType === 2 && (
         <Button
           label={'Open Position'}
           size="lg"
-          onClick={() => setExchangeType('market')}
+          onClick={() => setExchangeType(0)}
         />
       )}
     </div>

@@ -3,12 +3,18 @@ import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import { Fragment } from 'react'
 
+type ControllingTab = {
+  currentTab: number
+  setCurrentTab: (tab: number) => void
+}
+
 type TabsProps = {
   tabList: TabType[]
   size?: 'sm' | 'md' | 'lg'
   style?: 'normal' | 'monochromatic' | 'no-style'
   roundStyle?: 'round' | 'straight'
   defaultIndex?: number
+  controllingTab?: ControllingTab
 }
 
 const Tabs: React.FC<TabsProps> = ({
@@ -17,9 +23,14 @@ const Tabs: React.FC<TabsProps> = ({
   style = 'normal',
   roundStyle = 'round',
   defaultIndex = 0,
+  controllingTab,
 }: TabsProps) => {
   return (
-    <Tab.Group defaultIndex={defaultIndex}>
+    <Tab.Group
+      defaultIndex={defaultIndex}
+      selectedIndex={controllingTab ? controllingTab.currentTab : undefined}
+      onChange={controllingTab ? controllingTab.setCurrentTab : undefined}
+    >
       <Tab.List
         className={clsx(
           {
