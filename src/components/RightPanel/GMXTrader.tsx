@@ -92,7 +92,9 @@ const GMXTrader = () => {
         <div className="flex w-min">
           <Tabs tabList={tabsExchangeType} style="no-style" size="sm" />
         </div>
-        {exchangeType !== 'trigger' && (
+      </div>
+      {!(exchangeType === 'trigger') && (
+        <>
           <TokenSwapItem
             label={'Pay'}
             value={token.quantity}
@@ -115,33 +117,52 @@ const GMXTrader = () => {
             }
             secondaryText={`Balance 0.000`}
           />
-        )}
-        {exchangeType === 'limit' && (
-          <TokenSwapItem
-            label={'Price'}
-            value={limitPrice}
-            onValueChange={setLimitPrice}
-            secondaryText={'Mark: 1,564.21'}
-            tokenSelect={<span>USD</span>}
-          />
-        )}
-      </div>
-      <div className="mb-4 flex flex-col gap-2 pb-8 text-sm">
-        <div>Leverage slider</div>
-        <LeverageSlider
-          leverageOption={leverageOption}
-          setLeverageOption={setLeverageOption}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        {infoItems.map((item, key) => (
-          <div key={key} className="flex justify-between">
-            <div>{item.label}</div>
-            <div>{item.value}</div>
+
+          {exchangeType === 'limit' && (
+            <TokenSwapItem
+              label={'Price'}
+              value={limitPrice}
+              onValueChange={setLimitPrice}
+              secondaryText={'Mark: 1,564.21'}
+              tokenSelect={<span>USD</span>}
+            />
+          )}
+
+          <div className="mb-4 flex flex-col gap-2 pb-8 text-sm">
+            <div>Leverage slider</div>
+            <LeverageSlider
+              leverageOption={leverageOption}
+              setLeverageOption={setLeverageOption}
+            />
           </div>
-        ))}
-      </div>
-      <Button label={'Trade'} size="lg" />
+          <div className="flex flex-col gap-2">
+            {infoItems.map((item, key) => (
+              <div key={key} className="flex justify-between">
+                <div>{item.label}</div>
+                <div>{item.value}</div>
+              </div>
+            ))}
+          </div>
+
+          <Button
+            label={
+              token.quantity <= 0
+                ? 'Enter an amount'
+                : exchangeType === 'market'
+                ? 'Enable Leverage'
+                : 'Enable Orders'
+            }
+            size="lg"
+          />
+        </>
+      )}
+      {exchangeType === 'trigger' && (
+        <Button
+          label={'Open Position'}
+          size="lg"
+          onClick={() => setExchangeType('market')}
+        />
+      )}
     </div>
   )
 }
