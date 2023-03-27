@@ -16,8 +16,8 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
   secondaryText,
 }) => {
   return (
-    <div className="flex flex-col gap-2 bg-text-gray p-3 dark:bg-darkSecondary">
-      <div className="flex justify-between text-sm dark:text-text-gray">
+    <div className="flex flex-col gap-2 bg-gray-400 p-3 dark:bg-darkSecondary">
+      <div className="flex justify-between text-sm text-text-gray">
         <div>{label}</div>
         <div>{secondaryText}</div>
       </div>

@@ -135,7 +135,7 @@ const GMXTrader = () => {
           )}
 
           <div className="mb-4 flex flex-col gap-2 pb-8 text-sm">
-            <div>Leverage slider</div>
+            <div className="text-text-purple">Leverage slider</div>
             <LeverageSlider
               leverageOption={leverageOption}
               setLeverageOption={setLeverageOption}
