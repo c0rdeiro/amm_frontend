@@ -24,10 +24,10 @@ const Input: React.FC<InputProps> = ({
           'h-12 w-full': size === 'lg',
           'rounded-lg border border-solid border-input-border bg-white px-4 dark:bg-darkSecondary':
             styleType === 'normal',
-          'bg-text-gray text-2xl dark:bg-darkSecondary':
+          'bg-gray-400 text-2xl dark:bg-darkSecondary':
             styleType === 'discrete', //TODO: this bg should be inherit, look up why it doesnt apply that
         },
-        'items-center gap-6  py-2 font-medium text-black focus-visible:outline-none dark:text-white'
+        'text-text-DEFAULT items-center  gap-6 py-2 font-medium focus-visible:outline-none dark:text-white'
       )}
       value={value}
       type={type}

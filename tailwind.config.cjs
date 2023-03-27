@@ -9,13 +9,13 @@ module.exports = {
       'black': '#000',
       'darkBg': "#282c35",
       'gray': {
-        100: '#FAFAFC', //header, sidebar
-        300: '#f8f8fa', //main
-        400: '#f2f3f7', //right panel
+        100: '#FAFAFC', 
+        300: '#f8f8fa', 
+        400: '#f2f3f7', 
       },
 
       text: {
-        'gray': '#AEAEBE',
+        'gray': '#A3a3b1',
         'purple': '#9A9AAF',
         'DEFAULT': '#2E2E3A',
       },

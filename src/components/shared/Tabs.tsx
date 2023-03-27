@@ -58,9 +58,12 @@ const Tabs: React.FC<TabsProps> = ({
                       style === 'normal',
                     'ui-selected:bg-text-gray dark:ui-selected:bg-darkBg':
                       style === 'monochromatic',
+                    'ui-selected:text-text-DEFAULT dark:ui-selected:text-white':
+                      style === 'no-style',
+                    ' ui-selected:text-white ': style !== 'no-style',
                   },
                   'w-full rounded-lg font-medium',
-                  ' ui-selected:text-white ',
+
                   'ui-not-selected:bg-transparent ui-not-selected:text-text-purple ui-not-selected:hover:text-text-gray',
                   'ring-white  focus:outline-none'
                 )}
