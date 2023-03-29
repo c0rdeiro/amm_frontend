@@ -24,8 +24,6 @@ export async function getTokenCandles(
 ): Promise<(OhlcData & { volume: number })[]> {
   const interval = _interval ?? getDefaultPeriodFromRange(timeRange)
 
-  console.log(timeRange)
-
   const candles: BinanceCandleData[] = await (
     await fetch(
       `https://api.binance.com/api/v3/klines?symbol=${market}&interval=${interval}&startTime=${
@@ -34,11 +32,9 @@ export async function getTokenCandles(
     )
   ).json()
 
-  console.log(candles)
-
   const res: (OhlcData & { volume: number })[] = candles.map(
     (candle: BinanceCandleData) => ({
-      time: candle[0] as UTCTimestamp,
+      time: (candle[0] / 1000) as UTCTimestamp, //has to be divided by 1000 bc chart takes unix in seconds and binances gives unix in milliseconds
       open: +candle[1],
       high: +candle[2],
       close: +candle[4],

@@ -10,8 +10,6 @@ export async function getOldTokenCandles(
 ): Promise<OhlcData[]> {
   if (!market) return []
 
-  // const period = _period ?? getDefaultPeriodFromRange(timeRange)
-
   const candles: MarketSpotCandle[] = await market?.spotPriceHistory({
     startTimestamp: parseInt(timeRange.from.toString()),
     endTimestamp: parseInt(timeRange.to.toString()),

@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Header from './Header'
-import SideBar from './shared/SideBar/SideBar'
 
 interface LayoutProps {
   fullPage: boolean
@@ -20,7 +19,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="flex h-screen min-h-screen flex-col overflow-hidden">
           <Header />
           <div className="flex h-full w-full  flex-row bg-gray-400 dark:bg-darkBg dark:text-white">
-            {/* <SideBar /> */}
             <main className="w-[85%] grow  bg-gray-100 dark:bg-sectionsBGDark ">
               {children}
             </main>
