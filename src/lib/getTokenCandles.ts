@@ -1,30 +1,51 @@
+import { CandlesIntervals, SupportedMarket } from '@/types/next'
 import getDefaultPeriodFromRange from '@/utils/getDefaultPeriodFromRange'
-import { Market, MarketSpotCandle, SnapshotPeriod } from '@lyrafinance/lyra-js'
-import { formatEther } from 'ethers/lib/utils.js'
 import { OhlcData, TimeRange, UTCTimestamp } from 'lightweight-charts'
+
+type BinanceCandleData = [
+  number, // Kline open time
+  string, // Open price
+  string, // High price
+  string, // Low price
+  string, // Close price
+  string, // Volume
+  number, // Kline Close time
+  string, // Quote asset volume
+  number, // Number of trades
+  string, // Taker buy base asset volume
+  string, // Taker buy quote asset volume
+  string // Unused field, ignore.
+]
 
 export async function getTokenCandles(
   timeRange: TimeRange,
-  market?: Market,
-  _period?: SnapshotPeriod
-): Promise<OhlcData[]> {
-  if (!market) return []
+  market: SupportedMarket,
+  _interval?: CandlesIntervals
+): Promise<(OhlcData & { volume: number })[]> {
+  const interval = _interval ?? getDefaultPeriodFromRange(timeRange)
 
-  const period = _period ?? getDefaultPeriodFromRange(timeRange)
+  console.log(timeRange)
 
-  const candles: MarketSpotCandle[] = await market?.spotPriceHistory({
-    startTimestamp: parseInt(timeRange.from.toString()),
-    endTimestamp: parseInt(timeRange.to.toString()),
-    period: period,
-  })
+  const candles: BinanceCandleData[] = await (
+    await fetch(
+      `https://api.binance.com/api/v3/klines?symbol=${market}&interval=${interval}&startTime=${
+        timeRange.from.toString().split('.')[0]
+      }000&limit=1000`
+    )
+  ).json()
 
-  const res: OhlcData[] = candles.map((candle: MarketSpotCandle) => ({
-    time: candle.endTimestamp as UTCTimestamp,
-    open: parseFloat(formatEther(candle.open)),
-    high: parseFloat(formatEther(candle.high)),
-    close: parseFloat(formatEther(candle.close)),
-    low: parseFloat(formatEther(candle.low)),
-  }))
+  console.log(candles)
+
+  const res: (OhlcData & { volume: number })[] = candles.map(
+    (candle: BinanceCandleData) => ({
+      time: candle[0] as UTCTimestamp,
+      open: +candle[1],
+      high: +candle[2],
+      close: +candle[4],
+      low: +candle[3],
+      volume: +candle[5],
+    })
+  )
 
   return res
 }

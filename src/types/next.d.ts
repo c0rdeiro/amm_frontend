@@ -2,6 +2,10 @@
 import { NextPage } from 'next/types'
 import React from 'react'
 
+type SupportedMarket = 'ETHUSDT' | 'BTCUSDT'
+
+type CandlesIntervals = '15m' | '1h' | '4h'
+
 type CustomPage = NextPage & {
   title: string
   fullPage: boolean

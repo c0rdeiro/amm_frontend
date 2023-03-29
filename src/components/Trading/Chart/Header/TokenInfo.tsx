@@ -1,6 +1,6 @@
 import useChainlinkPricesQuery from '@/hooks/useChainlinkPriceQuery'
 import LINKIcon from '@/Icons/tokens/link'
-import { getTokenCandles } from '@/lib/getTokenCandles'
+import { getOldTokenCandles } from '@/lib/getOldTokenCandles'
 import { useTokenAddress, useTokenChartHoverInfo } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next'
 import lyra from '@/utils/getLyraSdk'
@@ -27,7 +27,7 @@ const TokenInfo: React.FC = () => {
   const { data: lastCandle } = useQuery({
     queryKey: ['lastCandle'],
     queryFn: () =>
-      getTokenCandles(
+      getOldTokenCandles(
         getTimeRangeFromDays(1),
         market,
         SnapshotPeriod.EightHours

@@ -3,6 +3,7 @@ import { useTokenActions, useTokenAddress } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
 import getMarketName from '@/utils/getMarketName'
+import getMarketNameFromBaseToken from '@/utils/getMarketNameFromBaseToken'
 import { Listbox, Transition } from '@headlessui/react'
 import { useQuery as useTSQuery } from '@tanstack/react-query'
 import { formatEther } from 'ethers/lib/utils.js'
@@ -16,7 +17,7 @@ const TokenSelect: React.FC = () => {
     queryFn: async () => await lyra.markets(),
     refetchInterval: 10000,
   })
-  const { setTokenAddress } = useTokenActions()
+  const { setTokenAddress, setMarketToken } = useTokenActions()
   const router = useRouter()
   const tokenSymbol = router.asPath.split('/').pop()
   const tokenAddress = useTokenAddress()
@@ -51,6 +52,7 @@ const TokenSelect: React.FC = () => {
                   onClick={() => {
                     router.push(`/trading/${getMarketName(item).toLowerCase()}`)
                     setTokenAddress(item.address)
+                    setMarketToken(getMarketNameFromBaseToken(item))
                   }}
                   className="flex items-center gap-2 px-2 py-2 hover:cursor-pointer"
                 >

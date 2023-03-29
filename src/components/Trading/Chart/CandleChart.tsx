@@ -50,7 +50,7 @@ const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
 }
 
 type CandleChartProps = {
-  data: OhlcData[]
+  data: (OhlcData & { volume: number })[]
 }
 
 const CandleChart: React.FC<CandleChartProps> = ({
@@ -113,7 +113,7 @@ const CandleChart: React.FC<CandleChartProps> = ({
 
     chart?.applyOptions({
       localization: {
-        priceFormatter: myPriceFormatter,
+        // priceFormatter: myPriceFormatter,
         // timeFormatter: (time: Time) => '9AM',
       },
     })
@@ -187,20 +187,22 @@ const CandleChart: React.FC<CandleChartProps> = ({
     volumeSeries?.priceScale().applyOptions({
       scaleMargins: {
         top: 0.9, // highest point of the series will be 70% away from the top
-        bottom: 0,
+        bottom: 0.05,
       },
     })
     volumeSeries?.setData(
       data.map((i) => ({
         time: i.time,
-        value: i.close,
+        value: i.volume,
         color: i.open > i.close ? '#952f34' : '#197148',
       }))
     )
 
-    visibleRange
-      ? chart?.timeScale().setVisibleRange(visibleRange)
-      : chart?.timeScale().fitContent()
+    // visibleRange
+    //   ? chart?.timeScale().setVisibleRange(visibleRange)
+    //   : chart?.timeScale().fitContent()
+
+    chart?.timeScale().fitContent()
 
     window.addEventListener('resize', handleResize)
 
