@@ -2,19 +2,17 @@ import { useGraphVisibleRange, useTokenActions } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next.js'
 import dateFormat from 'dateformat'
 import {
+  BarData,
   ChartOptions,
   ColorType,
   createChart,
   DeepPartial,
   OhlcData,
   SeriesMarker,
-  SeriesMarkerPosition,
   Time,
   UTCTimestamp,
 } from 'lightweight-charts'
 import { useEffect, useRef } from 'react'
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from '../../../../tailwind.config.cjs'
 
 const formatTickDates = (time: UTCTimestamp) => {
   return dateFormat(new Date(time * 1000), `mmm d, h TT`)
@@ -129,46 +127,46 @@ const CandleChart: React.FC<CandleChartProps> = ({
 
     const markers: SeriesMarker<Time>[] = [
       {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#20b26c',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#20b26c',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#20b26c',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 51]!!.time,
+        position: 'belowBar',
+        color: '#20b26c',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 10]!!.time,
+        position: 'belowBar',
+        color: '#20b26c',
+        shape: 'arrowUp',
+      },
+      {
+        time: data[data.length - 10]!!.time,
+        position: 'belowBar',
+        color: '#20b26c',
+        shape: 'arrowUp',
+      },
+      {
         time: data[data.length - 6]!!.time,
         position: 'aboveBar',
         color: '#ef454a',
         shape: 'arrowDown',
-      },
-      {
-        time: data[data.length - 10]!!.time,
-        position: 'belowBar',
-        color: '#20b26c',
-        shape: 'arrowUp',
-      },
-      {
-        time: data[data.length - 10]!!.time,
-        position: 'belowBar',
-        color: '#20b26c',
-        shape: 'arrowUp',
-      },
-      {
-        time: data[data.length - 51]!!.time,
-        position: 'belowBar',
-        color: '#20b26c',
-        shape: 'arrowUp',
-      },
-      {
-        time: data[data.length - 51]!!.time,
-        position: 'belowBar',
-        color: '#20b26c',
-        shape: 'arrowUp',
-      },
-      {
-        time: data[data.length - 51]!!.time,
-        position: 'belowBar',
-        color: '#20b26c',
-        shape: 'arrowUp',
-      },
-      {
-        time: data[data.length - 51]!!.time,
-        position: 'belowBar',
-        color: '#20b26c',
-        shape: 'arrowUp',
       },
     ]
     candleSeries?.setMarkers(markers)
@@ -179,15 +177,11 @@ const CandleChart: React.FC<CandleChartProps> = ({
       },
       priceScaleId: '', // set as an overlay by setting a blank priceScaleId
       // set the positioning of the volume series
-      scaleMargins: {
-        top: 0.7, // highest point of the series will be 70% away from the top
-        bottom: 0,
-      },
     })
     volumeSeries?.priceScale().applyOptions({
       scaleMargins: {
-        top: 0.9, // highest point of the series will be 70% away from the top
-        bottom: 0.05,
+        top: 0.8, // highest point of the series will be 70% away from the top
+        bottom: 0,
       },
     })
     volumeSeries?.setData(
@@ -207,8 +201,8 @@ const CandleChart: React.FC<CandleChartProps> = ({
     window.addEventListener('resize', handleResize)
 
     chart?.subscribeCrosshairMove((param) => {
-      if (param.time && param.seriesPrices.size) {
-        const val = param.seriesPrices.values().next().value
+      if (candleSeries && param.seriesData.get(candleSeries)) {
+        const val = param.seriesData.get(candleSeries) as BarData
         const items: TokenInfoType[] = [
           {
             label: 'Change',
