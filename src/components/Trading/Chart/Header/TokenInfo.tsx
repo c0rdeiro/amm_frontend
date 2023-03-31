@@ -1,22 +1,23 @@
 import useChainlinkPricesQuery from '@/hooks/useChainlinkPriceQuery'
 import LINKIcon from '@/Icons/tokens/link'
 import { getOldTokenCandles } from '@/lib/getOldTokenCandles'
-import { useTokenAddress, useTokenChartHoverInfo } from '@/store/tokenStore'
+import {
+  useMarketToken,
+  useTokenAddress,
+  useTokenChartHoverInfo,
+} from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next'
 import lyra from '@/utils/getLyraSdk'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import { SnapshotPeriod } from '@lyrafinance/lyra-js'
 import { useQuery } from '@tanstack/react-query'
 import { formatEther as formatEtherETH } from 'ethers/lib/utils.js'
-import { useRouter } from 'next/router'
 import { formatEther } from 'viem'
 
 import TokenInfoItem from './TokenInfoItem'
 
 const TokenInfo: React.FC = () => {
-  const router = useRouter()
-  const marketName = router.asPath.split('/').pop()
-
+  const marketToken = useMarketToken()
   const tokenAddress = useTokenAddress()
   const { data: market } = useQuery({
     queryKey: ['market', tokenAddress],
@@ -36,7 +37,7 @@ const TokenInfo: React.FC = () => {
     refetchInterval: 10000,
   })
 
-  const { data } = useChainlinkPricesQuery(marketName)
+  const { data } = useChainlinkPricesQuery(marketToken)
 
   const prev = lastCandle ? lastCandle[0]?.open : 0
   const change =
