@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Image from 'next/image'
-import tokenIcon from '@/hooks/tokenIcon'
 import formatDateTime from '@/utils/formatDateTime'
 import { PositionType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
@@ -53,7 +52,7 @@ const PositionCloseModal: React.FC<PositionCloseModalProps> = ({
                   quality={100}
                 />
                 <div className="flex flex-col items-center gap-4">
-                  {tokenIcon(position.token.symbol, 56)}
+                  {/* {tokenIcon(position.token.symbol, 56)} */}
 
                   <div className="flex flex-col items-center justify-center">
                     <h3 className="text-2.5xl font-semibold ">
@@ -69,7 +68,7 @@ const PositionCloseModal: React.FC<PositionCloseModalProps> = ({
                 </div>
                 <div className="isolate flex flex-col items-center">
                   <div className="flex flex-col items-center gap-4">
-                    <div className="flex items-start gap-2.5 rounded-7xl bg-green px-8 py-4">
+                    <div className="bg-green flex items-start gap-2.5 rounded-7xl px-8 py-4">
                       <p className="text-2.5xl font-bold text-white">
                         {formatNumber(position.profit, {
                           decimalCases: 2,

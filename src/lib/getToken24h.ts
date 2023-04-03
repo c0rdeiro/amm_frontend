@@ -1,4 +1,4 @@
-import { SupportedMarket } from '@/types/next'
+import { SupportedMarketSymbols } from '@/types/next'
 
 type Binance24hTicker = {
   symbol: string
@@ -27,7 +27,7 @@ type Binance24hTicker = {
 export type Token24hData = { change: number; high: number; low: number }
 
 export async function getToken24h(
-  market: SupportedMarket
+  market: SupportedMarketSymbols
 ): Promise<Token24hData> {
   const data: Binance24hTicker = await (
     await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${market}`)

@@ -1,4 +1,4 @@
-import { CandlesIntervals, SupportedMarket } from '@/types/next'
+import { CandlesIntervals, SupportedMarketSymbols } from '@/types/next'
 import getDefaultPeriodFromRange from '@/utils/getDefaultPeriodFromRange'
 import {
   HistogramData,
@@ -24,7 +24,7 @@ type BinanceCandleData = [
 
 export async function getTokenData(
   timeRange: TimeRange,
-  market: SupportedMarket,
+  market: SupportedMarketSymbols,
   _interval?: CandlesIntervals
 ): Promise<{ candles: OhlcData[]; volume: HistogramData[] }> {
   const interval = _interval ?? getDefaultPeriodFromRange(timeRange)

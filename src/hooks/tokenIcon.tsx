@@ -3,13 +3,13 @@ import BNBIcon from '@/Icons/tokens/bnb'
 import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import LINKIcon from '@/Icons/tokens/link'
+import { Market } from '@/types/next'
 
 export default function tokenIcon(
-  token: string,
+  market: Market,
   size: number
 ): React.ReactNode {
-  if (!token) return
-  switch (token?.toLowerCase()) {
+  switch (market?.label.toLowerCase()) {
     case 'eth':
     case 'weth':
       return <ETHIcon size={size} />

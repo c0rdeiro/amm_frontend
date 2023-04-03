@@ -1,10 +1,14 @@
 import { useTokenActions } from '@/store/tokenStore'
-import { CandlesIntervals, KlineData, SupportedMarket } from '@/types/next'
+import {
+  CandlesIntervals,
+  KlineData,
+  SupportedMarketSymbols,
+} from '@/types/next'
 import { OhlcData, UTCTimestamp } from 'lightweight-charts'
 import { useEffect } from 'react'
 
 export default function useMarketLivePrice(
-  market: SupportedMarket,
+  market: SupportedMarketSymbols,
   interval: CandlesIntervals
 ): (OhlcData & { volume: number }) | undefined {
   let data: (OhlcData & { volume: number }) | undefined = undefined

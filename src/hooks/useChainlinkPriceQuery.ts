@@ -1,11 +1,11 @@
-import { SupportedMarket } from '@/types/next'
+import { SupportedMarketSymbols } from '@/types/next'
 import GET_CHAINLINK_BTC_PRICE from '@/utils/apollo/getChainlinkBtc.query'
 import GET_CHAINLINK_ETH_PRICE from '@/utils/apollo/getChainlinkPrice.query'
 import { useQuery } from '@apollo/client'
 
 type ChainlinkMarketPrice = { id: number; price: bigint }
 
-const useChainlinkPricesQuery = (marketToken: SupportedMarket) => {
+const useChainlinkPricesQuery = (marketToken: SupportedMarketSymbols) => {
   //TODO: IMPROVE THIS
   const { data: ethData } = useEthPriceQuery()
   const { data: btcData } = useBtcPriceQuery()

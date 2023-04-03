@@ -2,7 +2,12 @@
 import { NextPage } from 'next/types'
 import React from 'react'
 
-type SupportedMarket = 'ETHUSDT' | 'BTCUSDT'
+type SupportedMarketSymbols = 'ETHUSDT' | 'BTCUSDT'
+
+type Market = {
+  symbol: SupportedMarketSymbols
+  label: string
+}
 
 type CandlesIntervals = '15m' | '1h' | '4h' | '8h' | '1d'
 
