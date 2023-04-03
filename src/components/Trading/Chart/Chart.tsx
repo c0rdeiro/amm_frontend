@@ -1,5 +1,5 @@
 import Spinner from '@/components/shared/Spinner'
-import { getTokenData } from '@/lib/getTokenCandles'
+import { getTokenData } from '@/lib/getTokenData'
 import { useGraphVisibleRange, useMarketToken } from '@/store/tokenStore'
 import { useQuery } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'

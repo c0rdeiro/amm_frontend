@@ -4,7 +4,7 @@ import React from 'react'
 
 type SupportedMarket = 'ETHUSDT' | 'BTCUSDT'
 
-type CandlesIntervals = '15m' | '1h' | '4h'
+type CandlesIntervals = '15m' | '1h' | '4h' | '8h' | '1d'
 
 type CustomPage = NextPage & {
   title: string
