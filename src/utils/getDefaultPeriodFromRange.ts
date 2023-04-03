@@ -1,9 +1,9 @@
-import { SnapshotPeriod } from '@lyrafinance/lyra-js'
+import { CandlesIntervals } from '@/types/next'
 import { TimeRange } from 'lightweight-charts'
 
 export default function getDefaultPeriodFromRange(
   timeRange: TimeRange
-): SnapshotPeriod {
+): CandlesIntervals {
   const hours =
     (parseFloat(timeRange.to.toString()) -
       parseFloat(timeRange.from.toString())) /
@@ -12,12 +12,12 @@ export default function getDefaultPeriodFromRange(
 
   switch (hours) {
     case 24: //1d
-      return SnapshotPeriod.FifteenMinutes
+      return '15m'
     case 96: //4d
-      return SnapshotPeriod.OneHour
+      return '1h'
     case 384: //16d
-      return SnapshotPeriod.FourHours
+      return '4h'
     default:
-      return SnapshotPeriod.FifteenMinutes
+      return '15m'
   }
 }

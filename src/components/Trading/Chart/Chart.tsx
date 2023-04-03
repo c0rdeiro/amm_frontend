@@ -1,27 +1,43 @@
-import { createChart, OhlcData } from 'lightweight-charts'
-import { useEffect, useRef } from 'react'
+import Spinner from '@/components/shared/Spinner'
+import { getTokenData } from '@/lib/getTokenData'
+import { useGraphVisibleRange, useMarketToken } from '@/store/tokenStore'
+import { useQuery } from '@tanstack/react-query'
+import dynamic from 'next/dynamic'
 
-interface ChartProps {
-  data: OhlcData[]
-}
+import ChartHeader from './Header/ChartHeader'
 
-const Chart: React.FC<ChartProps> = ({ data }: ChartProps) => {
-  const chartRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const chart = chartRef.current
-      ? createChart(chartRef.current, { width: 400, height: 300 })
-      : null
-
-    const lineSeries = chart?.addCandlestickSeries()
-
-    data ? lineSeries?.setData(data) : undefined
-    return () => {
-      chart?.remove()
+const Chart: React.FC = () => {
+  const CandleChart = dynamic(
+    () => import('@/components/Trading/Chart/CandleChart'),
+    {
+      loading: () => <Spinner />,
+      ssr: false,
     }
-  }, [])
+  )
 
-  return <div ref={chartRef}></div>
+  const frequency = useGraphVisibleRange()
+  const marketToken = useMarketToken()
+
+  const { data } = useQuery({
+    queryKey: [marketToken, frequency],
+    queryFn: () => getTokenData(frequency, marketToken),
+  })
+
+  return (
+    <div className="flex h-[65dvh] flex-col items-start pl-8 ">
+      <>
+        <ChartHeader />
+        {data ? (
+          <CandleChart
+            candlesData={data.candles ?? []}
+            volumeData={data.volume ?? []}
+          />
+        ) : (
+          <Spinner />
+        )}
+      </>
+    </div>
+  )
 }
 
 export default Chart

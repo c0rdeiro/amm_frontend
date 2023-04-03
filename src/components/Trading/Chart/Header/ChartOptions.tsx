@@ -4,7 +4,8 @@ import { TabType } from '@/types/next'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 
 const ChartOptions: React.FC = () => {
-  const { setGraphVisibleRange: setVisibleRange } = useTokenActions()
+  const { setGraphVisibleRange: setVisibleRange, setCandlesInterval } =
+    useTokenActions()
 
   const intervalOptions: TabType[] = [
     {
@@ -12,6 +13,7 @@ const ChartOptions: React.FC = () => {
       label: '15min',
       action: () => {
         setVisibleRange(getTimeRangeFromDays(1))
+        setCandlesInterval('15m')
       },
     },
     {
@@ -19,6 +21,7 @@ const ChartOptions: React.FC = () => {
       label: '1h',
       action: () => {
         setVisibleRange(getTimeRangeFromDays(4))
+        setCandlesInterval('1h')
       },
     },
     {
@@ -26,6 +29,7 @@ const ChartOptions: React.FC = () => {
       label: '4h',
       action: () => {
         setVisibleRange(getTimeRangeFromDays(16))
+        setCandlesInterval('4h')
       },
     },
   ]
