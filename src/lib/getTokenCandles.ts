@@ -1,6 +1,11 @@
 import { CandlesIntervals, SupportedMarket } from '@/types/next'
 import getDefaultPeriodFromRange from '@/utils/getDefaultPeriodFromRange'
-import { OhlcData, TimeRange, UTCTimestamp } from 'lightweight-charts'
+import {
+  HistogramData,
+  OhlcData,
+  TimeRange,
+  UTCTimestamp,
+} from 'lightweight-charts'
 
 type BinanceCandleData = [
   number, // Kline open time
@@ -17,11 +22,11 @@ type BinanceCandleData = [
   string // Unused field, ignore.
 ]
 
-export async function getTokenCandles(
+export async function getTokenData(
   timeRange: TimeRange,
   market: SupportedMarket,
   _interval?: CandlesIntervals
-): Promise<(OhlcData & { volume: number })[]> {
+): Promise<{ candles: OhlcData[]; volume: HistogramData[] }> {
   const interval = _interval ?? getDefaultPeriodFromRange(timeRange)
 
   const candles: BinanceCandleData[] = await (
@@ -32,16 +37,25 @@ export async function getTokenCandles(
     )
   ).json()
 
-  const res: (OhlcData & { volume: number })[] = candles.map(
-    (candle: BinanceCandleData) => ({
+  const res: { candles: OhlcData[]; volume: HistogramData[] } = {
+    candles: [],
+    volume: [],
+  }
+
+  candles.map((candle: BinanceCandleData) => {
+    res.candles.push({
       time: (candle[0] / 1000) as UTCTimestamp, //has to be divided by 1000 bc chart takes unix in seconds and binances gives unix in milliseconds
       open: +candle[1],
       high: +candle[2],
       close: +candle[4],
       low: +candle[3],
-      volume: +candle[5],
     })
-  )
+    res.volume.push({
+      time: (candle[0] / 1000) as UTCTimestamp,
+      value: +candle[5],
+      color: +candle[1] > +candle[4] ? '#952f34' : '#197148',
+    })
+  })
 
   return res
 }
