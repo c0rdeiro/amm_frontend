@@ -1,7 +1,7 @@
 import useChainlinkPricesQuery from '@/hooks/useChainlinkPriceQuery'
 import LINKIcon from '@/Icons/tokens/link'
 import { getToken24h, Token24hData } from '@/lib/getToken24h'
-import { useMarketToken, useTokenChartHoverInfo } from '@/store/tokenStore'
+import { useMarket, useTokenChartHoverInfo } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next'
 import { useQuery } from '@tanstack/react-query'
 import { formatEther } from 'viem'
@@ -9,14 +9,14 @@ import { formatEther } from 'viem'
 import TokenInfoItem from './TokenInfoItem'
 
 const TokenInfo: React.FC = () => {
-  const marketToken = useMarketToken()
+  const marketToken = useMarket()
 
   const { data } = useQuery<Token24hData>({
     queryKey: ['24h', marketToken],
-    queryFn: () => getToken24h(marketToken),
+    queryFn: () => getToken24h(marketToken.symbol),
   })
 
-  const { data: chainLinkData } = useChainlinkPricesQuery(marketToken)
+  const { data: chainLinkData } = useChainlinkPricesQuery(marketToken.symbol)
 
   const items: TokenInfoType[] = [
     {

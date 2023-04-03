@@ -65,7 +65,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
       id: 'token',
       cell: (info) => (
         <DataTableContentItem clickType="expand" row={info.row}>
-          {tokenIcon(info.getValue().symbol, 18)}
+          {/* {tokenIcon(info.getValue().symbol, 18)} */}
           {info.getValue().symbol}
         </DataTableContentItem>
       ),

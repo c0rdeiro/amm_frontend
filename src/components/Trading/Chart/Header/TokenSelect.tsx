@@ -1,49 +1,26 @@
 import Spinner from '@/components/shared/Spinner'
+import { markets } from '@/constants'
 import tokenIcon from '@/hooks/tokenIcon'
-import {
-  useTokenActions,
-  useTokenAddress,
-  useTokenPrice,
-} from '@/store/tokenStore'
+import { useMarket, useTokenActions, useTokenPrice } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
-import lyra from '@/utils/getLyraSdk'
-import getMarketName from '@/utils/getMarketName'
-import getMarketNameFromBaseToken from '@/utils/getMarketNameFromBaseToken'
 import { Listbox, Transition } from '@headlessui/react'
-import { useQuery as useTSQuery } from '@tanstack/react-query'
-import { formatEther } from 'ethers/lib/utils.js'
 import { useRouter } from 'next/router'
 import { Fragment, Suspense } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 
 const TokenSelect: React.FC = () => {
-  const { data: markets } = useTSQuery({
-    queryKey: ['markets'],
-    queryFn: async () => await lyra.markets(),
-    refetchInterval: 10000,
-  })
-  const { setTokenAddress, setMarketToken } = useTokenActions()
+  const { setMarket: setMarket } = useTokenActions()
   const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop() //TODO refactor to use tokenStore marketToken
-  const tokenAddress = useTokenAddress()
-  const { data: market } = useTSQuery({
-    queryKey: ['market', tokenAddress],
-    queryFn: async () =>
-      tokenAddress ? await lyra.market(tokenAddress) : undefined,
-    refetchInterval: 10000,
-    enabled: !!tokenAddress,
-  })
-
+  const market = useMarket()
   const tokenPrice = useTokenPrice()
 
   return (
     <Suspense fallback={<Spinner />}>
       <div className="flex flex-row items-start gap-2 text-2.5xl font-semibold">
-        {market ? tokenIcon(market.baseToken.symbol, 36) : undefined}
-        <Listbox value={tokenSymbol}>
+        {market ? tokenIcon(market, 36) : undefined}
+        <Listbox value={market.symbol}>
           <Listbox.Button className="flex flex-row items-center gap-1">
-            {market ? getMarketName(market) : undefined}{' '}
-            <MdOutlineKeyboardArrowDown size="1.5rem" />
+            {market.label} <MdOutlineKeyboardArrowDown size="1.5rem" />
           </Listbox.Button>
           <Transition
             as={Fragment}
@@ -57,14 +34,13 @@ const TokenSelect: React.FC = () => {
                   key={idx}
                   value={item}
                   onClick={() => {
-                    router.push(`/trading/${getMarketName(item).toLowerCase()}`)
-                    setTokenAddress(item.address)
-                    setMarketToken(getMarketNameFromBaseToken(item))
+                    router.push(`/trading/${item.label.toLowerCase()}`)
+                    setMarket(item)
                   }}
                   className="flex items-center gap-2 px-2 py-2 hover:cursor-pointer"
                 >
-                  {tokenIcon(getMarketName(item), 20)}
-                  {getMarketName(item)}
+                  {tokenIcon(item, 20)}
+                  {item.label}
                 </Listbox.Option>
               ))}
             </Listbox.Options>

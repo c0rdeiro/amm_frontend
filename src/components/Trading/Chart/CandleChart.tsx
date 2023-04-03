@@ -1,6 +1,6 @@
 import {
   useCandlesInterval,
-  useMarketToken,
+  useMarket,
   useTokenActions,
 } from '@/store/tokenStore'
 import { KlineData } from '@/types/next'
@@ -25,13 +25,13 @@ const CandleChart: React.FC<ChartProps> = ({
 }: ChartProps) => {
   const candleSeries = useRef<ISeriesApi<'Candlestick'>>(null)
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
-  const market = useMarketToken()
+  const market = useMarket()
   const interval = useCandlesInterval()
   const { setTokenPrice } = useTokenActions()
 
   useEffect(() => {
     const websocket = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${market.toLowerCase()}@kline_${interval}`
+      `wss://stream.binance.com:9443/ws/${market.symbol.toLowerCase()}@kline_${interval}`
     )
     websocket.onmessage = (event) => {
       const raw_data: KlineData = JSON.parse(event.data)

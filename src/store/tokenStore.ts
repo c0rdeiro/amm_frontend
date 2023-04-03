@@ -1,17 +1,18 @@
 import { create } from 'zustand'
 import { OhlcData, TimeRange } from 'lightweight-charts'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
-import { CandlesIntervals, SupportedMarket, TokenInfoType } from '@/types/next'
+import { CandlesIntervals, Market, TokenInfoType } from '@/types/next'
+import { markets } from '@/constants'
 
 type TokenStore = {
-  marketToken: SupportedMarket
+  market: Market
   tokenAddress: string
   tokenPrice: number | undefined
   graphVisibleRange: TimeRange
   candlesInterval: CandlesIntervals
   chartHoverInfo: TokenInfoType[] | null
   actions: {
-    setMarketToken: (marketToken: SupportedMarket) => void
+    setMarket: (market: Market) => void
     setTokenAddress: (tokenAddress: string) => void
     setTokenPrice: (tokenPrice: number) => void
     setGraphVisibleRange: (range: TimeRange) => void
@@ -22,15 +23,15 @@ type TokenStore = {
 }
 
 const useTokenStore = create<TokenStore>((set) => ({
-  marketToken: 'ETHUSDT',
+  market: markets[0] ?? { symbol: 'ETHUSDT', label: 'ETH' },
   tokenAddress: '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15',
   tokenPrice: undefined,
   chartHoverInfo: null,
   graphVisibleRange: getTimeRangeFromDays(1),
   candlesInterval: '15m',
   actions: {
-    setMarketToken: (marketToken: SupportedMarket) =>
-      set(() => ({ marketToken, tokenPrice: undefined })),
+    setMarket: (market: Market) =>
+      set(() => ({ market, tokenPrice: undefined })),
     setTokenAddress: (tokenAddress: string) => set(() => ({ tokenAddress })),
     setTokenPrice(tokenPrice) {
       set(() => ({ tokenPrice }))
@@ -45,7 +46,7 @@ const useTokenStore = create<TokenStore>((set) => ({
   },
 }))
 
-export const useMarketToken = () => useTokenStore((state) => state.marketToken)
+export const useMarket = () => useTokenStore((state) => state.market)
 export const useTokenAddress = () =>
   useTokenStore((state) => state.tokenAddress)
 export const useTokenPrice = () => useTokenStore((state) => state.tokenPrice)
