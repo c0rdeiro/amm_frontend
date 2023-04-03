@@ -1,5 +1,10 @@
+import Spinner from '@/components/shared/Spinner'
 import tokenIcon from '@/hooks/tokenIcon'
-import { useTokenActions, useTokenAddress } from '@/store/tokenStore'
+import {
+  useTokenActions,
+  useTokenAddress,
+  useTokenPrice,
+} from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import lyra from '@/utils/getLyraSdk'
 import getMarketName from '@/utils/getMarketName'
@@ -19,7 +24,7 @@ const TokenSelect: React.FC = () => {
   })
   const { setTokenAddress, setMarketToken } = useTokenActions()
   const router = useRouter()
-  const tokenSymbol = router.asPath.split('/').pop()
+  const tokenSymbol = router.asPath.split('/').pop() //TODO refactor to use tokenStore marketToken
   const tokenAddress = useTokenAddress()
   const { data: market } = useTSQuery({
     queryKey: ['market', tokenAddress],
@@ -29,8 +34,10 @@ const TokenSelect: React.FC = () => {
     enabled: !!tokenAddress,
   })
 
+  const tokenPrice = useTokenPrice()
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <div className="flex flex-row items-start gap-2 text-2.5xl font-semibold">
         {market ? tokenIcon(market.baseToken.symbol, 36) : undefined}
         <Listbox value={tokenSymbol}>
@@ -64,12 +71,14 @@ const TokenSelect: React.FC = () => {
           </Transition>
         </Listbox>
         <div className="flex flex-row">
-          {market
-            ? formatNumber(parseFloat(formatEther(market.spotPrice)), {
-                decimalCases: 2,
-                symbol: '$',
-              })
-            : undefined}
+          {tokenPrice ? (
+            formatNumber(tokenPrice, {
+              decimalCases: 2,
+              symbol: '$',
+            })
+          ) : (
+            <Spinner />
+          )}
         </div>
       </div>
     </Suspense>

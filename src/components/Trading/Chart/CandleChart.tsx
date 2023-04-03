@@ -1,4 +1,8 @@
-import { useCandlesInterval, useMarketToken } from '@/store/tokenStore'
+import {
+  useCandlesInterval,
+  useMarketToken,
+  useTokenActions,
+} from '@/store/tokenStore'
 import { KlineData } from '@/types/next'
 import {
   HistogramData,
@@ -23,6 +27,7 @@ const CandleChart: React.FC<ChartProps> = ({
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
   const market = useMarketToken()
   const interval = useCandlesInterval()
+  const { setTokenPrice } = useTokenActions()
 
   useEffect(() => {
     const websocket = new WebSocket(
@@ -46,10 +51,10 @@ const CandleChart: React.FC<ChartProps> = ({
           value: +raw_data.k.v,
           color: +raw_data.k.o > +raw_data.k.c ? '#952f34' : '#197148',
         })
+
+      setTokenPrice(+raw_data.k.c)
     }
     return () => {
-      console.log('WEBSOCKET CLOSE')
-
       websocket.close()
     }
   }, [market, interval])

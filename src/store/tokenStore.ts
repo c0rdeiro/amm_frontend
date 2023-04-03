@@ -6,16 +6,14 @@ import { CandlesIntervals, SupportedMarket, TokenInfoType } from '@/types/next'
 type TokenStore = {
   marketToken: SupportedMarket
   tokenAddress: string
-  tokenOHLCV: OhlcData & { volume: number }
+  tokenPrice: number | undefined
   graphVisibleRange: TimeRange
   candlesInterval: CandlesIntervals
   chartHoverInfo: TokenInfoType[] | null
   actions: {
     setMarketToken: (marketToken: SupportedMarket) => void
     setTokenAddress: (tokenAddress: string) => void
-    setTokenOhlcv: (
-      tokenOHLCV: (OhlcData & { volume: number }) | undefined
-    ) => void
+    setTokenPrice: (tokenPrice: number) => void
     setGraphVisibleRange: (range: TimeRange) => void
     setCandlesInterval: (candlesInterval: CandlesIntervals) => void
     setChartHoverInfo: (chartHoverInfo: TokenInfoType[]) => void
@@ -26,16 +24,16 @@ type TokenStore = {
 const useTokenStore = create<TokenStore>((set) => ({
   marketToken: 'ETHUSDT',
   tokenAddress: '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15',
-  tokenOHLCV: {} as OhlcData & { volume: number },
+  tokenPrice: undefined,
   chartHoverInfo: null,
   graphVisibleRange: getTimeRangeFromDays(1),
   candlesInterval: '15m',
   actions: {
     setMarketToken: (marketToken: SupportedMarket) =>
-      set(() => ({ marketToken })),
+      set(() => ({ marketToken, tokenPrice: undefined })),
     setTokenAddress: (tokenAddress: string) => set(() => ({ tokenAddress })),
-    setTokenOhlcv(tokenOHLCV) {
-      set(() => ({ tokenOHLCV }))
+    setTokenPrice(tokenPrice) {
+      set(() => ({ tokenPrice }))
     },
     setGraphVisibleRange: (range: TimeRange) =>
       set(() => ({ graphVisibleRange: range })),
@@ -50,7 +48,7 @@ const useTokenStore = create<TokenStore>((set) => ({
 export const useMarketToken = () => useTokenStore((state) => state.marketToken)
 export const useTokenAddress = () =>
   useTokenStore((state) => state.tokenAddress)
-export const useTokenOhlcv = () => useTokenStore((state) => state.tokenOHLCV)
+export const useTokenPrice = () => useTokenStore((state) => state.tokenPrice)
 export const useTokenChartHoverInfo = () =>
   useTokenStore((state) => state.chartHoverInfo)
 export const useCandlesInterval = () =>
