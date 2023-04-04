@@ -2,6 +2,7 @@ import {
   useCandlesInterval,
   useMarket,
   useTokenActions,
+  useTokenPrice,
 } from '@/store/tokenStore'
 import { KlineData } from '@/types/next'
 import {
@@ -19,6 +20,10 @@ interface ChartProps {
   volumeData: HistogramData[]
 }
 
+const WS_UPDATE_SPEED = 1000 //ms
+const UPDATE_TIMES = 4
+const ITERATIONS_SPEED = WS_UPDATE_SPEED / UPDATE_TIMES
+
 const CandleChart: React.FC<ChartProps> = ({
   candlesData,
   volumeData,
@@ -28,6 +33,7 @@ const CandleChart: React.FC<ChartProps> = ({
   const market = useMarket()
   const interval = useCandlesInterval()
   const { setTokenPrice } = useTokenActions()
+  const tokenPrice = useTokenPrice()
 
   useEffect(() => {
     const websocket = new WebSocket(
@@ -52,7 +58,28 @@ const CandleChart: React.FC<ChartProps> = ({
           color: +raw_data.k.o > +raw_data.k.c ? '#952f34' : '#197148',
         })
 
-      setTokenPrice(+raw_data.k.c)
+      if (!tokenPrice) {
+        setTokenPrice(+raw_data.k.c)
+      } else {
+        const curr = +raw_data.k.c
+        const delta = (curr - (tokenPrice ?? 0)) / UPDATE_TIMES
+        let priceShown = tokenPrice
+        for (let i = 0; i < UPDATE_TIMES; i++) {
+          setTimeout(function () {
+            priceShown += delta
+            console.log('iteration data', {
+              i,
+              delta,
+              priceShown,
+              curr,
+              tokenPrice,
+              now: new Date().getTime(),
+            })
+
+            setTokenPrice(priceShown)
+          }, ITERATIONS_SPEED)
+        }
+      }
     }
     return () => {
       websocket.close()
