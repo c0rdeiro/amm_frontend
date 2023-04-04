@@ -10,7 +10,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
   tokenInfo,
 }: TokenInfoItemProps) => {
   return (
-    <div className="flex flex-col items-start gap-0.5">
+    <div className="ml-1 flex flex-col items-start gap-0.5 2xl:ml-2">
       <div className="text-xs font-medium text-text-purple">
         {tokenInfo.label}
       </div>

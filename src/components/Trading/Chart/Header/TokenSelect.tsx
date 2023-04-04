@@ -16,7 +16,7 @@ const TokenSelect: React.FC = () => {
 
   return (
     <Suspense fallback={<Spinner />}>
-      <div className="flex flex-row items-start gap-2 text-2.5xl font-semibold">
+      <div className="flex flex-row items-start gap-2 text-2xl font-semibold xl:text-2.5xl">
         {market ? tokenIcon(market, 36) : undefined}
         <Listbox value={market.symbol}>
           <Listbox.Button className="flex flex-row items-center gap-1">
