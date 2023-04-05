@@ -3,7 +3,7 @@ import Tabs from '../shared/Tabs'
 import OptionsExchange from './OptionsExchange'
 import PositionRightPanel from './PositionRightPanel'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GMXTrader from './GMXTrader'
 
 type RightPanelProps = {
@@ -26,7 +26,10 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
           quality={100}
         />
       ),
-      action: () => setActiveTab(0),
+      action: () => {
+        setActiveTab(0)
+        localStorage.setItem('tab', '0')
+      },
     },
     {
       key: 1,
@@ -40,9 +43,17 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
           quality={100}
         />
       ),
-      action: () => setActiveTab(1),
+      action: () => {
+        setActiveTab(1)
+        localStorage.setItem('tab', '1')
+      },
     },
   ]
+
+  useEffect(() => {
+    if (localStorage.getItem('tab'))
+      setActiveTab(+localStorage.getItem('tab')!!)
+  }, [])
 
   const getOptionTab = () => {
     switch (activeTab) {
@@ -62,6 +73,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
           style="monochromatic"
           size="sm"
           roundStyle="straight"
+          defaultIndex={activeTab}
         />
       )}
       <div className="item-center px-13  flex  flex-col gap-4  p-1 px-6 pt-8 ">
