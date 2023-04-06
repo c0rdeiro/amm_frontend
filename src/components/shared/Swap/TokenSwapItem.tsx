@@ -6,6 +6,7 @@ type TokenSwapItemProps = {
   onValueChange: (qt: number) => void
   tokenSelect: React.ReactNode
   secondaryText?: string
+  isInputDisabled?: boolean
 }
 
 const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
@@ -14,6 +15,7 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
   onValueChange,
   tokenSelect,
   secondaryText,
+  isInputDisabled = false,
 }) => {
   return (
     <div className="flex flex-col gap-2 bg-gray-400 p-3 dark:bg-darkSecondary">
@@ -27,6 +29,7 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
           onChange={(e) => onValueChange(+e)}
           type="number"
           styleType="discrete"
+          isDisabled={isInputDisabled}
         />
         {tokenSelect}
       </div>

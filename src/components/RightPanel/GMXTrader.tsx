@@ -10,11 +10,13 @@ import Select from '../shared/Form/Select'
 import LeverageSlider from '../shared/LeverageSlider'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
+import { HiArrowsRightLeft } from 'react-icons/hi2'
+import TokenSwap from '../shared/Swap/TokenSwap'
 
 const GMXTrader = () => {
-  const [isLong, setIsLong] = useState<boolean>(true)
+  const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
-  const [exchangeType, setExchangeType] = useState<number>(0)
+  const [exchangeType, setExchangeType] = useState<number>(0) //these are numbers to manual control tabs; 0- market 1- limit 2- trigger
   const tabsLongShort: TabType[] = [
     {
       key: 0,
@@ -22,7 +24,7 @@ const GMXTrader = () => {
 
       icon: <IoTrendingUpSharp size="1.125rem" />,
       action: () => {
-        setIsLong(true)
+        setStrategy('long')
       },
     },
     {
@@ -30,7 +32,15 @@ const GMXTrader = () => {
       label: 'Short',
       icon: <IoTrendingDownSharp size="1.125rem" />,
       action: () => {
-        setIsLong(false)
+        setStrategy('short')
+      },
+    },
+    {
+      key: 2,
+      label: 'Swap',
+      icon: <HiArrowsRightLeft size="1.125rem" />,
+      action: () => {
+        setStrategy('swap')
       },
     },
   ]
@@ -72,9 +82,9 @@ const GMXTrader = () => {
   ]
   const [limitPrice, setLimitPrice] = useState<number>(0)
   const tokens = [
+    { label: 'ETH', value: 'ETH' },
     { label: 'USDC', value: 'USDC' },
     { label: 'USDT', value: 'USDT' },
-    { label: 'ETH', value: 'ETH' },
     { label: 'BTC', value: 'BTC' },
   ]
   const [token, setToken] = useState<{
@@ -89,7 +99,9 @@ const GMXTrader = () => {
         <Tabs tabList={tabsLongShort} style="monochromatic" />
         <div className="flex w-min">
           <Tabs
-            tabList={tabsExchangeType}
+            tabList={tabsExchangeType.filter(
+              (tab) => !(strategy === 'swap' && tab.key === 2)
+            )}
             style="no-style"
             size="sm"
             controllingTab={{
@@ -99,7 +111,7 @@ const GMXTrader = () => {
           />
         </div>
       </div>
-      {!(exchangeType === 2) && (
+      {!(exchangeType === 2) && strategy !== 'swap' && (
         <>
           <TokenSwapItem
             label={'Pay'}
@@ -168,6 +180,9 @@ const GMXTrader = () => {
           size="lg"
           onClick={() => setExchangeType(0)}
         />
+      )}
+      {strategy === 'swap' && (
+        <TokenSwap tokens={tokens} exchangeType={exchangeType} />
       )}
     </div>
   )
