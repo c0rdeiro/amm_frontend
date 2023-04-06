@@ -7,6 +7,7 @@ type InputProps = {
   size?: 'md' | 'lg'
   styleType?: 'normal' | 'discrete'
   onChange: (value: string) => void
+  isDisabled?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -15,6 +16,7 @@ const Input: React.FC<InputProps> = ({
   size = 'md',
   styleType = 'normal',
   onChange,
+  isDisabled = false,
 }: InputProps) => {
   return (
     <input
@@ -32,6 +34,7 @@ const Input: React.FC<InputProps> = ({
       value={value}
       type={type}
       onChange={(e) => onChange(e.target.value)}
+      disabled={isDisabled}
     />
   )
 }
