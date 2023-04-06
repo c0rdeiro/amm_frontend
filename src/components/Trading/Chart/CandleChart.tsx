@@ -11,6 +11,7 @@ import {
   UTCTimestamp,
 } from 'lightweight-charts'
 import { useEffect, useRef } from 'react'
+
 import ChartWrapper from './ChartWrapper'
 import Series from './Series'
 

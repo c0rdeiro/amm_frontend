@@ -1,18 +1,18 @@
 import Spinner from '@/components/shared/Spinner'
 import { markets } from '@/constants'
 import tokenIcon from '@/hooks/tokenIcon'
-import { useMarket, useTokenActions, useTokenPrice } from '@/store/tokenStore'
-import formatNumber from '@/utils/formatNumber'
+import { useMarket, useTokenActions } from '@/store/tokenStore'
 import { Listbox, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import { Fragment, Suspense } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 
+import TokenPrice from './TokenPrice'
+
 const TokenSelect: React.FC = () => {
   const { setMarket: setMarket } = useTokenActions()
   const router = useRouter()
   const market = useMarket()
-  const tokenPrice = useTokenPrice()
 
   return (
     <Suspense fallback={<Spinner />}>
@@ -46,16 +46,7 @@ const TokenSelect: React.FC = () => {
             </Listbox.Options>
           </Transition>
         </Listbox>
-        <div className="flex flex-row">
-          {tokenPrice ? (
-            formatNumber(tokenPrice, {
-              decimalCases: 2,
-              symbol: '$',
-            })
-          ) : (
-            <Spinner />
-          )}
-        </div>
+        <TokenPrice />
       </div>
     </Suspense>
   )
