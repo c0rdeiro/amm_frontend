@@ -13,8 +13,9 @@ const TokenPrice = () => {
     if (!displayPrice || !tokenPrice) {
       setDisplayPrice(tokenPrice)
     }
-    if (displayPrice && tokenPrice)
+    if (displayPrice !== undefined && tokenPrice !== undefined) {
       animateValue(displayPrice, tokenPrice, WS_UPDATE_SPEED, setDisplayPrice)
+    }
   }, [tokenPrice])
 
   return (
@@ -33,7 +34,7 @@ const TokenPrice = () => {
 
 //Quadratic easing
 function quadratic(duration: number, range: number, current: number) {
-  return ((duration * 3) / Math.pow(range, 3)) * Math.pow(current, 2)
+  return (((duration * 3) / Math.pow(range, 3)) * Math.pow(current, 2)) / 1e15
 }
 
 function animateValue(
@@ -45,11 +46,11 @@ function animateValue(
   const range = Math.abs(Number((end - start).toFixed(2)))
   let current = Number(start.toFixed(2))
   const increment = end > start ? 0.01 : -0.01
-  const step = function () {
-    if (Number(current.toFixed(2)) != end) {
-      current += increment
-      setter(Number(current.toFixed(2)))
 
+  const step = function () {
+    current += increment
+    setter(Number(current.toFixed(2)))
+    if (Math.abs(current - end) > 0.01) {
       setTimeout(step, quadratic(duration, range, current))
     } else {
       return
