@@ -10,7 +10,9 @@ const TokenPrice = () => {
   const [displayPrice, setDisplayPrice] = useState(tokenPrice)
 
   useEffect(() => {
-    if (!displayPrice) setDisplayPrice(tokenPrice)
+    if (!displayPrice || !tokenPrice) {
+      setDisplayPrice(tokenPrice)
+    }
     if (displayPrice && tokenPrice)
       animateValue(displayPrice, tokenPrice, WS_UPDATE_SPEED, setDisplayPrice)
   }, [tokenPrice])
