@@ -40,31 +40,19 @@ function animateValue(
   duration: number,
   setter: (tokenPrice: number) => void
 ) {
-  let range = Math.abs(Number((end - start).toFixed(2)))
+  const range = Math.abs(Number((end - start).toFixed(2)))
   let current = Number(start.toFixed(2))
-  let increment = end > start ? 0.01 : -0.01
-  // var startTime = new Date()
-  // var offset = 1
-  // var remainderTime = 0
-  console.log('ANIMATE', { increment, current, range, start, end })
-  // if (range === 0) return
+  const increment = end > start ? 0.01 : -0.01
   const step = function () {
-    console.log('RECURSIVE', {
-      current,
-      end,
-      entra: Number(current.toFixed(2)) != end,
-    })
     if (Number(current.toFixed(2)) != end) {
       current += increment
       setter(Number(current.toFixed(2)))
 
       setTimeout(step, quadratic(duration, range, current))
     } else {
-      console.log('ACABOUUUU')
       return
     }
   }
-  console.log('BATE AQUI OUTA X?')
 
   setTimeout(step, quadratic(duration, range, start))
 }
