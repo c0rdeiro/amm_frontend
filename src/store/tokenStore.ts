@@ -34,8 +34,6 @@ const useTokenStore = create<TokenStore>((set) => ({
       set(() => ({ market, tokenPrice: undefined })),
     setTokenAddress: (tokenAddress: string) => set(() => ({ tokenAddress })),
     setTokenPrice(tokenPrice) {
-      // console.log('SET PRICE', tokenPrice)
-
       set(() => ({ tokenPrice }))
     },
     setGraphVisibleRange: (range: TimeRange) =>
