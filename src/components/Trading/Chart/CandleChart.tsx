@@ -58,13 +58,13 @@ const CandleChart: React.FC<ChartProps> = ({
         prevAux.current !== undefined &&
         Math.abs(prevAux.current - +raw_data.k.c) > 0.01
       ) {
-        console.log({ from: prevAux.current, to: +raw_data.k.c })
-        setTokenPrice(+raw_data.k.c)
-
-        animateValue(prevAux.current, +raw_data.k.c, 500, (close: number) => {
-          prevAux.current = close
-          setData(close)
-        })
+        if (document.visibilityState !== 'hidden') {
+          setTokenPrice(+raw_data.k.c)
+          animateValue(prevAux.current, +raw_data.k.c, 500, (close: number) => {
+            prevAux.current = close
+            setData(close)
+          })
+        }
       }
 
       if (volumeSeries)

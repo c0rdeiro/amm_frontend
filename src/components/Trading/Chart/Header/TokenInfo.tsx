@@ -4,9 +4,9 @@ import { getToken24h, Token24hData } from '@/lib/getToken24h'
 import { useMarket, useTokenChartHoverInfo } from '@/store/tokenStore'
 import { TokenInfoType } from '@/types/next'
 import { useQuery } from '@tanstack/react-query'
-import { formatEther } from 'viem'
 
 import TokenInfoItem from './TokenInfoItem'
+import { formatEther } from 'ethers/lib/utils.js'
 
 const TokenInfo: React.FC = () => {
   const marketToken = useMarket()
