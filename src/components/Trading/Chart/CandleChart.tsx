@@ -10,10 +10,11 @@ import {
   OhlcData,
   UTCTimestamp,
 } from 'lightweight-charts'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import ChartWrapper from './ChartWrapper'
 import Series from './Series'
+import { animateValue } from './Header/TokenPrice'
 
 interface ChartProps {
   candlesData: OhlcData[]
@@ -29,7 +30,7 @@ const CandleChart: React.FC<ChartProps> = ({
   const market = useMarket()
   const interval = useCandlesInterval()
   const { setTokenPrice } = useTokenActions()
-
+  const prevAux = useRef<number | undefined>(undefined)
   useEffect(() => {
     const websocket = new WebSocket(
       `wss://stream.binance.com:9443/ws/${market.symbol.toLowerCase()}@kline_${interval}`
@@ -37,14 +38,34 @@ const CandleChart: React.FC<ChartProps> = ({
     websocket.onmessage = (event) => {
       const raw_data: KlineData = JSON.parse(event.data)
 
-      if (candleSeries)
-        candleSeries.current?.update({
-          time: (raw_data.k.t / 1000) as UTCTimestamp,
-          open: +raw_data.k.o,
-          high: +raw_data.k.h,
-          low: +raw_data.k.l,
-          close: +raw_data.k.c,
-        })
+      function setData(close: number) {
+        try {
+          candleSeries.current?.update({
+            time: (raw_data.k.t / 1000) as UTCTimestamp,
+            open: +raw_data.k.o,
+            high: +raw_data.k.h,
+            low: +raw_data.k.l,
+            close: close,
+          })
+        } catch (err) {}
+      }
+
+      if (prevAux.current === undefined) {
+        prevAux.current = +raw_data.k.c
+      }
+      if (
+        candleSeries &&
+        prevAux.current !== undefined &&
+        Math.abs(prevAux.current - +raw_data.k.c) > 0.01
+      ) {
+        if (document.visibilityState !== 'hidden') {
+          setTokenPrice(+raw_data.k.c)
+          animateValue(prevAux.current, +raw_data.k.c, 500, (close: number) => {
+            prevAux.current = close
+            setData(close)
+          })
+        }
+      }
 
       if (volumeSeries)
         volumeSeries.current?.update({
@@ -52,8 +73,6 @@ const CandleChart: React.FC<ChartProps> = ({
           value: +raw_data.k.v,
           color: +raw_data.k.o > +raw_data.k.c ? '#952f34' : '#197148',
         })
-
-      setTokenPrice(+raw_data.k.c)
     }
     return () => {
       websocket.close()
