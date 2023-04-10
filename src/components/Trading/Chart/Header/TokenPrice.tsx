@@ -37,7 +37,7 @@ function quadratic(duration: number, range: number, current: number) {
   return (((duration * 3) / Math.pow(range, 3)) * Math.pow(current, 2)) / 1e15
 }
 
-function animateValue(
+export function animateValue(
   start: number,
   end: number,
   duration: number,
