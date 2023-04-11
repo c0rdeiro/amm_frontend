@@ -79,8 +79,11 @@ function DataTable<T>({
                   'border-primary/[0.6] bg-gradient-to-r from-primary/[.08]  via-primary/[.1] to-primary/[.08] text-primary shadow-blue hover:bg-primary/[.05]':
                     row.getIsSelected(),
                 },
-                { 'hover:bg-white ': colorScheme === 'white' },
-                { ' bg-white ': row.getIsExpanded() }
+                {
+                  'hover:bg-white dark:hover:bg-darkSecondary':
+                    colorScheme === 'white',
+                },
+                { ' bg-white dark:bg-darkSecondary': row.getIsExpanded() }
               )}
             >
               {row.getVisibleCells().map((cell) => (
@@ -97,7 +100,7 @@ function DataTable<T>({
             </tr>
 
             {row.getIsExpanded() && renderSubComponent && (
-              <tr className=" bg-white shadow-table-white">
+              <tr className=" bg-white shadow-table-white dark:bg-darkSecondary dark:shadow-none">
                 {/* 2nd row is a custom 1 cell row */}
                 <td
                   colSpan={row.getVisibleCells().length}
@@ -107,18 +110,18 @@ function DataTable<T>({
                 </td>
               </tr>
             )}
-            {!data.length && (
-              <tr>
-                <td
-                  colSpan={columns.length}
-                  className="text-sm text-text-purple"
-                >
-                  No data do display
-                </td>
-              </tr>
-            )}
           </Fragment>
         ))}
+        {data.length === 0 && (
+          <tr>
+            <td
+              colSpan={columns.length}
+              className="text-md py-4 text-center text-text-purple"
+            >
+              No data do display
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   )

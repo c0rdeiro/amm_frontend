@@ -1,3 +1,6 @@
+import { BigNumber } from 'ethers'
+import { formatEther } from 'ethers/lib/utils.js'
+
 type FormatNumberOptions = {
   decimalCases?: number
   symbol?: '' | '$' | '%'
@@ -6,9 +9,11 @@ type FormatNumberOptions = {
 }
 
 const handleNumberSymbol = (
-  value: number,
+  value: number | BigNumber,
   displayPositive: boolean
 ): string => {
+  if (value instanceof BigNumber) value = parseFloat(formatEther(value))
+
   if (value < 0) {
     return '-'
   }
