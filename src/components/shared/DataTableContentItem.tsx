@@ -11,16 +11,22 @@ export function DataTableContentItem<T>({
   row,
   clickType,
 }: DataTableContentItemProps<T>) {
+  const getOnClickFunction = () => {
+    switch (clickType) {
+      case 'expand':
+        return row.getToggleExpandedHandler()
+      case 'select':
+        return row.getToggleSelectedHandler()
+      case 'no-action':
+      default:
+        return undefined
+    }
+  }
+
   return (
     <div
       className="flex items-center gap-1 py-2  pl-6 "
-      onClick={
-        clickType === 'expand'
-          ? row.getToggleExpandedHandler()
-          : clickType === 'select'
-          ? row.getToggleSelectedHandler()
-          : undefined
-      }
+      onClick={getOnClickFunction}
     >
       {children}
     </div>

@@ -69,7 +69,7 @@ function DataTable<T>({
               key={row.id}
               onClick={() => (rowClickAction ? rowClickAction(row) : undefined)}
               className={clsx(
-                'hover:cursor-pointer active:rounded-lg active:ring-1',
+                'active:rounded-lg active:ring-1',
                 { 'rounded-lg ring-1': row.getIsSelected() },
                 {
                   'hover:bg-primary/[.05] active:border-primary/[0.6] active:bg-gradient-to-r  active:from-primary/[.08] active:via-primary/[.1] active:to-primary/[.08] active:text-primary active:shadow-blue':
