@@ -6,6 +6,7 @@ import { useState } from 'react'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import formatNumber from '@/utils/formatNumber'
 import Button from '../shared/Button'
+import Input from '../shared/Form/Input'
 
 type GMXClosePositionModalProps = {
   position: GMXPosition
@@ -33,6 +34,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
   ]
 
   const [quantity, setQuantity] = useState(0)
+  const [keepLeverage, setkeepLeverage] = useState(true)
+  const [allowSlippage, setallowSlippage] = useState(false)
   const [fees, setfees] = useState(0.16)
 
   return (
@@ -64,11 +67,23 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
           <div className="flex flex-col">
             <div className="flex w-full justify-between text-sm text-text-purple">
               <span>{`Keep leverage at ${position.leverageStr}`}</span>
-              <div>O</div>
+              <Input
+                type="checkbox"
+                value={''}
+                size="checkbox"
+                checked={keepLeverage}
+                onChange={() => setkeepLeverage(!keepLeverage)}
+              />
             </div>
             <div className="flex w-full justify-between text-sm text-text-purple">
               <span>{`Allow up to 1% slippage`}</span>
-              <div>O</div>
+              <Input
+                type="checkbox"
+                value={''}
+                size="checkbox"
+                checked={allowSlippage}
+                onChange={() => setallowSlippage(!allowSlippage)}
+              />
             </div>
             <div className="flex w-full justify-between text-sm text-text-purple">
               <span>{`Allowed Slippage`}</span>
