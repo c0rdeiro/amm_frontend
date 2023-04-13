@@ -8,6 +8,7 @@ import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { AiOutlineEdit } from 'react-icons/ai'
 import GMXClosePositionModal from '../Modals/GMXClosePositionModal'
 import { useState } from 'react'
+import GMXPositionCollateralModal from '../Modals/GMXPositionCollateralModal'
 
 type GMXPositionsTableProps = {
   data: GMXPosition[]
@@ -19,6 +20,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
 }) => {
   const showPnlAfterFees = false //TODO
   const [isCloseModalOpen, setisCloseModalOpen] = useState(false)
+  const [isCollateralModalOpen, setisCollateralModalOpen] = useState(false)
   const [currentPosition, setCurrentPosition] = useState<
     GMXPosition | undefined
   >()
@@ -29,7 +31,8 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
   }
 
   const editColateral = (position: GMXPosition) => {
-    console.log('edit collateral', position)
+    setisCollateralModalOpen(true)
+    setCurrentPosition(position)
   }
 
   const columnHelper = createColumnHelper<GMXPosition>()
@@ -184,6 +187,13 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
           position={currentPosition}
           isOpen={isCloseModalOpen}
           setIsOpen={setisCloseModalOpen}
+        />
+      )}
+      {currentPosition && (
+        <GMXPositionCollateralModal
+          position={currentPosition}
+          isOpen={isCollateralModalOpen}
+          setIsOpen={setisCollateralModalOpen}
         />
       )}
     </>
