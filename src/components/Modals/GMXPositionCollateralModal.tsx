@@ -64,15 +64,15 @@ const GMXPositionCollateralModal: React.FC<GMXPositionCollateralModalProps> = ({
           />
 
           <div className="flex flex-col">
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Leverage`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Leverage`}</span>
               <div>{position.leverageStr}</div>
             </div>
           </div>
           <div className="flex h-[0.5px] w-full bg-darkBg" />
           <div className="flex flex-col">
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Mark Price`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Mark Price`}</span>
               <div>
                 {formatNumber(position.markPrice, {
                   decimalCases: 2,
@@ -80,8 +80,8 @@ const GMXPositionCollateralModal: React.FC<GMXPositionCollateralModalProps> = ({
                 })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Entry Price`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Entry Price`}</span>
               <div>
                 {formatNumber(position.entryPrice, {
                   decimalCases: 2,
@@ -89,8 +89,8 @@ const GMXPositionCollateralModal: React.FC<GMXPositionCollateralModalProps> = ({
                 })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Allowed Slippage`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Allowed Slippage`}</span>
               <div>
                 {formatNumber(position.liqPrice, {
                   decimalCases: 2,
@@ -101,14 +101,14 @@ const GMXPositionCollateralModal: React.FC<GMXPositionCollateralModalProps> = ({
           </div>
           <div className="flex h-[0.5px] w-full bg-darkBg" />
           <div className="flex flex-col">
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Size`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Size`}</span>
               <div>
                 {formatNumber(position.size, { decimalCases: 2, symbol: '$' })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Collateral (${position.collateralToken.symbol})`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Collateral (${position.collateralToken.symbol})`}</span>
               <div>
                 {formatNumber(position.collateral, {
                   decimalCases: 2,
@@ -116,8 +116,8 @@ const GMXPositionCollateralModal: React.FC<GMXPositionCollateralModalProps> = ({
                 })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Fees`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Fees`}</span>
               <div>{formatNumber(fees, { decimalCases: 2, symbol: '$' })}</div>
             </div>
           </div>

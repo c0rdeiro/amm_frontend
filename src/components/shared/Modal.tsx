@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, children }) => {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-100" onClose={closeModal}>
+      <Dialog as="div" className="relative z-50" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, children }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="flex w-full transform items-center justify-center overflow-hidden transition-all">
+              <Dialog.Panel className="flex w-full transform items-center justify-center transition-all">
                 {children}
               </Dialog.Panel>
             </Transition.Child>

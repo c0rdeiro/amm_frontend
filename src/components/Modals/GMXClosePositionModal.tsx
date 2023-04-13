@@ -8,6 +8,7 @@ import formatNumber from '@/utils/formatNumber'
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
 import { formatEther } from 'ethers/lib/utils.js'
+import Select from '../shared/Form/Select'
 
 type GMXClosePositionModalProps = {
   position: GMXPosition
@@ -40,6 +41,48 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
   const [allowSlippage, setallowSlippage] = useState(false)
   const [allowedSlippage, setAllowedSlippage] = useState(0.003)
   const [fees, setfees] = useState(0.16)
+
+  const tokens: { label: string; value: string }[] = [
+    { label: 'ETH', value: 'ETH' },
+    { label: 'USDC', value: 'USDC' },
+    { label: 'USDT', value: 'USDT' },
+    { label: 'BTC', value: 'BTC' },
+  ]
+
+  const getFirstToken = () => {
+    const token = tokens.find(
+      (token) => token.value === position.indexToken.symbol
+    )
+
+    return token
+      ? {
+          ...token,
+          label: `${formatNumber(0, { decimalCases: 4 })} ${
+            token.value
+          } ${formatNumber(receiveDollars, {
+            decimalCases: 2,
+            symbol: '$',
+          })}`,
+          quantity: 0,
+        }
+      : {
+          ...tokens[0]!,
+          label: `${formatNumber(0, { decimalCases: 4 })} ${
+            tokens[0]!.value
+          } ${formatNumber(receiveDollars, {
+            decimalCases: 2,
+            symbol: '$',
+          })}`,
+          quantity: 0,
+        }
+  }
+
+  const [receiveDollars, setreceiveDollars] = useState(0)
+  const [receiveToken, setreceiveToken] = useState<{
+    label: string
+    value: string
+    quantity: number
+  }>(getFirstToken())
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -77,8 +120,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
             />
           )}
           <div className="flex flex-col">
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Keep leverage at ${position.leverageStr}`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Keep leverage at ${position.leverageStr}`}</span>
               <Input
                 type="checkbox"
                 value={''}
@@ -89,8 +132,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
             </div>
             {exchangeType === 0 && (
               <>
-                <div className="flex w-full justify-between text-sm text-text-purple">
-                  <span>{`Allow up to 1% slippage`}</span>
+                <div className="flex w-full justify-between text-sm ">
+                  <span className="text-text-purple">{`Allow up to 1% slippage`}</span>
                   <Input
                     type="checkbox"
                     value={''}
@@ -106,8 +149,11 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
                     }}
                   />
                 </div>
-                <div className="flex w-full justify-between text-sm text-text-purple">
-                  <span>{`Allowed Slippage`}</span>
+                <div className="flex w-full justify-between text-sm ">
+                  <span className="text-text-purple">
+                    {' '}
+                    {`Allowed Slippage`}
+                  </span>
                   <div>
                     {formatNumber(allowedSlippage, {
                       decimalCases: 2,
@@ -119,8 +165,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
               </>
             )}
             {exchangeType === 1 && (
-              <div className="flex w-full justify-between text-sm text-text-purple">
-                <span>{`Trigger Price`}</span>
+              <div className="flex w-full justify-between text-sm ">
+                <span className="text-text-purple">{`Trigger Price`}</span>
                 <div>
                   {price < parseFloat(formatEther(position.markPrice))
                     ? '<'
@@ -134,8 +180,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
           </div>
           <div className="flex h-[0.5px] w-full bg-darkBg" />
           <div className="flex flex-col">
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Mark Price`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Mark Price`}</span>
               <div>
                 {formatNumber(position.markPrice, {
                   decimalCases: 2,
@@ -143,8 +189,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
                 })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Entry Price`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Entry Price`}</span>
               <div>
                 {formatNumber(position.entryPrice, {
                   decimalCases: 2,
@@ -152,8 +198,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
                 })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Allowed Slippage`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Allowed Slippage`}</span>
               <div>
                 {formatNumber(position.liqPrice, {
                   decimalCases: 2,
@@ -164,14 +210,14 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
           </div>
           <div className="flex h-[0.5px] w-full bg-darkBg" />
           <div className="flex flex-col">
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Size`}</span>
+            <div className="flex w-full justify-between text-sm">
+              <span className="text-text-purple">{`Size`}</span>
               <div>
                 {formatNumber(position.size, { decimalCases: 2, symbol: '$' })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Collateral (${position.collateralToken.symbol})`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Collateral (${position.collateralToken.symbol})`}</span>
               <div>
                 {formatNumber(position.collateral, {
                   decimalCases: 2,
@@ -179,24 +225,42 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
                 })}
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`PnL`}</span>
+            {!keepLeverage && (
+              <div className="flex w-full justify-between text-sm ">
+                <span className="text-text-purple">{`Leverage`}</span>
+                <div>{position.leverageStr}</div>
+              </div>
+            )}
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`PnL`}</span>
               <div>
                 {position.deltaStr} ({position.deltaPercentageStr})
               </div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Fees`}</span>
+            <div className="flex w-full justify-between text-sm ">
+              <span className="text-text-purple">{`Fees`}</span>
               <div>{formatNumber(fees, { decimalCases: 2, symbol: '$' })}</div>
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Receive`}</span>
-              <div>
-                {`${formatNumber(0, { decimalCases: 4 })} ${
-                  position.indexToken.symbol
-                }`}{' '}
-                ({formatNumber(0, { decimalCases: 2, symbol: '$' })})
-              </div>
+            <div className="flex w-full items-center justify-between text-sm ">
+              <span className="text-text-purple">{`Receive`}</span>
+
+              <Select
+                items={tokens}
+                selectedItem={receiveToken}
+                setSelectedItem={(token: { label: string; value: string }) =>
+                  setreceiveToken({
+                    label: `${formatNumber(0, { decimalCases: 4 })} ${
+                      token.value
+                    } ${formatNumber(receiveDollars, {
+                      decimalCases: 2,
+                      symbol: '$',
+                    })}`,
+                    value: token.value,
+                    quantity: 0,
+                  })
+                }
+                style="no-style"
+              />
             </div>
           </div>
 
