@@ -10,11 +10,11 @@ import {
   OhlcData,
   UTCTimestamp,
 } from 'lightweight-charts'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 import ChartWrapper from './ChartWrapper'
-import Series from './Series'
 import { animateValue } from './Header/TokenPrice'
+import Series from './Series'
 
 interface ChartProps {
   candlesData: OhlcData[]

@@ -1,13 +1,12 @@
-import Modal from '../shared/Modal'
-import { RxCross2 } from 'react-icons/rx'
-import Tabs from '../shared/Tabs'
 import { TabType } from '@/types/next'
-import { useState } from 'react'
-import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import formatNumber from '@/utils/formatNumber'
+import { useState } from 'react'
+import { RxCross2 } from 'react-icons/rx'
+
 import Button from '../shared/Button'
-import Input from '../shared/Form/Input'
-import { formatEther } from 'ethers/lib/utils.js'
+import Modal from '../shared/Modal'
+import TokenSwapItem from '../shared/Swap/TokenSwapItem'
+import Tabs from '../shared/Tabs'
 
 type GMXPositionCollateralModalProps = {
   position: GMXPosition

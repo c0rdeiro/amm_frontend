@@ -1,14 +1,13 @@
 import formatNumber from '@/utils/formatNumber'
 import { createColumnHelper } from '@tanstack/react-table'
-
-import { DataTableContentItem } from '../shared/DataTableContentItem'
-import DataTable from '../shared/DataTable'
 import clsx from 'clsx'
-import { HiOutlineDotsVertical } from 'react-icons/hi'
-import { AiOutlineEdit } from 'react-icons/ai'
-import GMXClosePositionModal from '../Modals/GMXClosePositionModal'
 import { useState } from 'react'
+import { AiOutlineEdit } from 'react-icons/ai'
+
+import GMXClosePositionModal from '../Modals/GMXClosePositionModal'
 import GMXPositionCollateralModal from '../Modals/GMXPositionCollateralModal'
+import DataTable from '../shared/DataTable'
+import { DataTableContentItem } from '../shared/DataTableContentItem'
 
 type GMXPositionsTableProps = {
   data: GMXPosition[]

@@ -2,16 +2,16 @@ import 'rc-slider/assets/index.css'
 
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
+import { HiArrowsRightLeft } from 'react-icons/hi2'
 import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 
 import Button from '../shared/Button'
 import Select from '../shared/Form/Select'
 import LeverageSlider from '../shared/LeverageSlider'
+import TokenSwap from '../shared/Swap/TokenSwap'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
-import { HiArrowsRightLeft } from 'react-icons/hi2'
-import TokenSwap from '../shared/Swap/TokenSwap'
 
 const GMXTrader = () => {
   const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')

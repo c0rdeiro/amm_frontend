@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import ThemeSwitch from './ThemeSwitch'
+
 import CustomConnectButton from './CustomConnectButton'
+import ThemeSwitch from './ThemeSwitch'
 
 const Header: React.FC = () => {
   return (

@@ -1,9 +1,10 @@
 import Tabs from '@/components/shared/Tabs'
 import { TabType } from '@/types/next'
-import PositionsCompactTable from './PositionsCompactTable'
 import { BigNumber } from 'ethers'
 import { useState } from 'react'
+
 import GMXPositionsTable from '../GMXPositionsTable'
+import PositionsCompactTable from './PositionsCompactTable'
 
 const TokenPositionsPanel = () => {
   const tableTabs: TabType[] = [

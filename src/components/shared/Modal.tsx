@@ -1,9 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import Image from 'next/image'
-import formatDateTime from '@/utils/formatDateTime'
-import { PositionType } from '@/types/next'
-import formatNumber from '@/utils/formatNumber'
 
 type ModalProps = {
   isOpen: boolean
