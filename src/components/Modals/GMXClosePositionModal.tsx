@@ -7,6 +7,7 @@ import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import formatNumber from '@/utils/formatNumber'
 import Button from '../shared/Button'
 import Input from '../shared/Form/Input'
+import { formatEther } from 'ethers/lib/utils.js'
 
 type GMXClosePositionModalProps = {
   position: GMXPosition
@@ -29,13 +30,15 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
     {
       key: 1,
       label: 'Trigger',
-      action: () => setExchangeType(2),
+      action: () => setExchangeType(1),
     },
   ]
 
   const [quantity, setQuantity] = useState(0)
+  const [price, setPrice] = useState(0)
   const [keepLeverage, setkeepLeverage] = useState(true)
   const [allowSlippage, setallowSlippage] = useState(false)
+  const [allowedSlippage, setAllowedSlippage] = useState(0.003)
   const [fees, setfees] = useState(0.16)
 
   return (
@@ -64,6 +67,15 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
             tokenSelect={<div className="text-2xl">USD</div>}
             secondaryText={`Max: 0.00`}
           />
+          {exchangeType === 1 && (
+            <TokenSwapItem
+              label={'Price'}
+              value={price}
+              onValueChange={setPrice}
+              tokenSelect={<div className="text-2xl">USD</div>}
+              secondaryText={`Mark: ${position.markPrice}`}
+            />
+          )}
           <div className="flex flex-col">
             <div className="flex w-full justify-between text-sm text-text-purple">
               <span>{`Keep leverage at ${position.leverageStr}`}</span>
@@ -75,26 +87,50 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
                 onChange={() => setkeepLeverage(!keepLeverage)}
               />
             </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Allow up to 1% slippage`}</span>
-              <Input
-                type="checkbox"
-                value={''}
-                size="checkbox"
-                checked={allowSlippage}
-                onChange={() => setallowSlippage(!allowSlippage)}
-              />
-            </div>
-            <div className="flex w-full justify-between text-sm text-text-purple">
-              <span>{`Allowed Slippage`}</span>
-              <div>
-                {formatNumber(0.0003, {
-                  decimalCases: 2,
-                  isSymbolEnd: true,
-                  symbol: '%',
-                })}
+            {exchangeType === 0 && (
+              <>
+                <div className="flex w-full justify-between text-sm text-text-purple">
+                  <span>{`Allow up to 1% slippage`}</span>
+                  <Input
+                    type="checkbox"
+                    value={''}
+                    size="checkbox"
+                    checked={allowSlippage}
+                    onChange={() => {
+                      setallowSlippage((prev) => {
+                        prev
+                          ? setAllowedSlippage(0.003)
+                          : setAllowedSlippage(0.01)
+                        return !prev
+                      })
+                    }}
+                  />
+                </div>
+                <div className="flex w-full justify-between text-sm text-text-purple">
+                  <span>{`Allowed Slippage`}</span>
+                  <div>
+                    {formatNumber(allowedSlippage, {
+                      decimalCases: 2,
+                      isSymbolEnd: true,
+                      symbol: '%',
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+            {exchangeType === 1 && (
+              <div className="flex w-full justify-between text-sm text-text-purple">
+                <span>{`Trigger Price`}</span>
+                <div>
+                  {price < parseFloat(formatEther(position.markPrice))
+                    ? '<'
+                    : '>'}
+                  {formatNumber(price, {
+                    decimalCases: 2,
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="flex h-[0.5px] w-full bg-darkBg" />
           <div className="flex flex-col">
@@ -153,23 +189,27 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
               <span>{`Fees`}</span>
               <div>{formatNumber(fees, { decimalCases: 2, symbol: '$' })}</div>
             </div>
-          </div>
-          <div className="flex h-[0.5px] w-full bg-darkBg" />
-          <div className="flex w-full justify-between text-sm text-text-purple">
-            <span>{`Receive`}</span>
-            <div>
-              {`${formatNumber(0, { decimalCases: 4 })} ${
-                position.indexToken.symbol
-              }`}{' '}
-              ({formatNumber(0, { decimalCases: 2, symbol: '$' })})
+            <div className="flex w-full justify-between text-sm text-text-purple">
+              <span>{`Receive`}</span>
+              <div>
+                {`${formatNumber(0, { decimalCases: 4 })} ${
+                  position.indexToken.symbol
+                }`}{' '}
+                ({formatNumber(0, { decimalCases: 2, symbol: '$' })})
+              </div>
             </div>
           </div>
+
           <Button
             label={
               quantity <= 0
                 ? 'Enter an amount'
                 : exchangeType === 0
-                ? 'Enable Leverage'
+                ? 'Close'
+                : price === 0
+                ? 'Enter Price'
+                : price < parseFloat(formatEther(position.liqPrice)) //TODO might need to revisit this once there's real data
+                ? 'Price below Liq. Price'
                 : 'Enable Orders'
             }
             size="lg"

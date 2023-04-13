@@ -158,17 +158,17 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
       ),
       header: () => <span></span>,
     }),
-    columnHelper.accessor('key', {
-      id: 'actions',
-      cell: (info) => (
-        <DataTableContentItem clickType="no-action" row={info.row}>
-          <span className="hover:cursor-pointer">
-            <HiOutlineDotsVertical />
-          </span>
-        </DataTableContentItem>
-      ),
-      header: () => <span></span>,
-    }),
+    // columnHelper.accessor('key', {
+    //   id: 'actions',
+    //   cell: (info) => (
+    //     <DataTableContentItem clickType="no-action" row={info.row}>
+    //       <span className="hover:cursor-pointer">
+    //         <HiOutlineDotsVertical />
+    //       </span>
+    //     </DataTableContentItem>
+    //   ),
+    //   header: () => <span></span>,
+    // }),
   ]
 
   return (
