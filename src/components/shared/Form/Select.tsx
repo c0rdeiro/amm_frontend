@@ -47,7 +47,7 @@ function Select<T>({
             'relative flex h-12 items-center gap-2 font-medium text-black  dark:text-white',
             {
               'bg-gray-300': isDisabled,
-              'rounded-lg border border-solid border-input-border bg-white px-4 py-2 dark:bg-darkSecondary':
+              'rounded-lg border border-solid border-input-border bg-white px-4 py-2 dark:bg-darkSecondary dark:hover:bg-darkBg':
                 style === 'normal',
               'bg-inherit': style === 'no-style',
             }
@@ -64,7 +64,7 @@ function Select<T>({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="text-text-default absolute z-50 mt-1 max-h-60 gap-4 overflow-auto rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium focus:outline-none dark:bg-darkSecondary">
+          <Listbox.Options className="text-text-default absolute z-100 mt-1 max-h-60 w-full gap-4 overflow-visible rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium focus:outline-none dark:bg-darkSecondary">
             {items.map((item) => (
               <Listbox.Option
                 key={item.label}

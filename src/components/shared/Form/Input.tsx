@@ -4,10 +4,11 @@ import { HTMLInputTypeAttribute } from 'react'
 type InputProps = {
   value: string
   type?: HTMLInputTypeAttribute
-  size?: 'md' | 'lg'
+  size?: 'md' | 'lg' | 'checkbox'
   styleType?: 'normal' | 'discrete'
   onChange: (value: string) => void
   isDisabled?: boolean
+  checked?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -17,11 +18,13 @@ const Input: React.FC<InputProps> = ({
   styleType = 'normal',
   onChange,
   isDisabled = false,
+  checked = false,
 }: InputProps) => {
   return (
     <input
       className={clsx(
         {
+          'h-4 w-4 accent-primary': size === 'checkbox',
           'h-9 w-29': size === 'md',
           'h-12 w-full': size === 'lg',
           'rounded-lg border border-solid border-input-border bg-white px-4 dark:bg-darkSecondary':
@@ -35,6 +38,7 @@ const Input: React.FC<InputProps> = ({
       type={type}
       onChange={(e) => onChange(e.target.value)}
       disabled={isDisabled}
+      checked={checked}
     />
   )
 }

@@ -44,36 +44,34 @@ const Tabs: React.FC<TabsProps> = ({
       >
         {tabList.map((item) => (
           <Tab as={Fragment} key={item.key}>
-            {({ selected }) => (
-              <button
-                onClick={item.action}
-                className={clsx(
-                  {
-                    'px-3 py-1.5 text-sm': size === 'sm',
-                    'px-3 py-1.5': size === 'md',
-                    'px-6 py-3': size === 'lg',
-                  },
-                  {
-                    'ui-selected:bg-primary ui-selected:shadow-blue':
-                      style === 'normal',
-                    'ui-selected:bg-text-gray dark:ui-selected:bg-darkBg':
-                      style === 'monochromatic',
-                    'ui-selected:text-text-DEFAULT dark:ui-selected:text-white':
-                      style === 'no-style',
-                    ' ui-selected:text-white ': style !== 'no-style',
-                  },
-                  'w-full rounded-lg font-medium',
+            <button
+              onClick={item.action}
+              className={clsx(
+                {
+                  'px-3 py-1.5 text-sm': size === 'sm',
+                  'px-3 py-1.5': size === 'md',
+                  'px-6 py-3': size === 'lg',
+                },
+                {
+                  'ui-selected:bg-primary ui-selected:shadow-blue':
+                    style === 'normal',
+                  'ui-selected:bg-text-gray dark:ui-selected:bg-darkBg':
+                    style === 'monochromatic',
+                  'ui-selected:text-text-DEFAULT dark:ui-selected:text-white':
+                    style === 'no-style',
+                  ' ui-selected:text-white ': style !== 'no-style',
+                },
+                'w-full rounded-lg font-medium',
 
-                  'ui-not-selected:bg-transparent ui-not-selected:text-text-purple ui-not-selected:hover:text-text-gray',
-                  'ring-white  focus:outline-none'
-                )}
-              >
-                <span className="flex w-full items-center justify-center gap-1 ">
-                  {item.label}
-                  {item.icon}
-                </span>
-              </button>
-            )}
+                'ui-not-selected:bg-transparent ui-not-selected:text-text-purple ui-not-selected:hover:text-text-gray',
+                'ring-white  focus:outline-none'
+              )}
+            >
+              <span className="flex w-full items-center justify-center gap-1 ">
+                {item.label}
+                {item.icon}
+              </span>
+            </button>
           </Tab>
         ))}
       </Tab.List>

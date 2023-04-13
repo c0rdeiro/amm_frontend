@@ -1,4 +1,4 @@
-import TokenPositionsPanel from '@/components/Positions/Token/TokenPositionsPanel'
+import TokenPositionsPanel from '@/components/Positions/IVX/TokenPositionsPanel'
 import RightPanel from '@/components/RightPanel/RightPanel'
 import Chart from '@/components/Trading/Chart/Chart'
 

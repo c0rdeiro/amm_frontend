@@ -1,7 +1,7 @@
 import { ThemeContext } from '@/providers/ThemeProvider'
 import clsx from 'clsx'
-import { useContext, useEffect, useState } from 'react'
-import { HiMoon, HiOutlineMoon, HiOutlineSun, HiSun } from 'react-icons/hi2'
+import { useContext } from 'react'
+import { HiMoon, HiSun } from 'react-icons/hi2'
 
 const ThemeSwitch = () => {
   const { isDarkTheme, toggleDarkTheme } = useContext(ThemeContext)

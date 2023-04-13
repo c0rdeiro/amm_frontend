@@ -1,8 +1,8 @@
-import { create } from 'zustand'
-import { OhlcData, TimeRange } from 'lightweight-charts'
-import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
-import { CandlesIntervals, Market, TokenInfoType } from '@/types/next'
 import { markets } from '@/constants'
+import { CandlesIntervals, Market, TokenInfoType } from '@/types/next'
+import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
+import { TimeRange } from 'lightweight-charts'
+import { create } from 'zustand'
 
 type TokenStore = {
   market: Market

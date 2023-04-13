@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import TokenSwapItem from './TokenSwapItem'
 import Select from '../Form/Select'
-import { HiArrowsUpDown } from 'react-icons/hi2'
 import Button from '../Button'
 
 type TokenSwapProps = {
@@ -9,10 +8,10 @@ type TokenSwapProps = {
   exchangeType: number //0- market 1- limit
 }
 const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
-  const swap = () => {
-    setFirstToken(secondToken)
-    setSecondToken(firstToken)
-  }
+  // const swap = () => {
+  //   setFirstToken(secondToken)
+  //   setSecondToken(firstToken)
+  // }
   const [firstToken, setFirstToken] = useState<{
     label: string
     value: string
