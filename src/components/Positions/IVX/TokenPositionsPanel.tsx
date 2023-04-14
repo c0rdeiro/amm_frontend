@@ -36,7 +36,7 @@ const TokenPositionsPanel = () => {
       collateralToken: ethToken,
       indexToken: ethToken,
       isLong: true,
-      size: BigNumber.from(1),
+      size: BigNumber.from(50),
       collateral: BigNumber.from(1),
       averagePrice: BigNumber.from(1),
       entryFundingRate: BigNumber.from(1),

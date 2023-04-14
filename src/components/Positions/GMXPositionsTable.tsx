@@ -1,5 +1,5 @@
 import formatNumber from '@/utils/formatNumber'
-import { createColumnHelper } from '@tanstack/react-table'
+import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useState } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
@@ -17,6 +17,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
   data,
   showTableHeader = true,
 }) => {
+  const [sorting, setSorting] = useState<SortingState>([])
   const showPnlAfterFees = false //TODO
   const [isCloseModalOpen, setisCloseModalOpen] = useState(false)
   const [isCollateralModalOpen, setisCollateralModalOpen] = useState(false)
@@ -57,6 +58,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Position</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor('netValue', {
       id: 'netValue',
@@ -89,6 +91,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Net Value</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor('size', {
       id: 'size',
@@ -98,6 +101,8 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Size</span>,
+      enableSorting: true,
+      sortingFn: 'basic',
     }),
 
     columnHelper.accessor('collateral', {
@@ -116,6 +121,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Collateral</span>,
+      enableSorting: false,
     }),
 
     columnHelper.accessor('entryPrice', {
@@ -126,6 +132,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Entry Price</span>,
+      enableSorting: false,
     }),
 
     columnHelper.accessor('markPrice', {
@@ -136,6 +143,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Mark Price</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor('liqPrice', {
       id: 'liqPrice',
@@ -145,6 +153,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Liq. Price</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor('key', {
       id: 'close',
@@ -159,6 +168,7 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span></span>,
+      enableSorting: false,
     }),
     // columnHelper.accessor('key', {
     //   id: 'actions',
@@ -180,6 +190,8 @@ const GMXPositionsTable: React.FC<GMXPositionsTableProps> = ({
         data={data}
         columns={columns}
         showHeader={showTableHeader}
+        sorting={sorting}
+        setSorting={setSorting}
       />
       {currentPosition && (
         <GMXClosePositionModal
