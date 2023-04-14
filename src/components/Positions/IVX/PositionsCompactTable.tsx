@@ -36,6 +36,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Contracts</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor('strike', {
       id: 'strike',
@@ -45,6 +46,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Strike</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor('size', {
       id: 'size',
@@ -74,6 +76,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Seconds to Expiry</span>,
+      enableSorting: false,
     }),
 
     columnHelper.accessor('status', {
@@ -88,6 +91,7 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span>Status</span>,
+      enableSorting: false,
     }),
   ]
 

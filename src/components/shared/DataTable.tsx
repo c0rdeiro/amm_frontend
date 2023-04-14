@@ -5,9 +5,13 @@ import {
   flexRender,
   Row,
   getExpandedRowModel,
+  SortingState,
+  OnChangeFn,
+  getSortedRowModel,
 } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { Fragment } from 'react'
+import { RiArrowUpSFill, RiArrowDownSFill } from 'react-icons/ri'
 
 type DataTableProps<T> = {
   columns: ColumnDef<T, any>[]
@@ -18,6 +22,8 @@ type DataTableProps<T> = {
   colorScheme?: 'white' | 'blue'
   enableMultiRowSelection?: boolean
   showHeader?: boolean
+  sorting?: SortingState
+  setSorting?: OnChangeFn<SortingState>
 }
 
 function DataTable<T>({
@@ -29,6 +35,8 @@ function DataTable<T>({
   colorScheme = 'blue',
   enableMultiRowSelection = false,
   showHeader = true,
+  sorting,
+  setSorting,
 }: DataTableProps<T>) {
   const table = useReactTable({
     columns,
@@ -36,7 +44,12 @@ function DataTable<T>({
     getRowCanExpand,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     enableMultiRowSelection,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
   })
 
   return (
@@ -48,14 +61,50 @@ function DataTable<T>({
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="pl-6 text-left text-xs text-text-purple"
+                  className="pl-6 text-left text-sm text-text-purple"
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
+                  {header.isPlaceholder ? null : (
+                    <div
+                      className={clsx('flex items-center', {
+                        'cursor-pointer select-none':
+                          header.column.getCanSort(),
+                      })}
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                      {header.column.getCanSort() && (
+                        <div className="relative flex flex-col items-center">
+                          <span className="absolute -top-4 left-1">
+                            <RiArrowUpSFill
+                              size={24}
+                              color={
+                                header.column.getIsSorted() === 'asc'
+                                  ? 'white'
+                                  : undefined
+                              }
+                            />
+                          </span>
+                          <span className="absolute -top-2 left-1">
+                            <RiArrowDownSFill
+                              size={24}
+                              color={
+                                header.column.getIsSorted() === 'desc'
+                                  ? 'white'
+                                  : undefined
+                              }
+                            />
+                          </span>
+                        </div>
+                      )}
+                      {/* {{
+                        asc: ,
+                        desc: ,
+                      }[header.column.getIsSorted() as string] ?? null} */}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
