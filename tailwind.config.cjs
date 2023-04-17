@@ -15,6 +15,7 @@ module.exports = {
 
       },
       'primary': '#FFD953',
+      'primaryDarker': '#BF9D22',
       'green': {
         400: '#0DAC86',
       },
@@ -42,6 +43,5 @@ module.exports = {
       
     },
   },
-  darkMode: "class",
   plugins: [require('@headlessui/tailwindcss')({ prefix: 'ui' })],
 }

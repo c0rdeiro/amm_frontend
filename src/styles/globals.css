@@ -30,11 +30,14 @@
 }
 
 .rc-slider-dot.rc-slider-dot-active {
-  background-color: #2e979a !important;
+  background-color: #ffd953 !important;
 }
 
 .rc-slider-handle-dragging {
   box-shadow: none !important;
+}
+.rc-slider-mark-text-active {
+  color: #ffd953 !important;
 }
 
 input[type='number']::-webkit-outer-spin-button,

@@ -58,19 +58,21 @@ const GMXTrader = () => {
     },
   ]
 
-  const infoItems: { label: string; value: string | number }[] = [
+  const infoItems: { key: number; label: string; value: string | number }[] = [
     //TODO: change values to real data
-    { label: 'Collateral in', value: 'USD' },
-    { label: 'Leverage', value: `${leverageOption}x` },
+    { key: 0, label: 'Collateral in', value: 'USD' },
     {
+      key: 1,
       label: 'Entry Price',
       value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
     },
     {
+      key: 2,
       label: 'Liq. Price',
       value: formatNumber(-1685, { symbol: '$', decimalCases: 2 }),
     },
     {
+      key: 3,
       label: 'Fees',
       value: formatNumber(15.12, { symbol: '$', decimalCases: 2 }),
     },
@@ -136,23 +138,30 @@ const GMXTrader = () => {
               tokenSelect={<span>USD</span>}
             />
           )}
-
-          <div className="mb-4 flex flex-col gap-2 pb-8 text-sm">
-            <div className="text-text-purple">Leverage slider</div>
-            <LeverageSlider
-              leverageOption={leverageOption}
-              setLeverageOption={setLeverageOption}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            {infoItems.map((item, key) => (
-              <div key={key} className="flex justify-between">
-                <div>{item.label}</div>
-                <div>{item.value}</div>
+          <div className="flex flex-col gap-5 rounded bg-gray-500 p-3">
+            <div className="mb-4 flex flex-col gap-2 text-sm">
+              <div className="flex justify-between">
+                <div className="text-xs font-normal text-gray-300">
+                  Leverage slider
+                </div>
+                <div className="text-sm text-primary">{leverageOption}x</div>
               </div>
-            ))}
+              <LeverageSlider
+                leverageOption={leverageOption}
+                setLeverageOption={setLeverageOption}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              {infoItems.map((item) => (
+                <div key={item.key} className="flex justify-between">
+                  <div className="text-xs font-normal text-gray-300">
+                    {item.label}
+                  </div>
+                  <div className="text-sm">{item.value}</div>
+                </div>
+              ))}
+            </div>
           </div>
-
           <Button label={getSubmitBtnLabel()} size="lg" />
         </>
       )}

@@ -32,21 +32,18 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={clsx(
         {
-          'h-7 w-29 gap-1.5 py-1.5 px-2': size === 'xs',
+          'w-29 h-7 gap-1.5 py-1.5 px-2': size === 'xs',
           'h-10.5 w-35': size === 'sm',
           'h-13 w-44 py-4 px-6': size === 'md',
-          'h-15 w-full text-lg': size === 'lg',
-          'bg-primary text-white hover:bg-primary-light active:bg-primary-dark':
-            ['normal', 'shadow'].includes(styleType),
-          'shadow-blue': styleType === 'shadow',
-          'bg-white text-primary hover:border hover:border-primary-light active:border active:border-primary-dark':
-            styleType === 'outline',
+          ' w-full py-2': size === 'lg',
           'bg-green-500 text-white hover:bg-green-400': styleType === 'green',
           'bg-red-500 text-white hover:bg-red-400': styleType === 'red',
-          'bg-text-gray text-white dark:bg-darkBg':
+          'bg-text-gray dark:bg-darkBg text-white':
             styleType === 'monochromatic',
+          'bg-primary text-sm font-medium text-gray-700 hover:bg-primaryDarker ':
+            styleType === 'normal',
         },
-        'flex items-center justify-center gap-2 rounded-lg disabled:opacity-30'
+        'flex items-center justify-center gap-2 rounded disabled:opacity-30'
       )}
     >
       {label}
