@@ -38,7 +38,8 @@ type TabType = {
   key: number
   label: string
   action: () => void
-  icon?: React.ReactNode
+  rightIcon?: React.ReactNode
+  leftIcon?: React.ReactNode
 }
 
 type OptionType = {

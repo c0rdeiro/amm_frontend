@@ -17,7 +17,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
     {
       key: 0,
       label: '',
-      icon: (
+      rightIcon: (
         <Image
           alt="ivx-logo"
           src="/IVX_Gradient.svg"
@@ -34,7 +34,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
     {
       key: 1,
       label: '',
-      icon: (
+      rightIcon: (
         <Image
           alt="gmx-logo"
           src="/gmx_logo.svg"
@@ -66,17 +66,17 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
     }
   }
   return (
-    <div className="rounded-0 flex min-h-full w-rightPanel flex-col border-4 border-gray-400 font-medium dark:border-headerDark">
+    <div className=" min-w-82 mx-2 flex h-min w-82 flex-col font-medium">
       {isOption && (
         <Tabs
           tabList={tabs}
           style="monochromatic"
           size="sm"
-          roundStyle="straight"
+          roundStyle="folder"
           defaultIndex={activeTab}
         />
       )}
-      <div className="item-center px-13  flex  flex-col gap-4  p-1 px-6 pt-8 ">
+      <div>
         {/*  default no options selected */}
         {isOption
           ? getOptionTab()

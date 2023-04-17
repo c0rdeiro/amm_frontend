@@ -2,16 +2,17 @@ import { useState } from 'react'
 import TokenSwapItem from './TokenSwapItem'
 import Select from '../Form/Select'
 import Button from '../Button'
+import { HiArrowsUpDown } from 'react-icons/hi2'
 
 type TokenSwapProps = {
   tokens: { label: string; value: string }[]
-  exchangeType: number //0- market 1- limit
+  exchangeType: 'market' | 'limit'
 }
 const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
-  // const swap = () => {
-  //   setFirstToken(secondToken)
-  //   setSecondToken(firstToken)
-  // }
+  const swap = () => {
+    setFirstToken(secondToken)
+    setSecondToken(firstToken)
+  }
   const [firstToken, setFirstToken] = useState<{
     label: string
     value: string
@@ -52,12 +53,12 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
           }
           secondaryText={`Balance 0.000`}
         />
-        {/* <div
+        <div
           className="absolute top-[40%] right-[42%] flex h-10 w-10 items-center justify-center rounded-full bg-primary hover:cursor-pointer"
           onClick={swap}
         >
-          <HiArrowsUpDown size={20} />
-        </div> */}
+          <HiArrowsUpDown size={20} color="black" />
+        </div>
         <TokenSwapItem
           label={'Receive'}
           value={secondToken.quantity}
@@ -82,7 +83,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
           isInputDisabled
         />
       </div>
-      {exchangeType === 1 && (
+      {exchangeType === 'limit' && (
         <TokenSwapItem
           label={'Price'}
           value={price}

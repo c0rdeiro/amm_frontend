@@ -19,7 +19,7 @@ const OptionsExchange = () => {
       key: 0,
       label: 'Call',
 
-      icon: <IoTrendingUpSharp size="1.125rem" />,
+      rightIcon: <IoTrendingUpSharp size="1.125rem" />,
       action: () => {
         setIsCall(true)
       },
@@ -27,7 +27,7 @@ const OptionsExchange = () => {
     {
       key: 1,
       label: 'Put',
-      icon: <IoTrendingDownSharp size="1.125rem" />,
+      rightIcon: <IoTrendingDownSharp size="1.125rem" />,
       action: () => {
         setIsCall(false)
       },
@@ -71,11 +71,11 @@ const OptionsExchange = () => {
         <div>{formatNumber(margin, { decimalCases: 2, symbol: '$' })}</div>
       </div>
       <Tabs tabList={callOrPutTabs} size="lg" style="monochromatic" />
-      <div className="flex w-full grow-0 flex-col gap-1 text-text-purple">
+      <div className="text-text-purple flex w-full grow-0 flex-col gap-1">
         <div>Strike Price</div>
         <Tabs tabList={strikePrices} size="lg" style="monochromatic" />
       </div>
-      <div className="flex w-full flex-col gap-1 text-text-purple">
+      <div className="text-text-purple flex w-full flex-col gap-1">
         <div>Quantity</div>
         <div className="flex w-full">
           <Input

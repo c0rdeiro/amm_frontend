@@ -14,31 +14,31 @@ import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
 
 const GMXTrader = () => {
-  const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
+  const [strategy, setStrategy] = useState<'long' | 'put' | 'swap'>('long')
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
-  const [exchangeType, setExchangeType] = useState<number>(0) //these are numbers to manual control tabs; 0- market 1- limit 2- trigger
+  const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')
   const tabsLongShort: TabType[] = [
     {
       key: 0,
       label: 'Long',
 
-      icon: <IoTrendingUpSharp size="1.125rem" />,
+      leftIcon: <IoTrendingUpSharp size="1.125rem" />,
       action: () => {
         setStrategy('long')
       },
     },
     {
       key: 1,
-      label: 'Short',
-      icon: <IoTrendingDownSharp size="1.125rem" />,
+      label: 'Put',
+      leftIcon: <IoTrendingDownSharp size="1.125rem" />,
       action: () => {
-        setStrategy('short')
+        setStrategy('put')
       },
     },
     {
       key: 2,
       label: 'Swap',
-      icon: <HiArrowsRightLeft size="1.125rem" />,
+      leftIcon: <HiArrowsRightLeft size="1.125rem" />,
       action: () => {
         setStrategy('swap')
       },
@@ -49,17 +49,12 @@ const GMXTrader = () => {
     {
       key: 0,
       label: 'Market',
-      action: () => setExchangeType(0),
+      action: () => setExchangeType('market'),
     },
     {
       key: 1,
       label: 'Limit',
-      action: () => setExchangeType(1),
-    },
-    {
-      key: 2,
-      label: 'Trigger',
-      action: () => setExchangeType(2),
+      action: () => setExchangeType('limit'),
     },
   ]
 
@@ -90,32 +85,28 @@ const GMXTrader = () => {
   const [token, setToken] = useState<{
     label: string
     value: string
-    quantity: number
-  }>({ quantity: 0, ...tokens[0]! })
+    quantity: number | undefined
+  }>({ ...tokens[0]!, quantity: undefined })
 
+  const getSubmitBtnLabel = () => {
+    if (!token.quantity || token.quantity <= 0) return 'Enter an amount'
+
+    return exchangeType === 'market' ? 'Enable Leverage' : 'Enable Orders'
+  }
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-full flex-col gap-2 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5">
       <div className="flex flex-col gap-2">
-        <Tabs tabList={tabsLongShort} style="monochromatic" />
+        <Tabs tabList={tabsLongShort} style="normal" />
         <div className="flex w-min">
-          <Tabs
-            tabList={tabsExchangeType.filter(
-              (tab) => !(strategy === 'swap' && tab.key === 2)
-            )}
-            style="no-style"
-            size="sm"
-            controllingTab={{
-              currentTab: exchangeType,
-              setCurrentTab: setExchangeType,
-            }}
-          />
+          <Tabs tabList={tabsExchangeType} style="no-style" size="sm" />
         </div>
       </div>
-      {!(exchangeType === 2) && strategy !== 'swap' && (
+      {strategy !== 'swap' && (
         <>
           <TokenSwapItem
-            label={'Pay'}
+            label={'Size'}
             value={token.quantity}
+            placeholder="0.0"
             onValueChange={(qt) =>
               setToken((prev) => ({ ...prev, quantity: qt }))
             }
@@ -133,10 +124,10 @@ const GMXTrader = () => {
                 style="no-style"
               />
             }
-            secondaryText={`Balance 0.000`}
+            secondaryText={``}
           />
 
-          {exchangeType === 1 && (
+          {exchangeType === 'limit' && (
             <TokenSwapItem
               label={'Price'}
               value={limitPrice}
@@ -162,25 +153,10 @@ const GMXTrader = () => {
             ))}
           </div>
 
-          <Button
-            label={
-              token.quantity <= 0
-                ? 'Enter an amount'
-                : exchangeType === 0
-                ? 'Enable Leverage'
-                : 'Enable Orders'
-            }
-            size="lg"
-          />
+          <Button label={getSubmitBtnLabel()} size="lg" />
         </>
       )}
-      {exchangeType === 2 && (
-        <Button
-          label={'Open Position'}
-          size="lg"
-          onClick={() => setExchangeType(0)}
-        />
-      )}
+
       {strategy === 'swap' && (
         <TokenSwap tokens={tokens} exchangeType={exchangeType} />
       )}
