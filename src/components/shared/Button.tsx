@@ -40,7 +40,7 @@ const Button: React.FC<ButtonProps> = ({
           'bg-red-500 text-white hover:bg-red-400': styleType === 'red',
           'bg-text-gray dark:bg-darkBg text-white':
             styleType === 'monochromatic',
-          'bg-primary text-sm font-medium text-gray-700 hover:bg-primaryDarker ':
+          'bg-primary text-sm font-medium text-gray-700 transition duration-500 hover:bg-primaryDarker':
             styleType === 'normal',
         },
         'flex items-center justify-center gap-2 rounded disabled:opacity-30'

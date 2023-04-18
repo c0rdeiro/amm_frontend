@@ -68,7 +68,7 @@ function Select<T>({
                 key={item.label}
                 value={item}
                 disabled={!!item.isDisabled}
-                className="hover:rounded hover:bg-gray-400 "
+                className="hover:cursor-pointer hover:rounded hover:bg-gray-400"
               >
                 {({ selected }) => (
                   <span

@@ -56,7 +56,7 @@ const Tabs: React.FC<TabsProps> = ({
                   'px-6 py-3': size === 'lg',
                 },
                 {
-                  'first:rounded-l-md last:rounded-r-md ui-selected:bg-primary ui-selected:text-gray-600 ui-not-selected:bg-gray-500 ui-not-selected:text-gray-300':
+                  'transition duration-500 first:rounded-l-md last:rounded-r-md ui-selected:bg-primary ui-selected:text-gray-600 ui-not-selected:bg-gray-500 ui-not-selected:text-gray-300 ui-not-selected:hover:bg-gray-400':
                     style === 'normal',
                   'ring-gray-500 ui-selected:bg-gray-600':
                     style === 'monochromatic',

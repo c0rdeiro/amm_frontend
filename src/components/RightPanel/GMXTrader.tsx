@@ -12,8 +12,10 @@ import LeverageSlider from '../shared/LeverageSlider'
 import TokenSwap from '../shared/Swap/TokenSwap'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
+import { useMarket } from '@/store/tokenStore'
 
 const GMXTrader = () => {
+  const market = useMarket()
   const [strategy, setStrategy] = useState<'long' | 'put' | 'swap'>('long')
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
   const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')
@@ -77,7 +79,40 @@ const GMXTrader = () => {
       value: formatNumber(15.12, { symbol: '$', decimalCases: 2 }),
     },
   ]
-  const [limitPrice, setLimitPrice] = useState<number>(0)
+
+  const extraInfoItems: {
+    key: number
+    label: string
+    value: string | number
+  }[] = [
+    //TODO: change values to real data
+    {
+      key: 0,
+      label: 'Entry Price',
+      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+    },
+    {
+      key: 1,
+      label: 'Exit Price',
+      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+    },
+    {
+      key: 2,
+      label: 'Borrow Fee',
+      value: `${formatNumber(0.0000055, {
+        symbol: '%',
+        isSymbolEnd: true,
+        decimalCases: 4,
+      })} / 1h`,
+    },
+    {
+      key: 3,
+      label: 'Available Liquidity',
+      value: formatNumber(2843643.15, { symbol: '$', decimalCases: 2 }),
+    },
+  ]
+
+  const [limitPrice, setLimitPrice] = useState<number>()
   const tokens = [
     { label: 'ETH', value: 'ETH' },
     { label: 'USDC', value: 'USDC' },
@@ -96,7 +131,7 @@ const GMXTrader = () => {
     return exchangeType === 'market' ? 'Enable Leverage' : 'Enable Orders'
   }
   return (
-    <div className="flex w-full flex-col gap-2 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5">
+    <div className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5">
       <div className="flex flex-col gap-2">
         <Tabs tabList={tabsLongShort} style="normal" />
         <div className="flex w-min">
@@ -105,6 +140,20 @@ const GMXTrader = () => {
       </div>
       {strategy !== 'swap' && (
         <>
+          {exchangeType === 'limit' && (
+            <TokenSwapItem
+              label={'Price'}
+              value={limitPrice}
+              onValueChange={setLimitPrice}
+              secondaryText={'Mark: 1,564.21'}
+              tokenSelect={
+                <span className="pr-2 text-sm font-normal text-gray-300">
+                  USD
+                </span>
+              }
+              placeholder="0.0"
+            />
+          )}
           <TokenSwapItem
             label={'Size'}
             value={token.quantity}
@@ -129,28 +178,21 @@ const GMXTrader = () => {
             secondaryText={``}
           />
 
-          {exchangeType === 'limit' && (
-            <TokenSwapItem
-              label={'Price'}
-              value={limitPrice}
-              onValueChange={setLimitPrice}
-              secondaryText={'Mark: 1,564.21'}
-              tokenSelect={<span>USD</span>}
-            />
-          )}
           <div className="flex flex-col gap-5 rounded bg-gray-500 p-3">
-            <div className="mb-4 flex flex-col gap-2 text-sm">
-              <div className="flex justify-between">
-                <div className="text-xs font-normal text-gray-300">
-                  Leverage slider
+            {exchangeType === 'market' && (
+              <div className="mb-4 flex flex-col gap-2 text-sm">
+                <div className="flex justify-between">
+                  <div className="text-xs font-normal text-gray-300">
+                    Leverage slider
+                  </div>
+                  <div className="text-sm text-primary">{leverageOption}x</div>
                 </div>
-                <div className="text-sm text-primary">{leverageOption}x</div>
+                <LeverageSlider
+                  leverageOption={leverageOption}
+                  setLeverageOption={setLeverageOption}
+                />
               </div>
-              <LeverageSlider
-                leverageOption={leverageOption}
-                setLeverageOption={setLeverageOption}
-              />
-            </div>
+            )}
             <div className="flex flex-col gap-2">
               {infoItems.map((item) => (
                 <div key={item.key} className="flex justify-between">
@@ -163,6 +205,21 @@ const GMXTrader = () => {
             </div>
           </div>
           <Button label={getSubmitBtnLabel()} size="lg" />
+
+          <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
+            <div>
+              {strategy.charAt(0).toUpperCase() + strategy.slice(1)}{' '}
+              {market.label}
+            </div>
+            {extraInfoItems.map((item) => (
+              <div key={item.key} className="flex justify-between">
+                <div className="text-xs font-normal text-gray-300">
+                  {item.label}
+                </div>
+                <div className="text-sm">{item.value}</div>
+              </div>
+            ))}
+          </div>
         </>
       )}
 

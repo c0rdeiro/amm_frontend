@@ -3,6 +3,7 @@ import TokenSwapItem from './TokenSwapItem'
 import Select from '../Form/Select'
 import Button from '../Button'
 import { HiArrowsUpDown } from 'react-icons/hi2'
+import formatNumber from '@/utils/formatNumber'
 
 type TokenSwapProps = {
   tokens: { label: string; value: string }[]
@@ -16,15 +17,47 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
   const [firstToken, setFirstToken] = useState<{
     label: string
     value: string
-    quantity: number
-  }>({ quantity: 0, ...tokens[0]! })
+    quantity: number | undefined
+  }>({ quantity: undefined, ...tokens[0]! })
   const [secondToken, setSecondToken] = useState<{
     label: string
     value: string
-    quantity: number
-  }>({ quantity: 0, ...tokens[1]! })
+    quantity: number | undefined
+  }>({ quantity: undefined, ...tokens[1]! })
 
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState<number>()
+
+  const extraInfoItems: {
+    key: number
+    label: string
+    value: string | number
+  }[] = [
+    //TODO: change values to real data
+    {
+      key: 0,
+      label: 'Entry Price',
+      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+    },
+    {
+      key: 1,
+      label: 'Exit Price',
+      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+    },
+    {
+      key: 2,
+      label: 'Borrow Fee',
+      value: `${formatNumber(0.0000055, {
+        symbol: '%',
+        isSymbolEnd: true,
+        decimalCases: 4,
+      })} / 1h`,
+    },
+    {
+      key: 3,
+      label: 'Available Liquidity',
+      value: formatNumber(2843643.15, { symbol: '$', decimalCases: 2 }),
+    },
+  ]
 
   return (
     <>
@@ -32,6 +65,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
         <TokenSwapItem
           label={'Pay'}
           value={firstToken.quantity}
+          placeholder="0.0"
           onValueChange={(qt) =>
             setFirstToken((prev) => ({ ...prev, quantity: qt }))
           }
@@ -51,10 +85,9 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
               style="no-style"
             />
           }
-          secondaryText={`Balance 0.000`}
         />
         <div
-          className="absolute top-[40%] right-[42%] flex h-10 w-10 items-center justify-center rounded-full bg-primary hover:cursor-pointer"
+          className="absolute top-[43%] right-[44%] flex h-8 w-8 items-center justify-center rounded-full bg-primary hover:cursor-pointer"
           onClick={swap}
         >
           <HiArrowsUpDown size={20} color="black" />
@@ -62,6 +95,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
         <TokenSwapItem
           label={'Receive'}
           value={secondToken.quantity}
+          placeholder="0.0"
           onValueChange={(qt) =>
             setSecondToken((prev) => ({ ...prev, quantity: qt }))
           }
@@ -79,7 +113,6 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
               style="no-style"
             />
           }
-          secondaryText={`Balance 0.000`}
           isInputDisabled
         />
       </div>
@@ -88,18 +121,38 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
           label={'Price'}
           value={price}
           onValueChange={setPrice}
-          secondaryText={`Balance 0.000`}
-          tokenSelect={`${secondToken.label} per ${firstToken.label}`}
+          secondaryText={`Mark: 1,871.11`}
+          tokenSelect={
+            <span className="pr-2 text-sm font-normal text-gray-300">USD</span>
+          }
+          placeholder="0.0"
         />
       )}
-      <div className="flex justify-between">
-        <div>Fees</div>
-        <div>-</div>
+      <div className="flex flex-col gap-5 rounded bg-gray-500 p-3">
+        <div className="flex justify-between">
+          <div className="text-xs font-normal text-gray-300">Fees</div>
+          <div className="text-sm">-</div>
+        </div>
       </div>
       <Button
-        label={firstToken.quantity <= 0 ? 'Enter an amount' : 'Swap'}
+        label={
+          firstToken.quantity && firstToken.quantity <= 0
+            ? 'Enter an amount'
+            : 'Swap'
+        }
         size="lg"
       />
+      <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
+        <div>Swap {}</div>
+        {extraInfoItems.map((item) => (
+          <div key={item.key} className="flex justify-between">
+            <div className="text-xs font-normal text-gray-300">
+              {item.label}
+            </div>
+            <div className="text-sm">{item.value}</div>
+          </div>
+        ))}
+      </div>
     </>
   )
 }
