@@ -66,8 +66,8 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
     }
   }
   return (
-    <div className=" min-w-82 mx-2 flex h-min w-82 flex-col font-medium">
-      {isOption && (
+    <div className="mx-4 flex h-min min-w-82 flex-col font-medium">
+      {/* {isOption && (
         <Tabs
           tabList={tabs}
           style="monochromatic"
@@ -75,12 +75,12 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
           roundStyle="folder"
           defaultIndex={activeTab}
         />
-      )}
+      )} */}
       <div>
-        {/*  default no options selected */}
-        {isOption
+        <GMXTrader />
+        {/* {isOption
           ? getOptionTab()
-          : position && <PositionRightPanel position={position} />}
+          : position && <PositionRightPanel position={position} />} */}
       </div>
     </div>
   )

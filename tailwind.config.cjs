@@ -30,6 +30,9 @@ module.exports = {
     },
 
     extend: {
+      minWidth: {
+        82: '22.25rem'
+      },
       width: {
         82: '22.25rem' //right panel
       },

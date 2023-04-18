@@ -131,7 +131,7 @@ const GMXTrader = () => {
     return exchangeType === 'market' ? 'Enable Leverage' : 'Enable Orders'
   }
   return (
-    <div className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5">
+    <div className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5 text-white">
       <div className="flex flex-col gap-2">
         <Tabs tabList={tabsLongShort} style="normal" />
         <div className="flex w-min">
