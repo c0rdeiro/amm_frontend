@@ -8,11 +8,20 @@ import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 
 import Button from '../shared/Button'
 import Select from '../shared/Form/Select'
-import LeverageSlider from '../shared/LeverageSlider'
+import CustomSlider from '../shared/CustomSlider'
 import TokenSwap from '../shared/Swap/TokenSwap'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
 import { useMarket } from '@/store/tokenStore'
+
+const leverageMarks = {
+  1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
+  5: { label: '5x', style: { color: '#A3a3b1' } },
+  10: { label: '10x', style: { color: '#A3a3b1' } },
+  15: { label: '15x', style: { color: '#A3a3b1' } },
+  20: { label: '20x', style: { color: '#A3a3b1' } },
+  25: { label: '25x', style: { color: '#A3a3b1' } },
+}
 
 const GMXTrader = () => {
   const market = useMarket()
@@ -187,9 +196,10 @@ const GMXTrader = () => {
                   </div>
                   <div className="text-sm text-primary">{leverageOption}x</div>
                 </div>
-                <LeverageSlider
-                  leverageOption={leverageOption}
-                  setLeverageOption={setLeverageOption}
+                <CustomSlider
+                  option={leverageOption}
+                  setOption={setLeverageOption}
+                  marks={leverageMarks}
                 />
               </div>
             )}
