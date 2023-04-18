@@ -13,6 +13,7 @@ import TokenSwap from '../shared/Swap/TokenSwap'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
 import { useMarket } from '@/store/tokenStore'
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -108,7 +109,7 @@ const GMXTrader = () => {
     {
       key: 2,
       label: 'Borrow Fee',
-      value: `${formatNumber(0.0000055, {
+      value: `${formatNumber(0.000055, {
         symbol: '%',
         isSymbolEnd: true,
         decimalCases: 4,
@@ -149,71 +150,114 @@ const GMXTrader = () => {
       </div>
       {strategy !== 'swap' && (
         <>
-          {exchangeType === 'limit' && (
-            <TokenSwapItem
-              label={'Price'}
-              value={limitPrice}
-              onValueChange={setLimitPrice}
-              secondaryText={'Mark: 1,564.21'}
-              tokenSelect={
-                <span className="pr-2 text-sm font-normal text-gray-300">
-                  USD
-                </span>
-              }
-              placeholder="0.0"
-            />
-          )}
-          <TokenSwapItem
-            label={'Size'}
-            value={token.quantity}
-            placeholder="0.0"
-            onValueChange={(qt) =>
-              setToken((prev) => ({ ...prev, quantity: qt }))
-            }
-            tokenSelect={
-              <Select
-                items={tokens}
-                selectedItem={token}
-                setSelectedItem={(token: { label: string; value: string }) =>
-                  setToken({
-                    label: token.label,
-                    value: token.value,
-                    quantity: 0,
-                  })
-                }
-                style="no-style"
-              />
-            }
-            secondaryText={``}
-          />
-
-          <div className="flex flex-col gap-5 rounded bg-gray-500 p-3">
-            {exchangeType === 'market' && (
-              <div className="mb-4 flex flex-col gap-2 text-sm">
-                <div className="flex justify-between">
-                  <div className="text-xs font-normal text-gray-300">
-                    Leverage slider
-                  </div>
-                  <div className="text-sm text-primary">{leverageOption}x</div>
-                </div>
-                <CustomSlider
-                  option={leverageOption}
-                  setOption={setLeverageOption}
-                  marks={leverageMarks}
+          <LayoutGroup>
+            <AnimatePresence initial={false}>
+              {exchangeType === 'limit' && (
+                <motion.div
+                  layout="position"
+                  key="tokenswapprice"
+                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <TokenSwapItem
+                    label={'Price'}
+                    value={limitPrice}
+                    onValueChange={setLimitPrice}
+                    secondaryText={'Mark: 1,564.21'}
+                    tokenSelect={
+                      <span className="pr-2 text-sm font-normal text-gray-300">
+                        USD
+                      </span>
+                    }
+                    placeholder="0.0"
+                  />
+                </motion.div>
+              )}
+              <motion.div
+                key="tokenswapsize"
+                layout="position"
+                transition={{ layout: { duration: 0.3 } }}
+              >
+                <TokenSwapItem
+                  label={'Size'}
+                  value={token.quantity}
+                  placeholder="0.0"
+                  onValueChange={(qt) =>
+                    setToken((prev) => ({ ...prev, quantity: qt }))
+                  }
+                  tokenSelect={
+                    <Select
+                      items={tokens}
+                      selectedItem={token}
+                      setSelectedItem={(token: {
+                        label: string
+                        value: string
+                      }) =>
+                        setToken({
+                          label: token.label,
+                          value: token.value,
+                          quantity: 0,
+                        })
+                      }
+                      style="no-style"
+                    />
+                  }
+                  secondaryText={``}
                 />
-              </div>
-            )}
-            <div className="flex flex-col gap-2">
-              {infoItems.map((item) => (
-                <div key={item.key} className="flex justify-between">
-                  <div className="text-xs font-normal text-gray-300">
-                    {item.label}
-                  </div>
-                  <div className="text-sm">{item.value}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+              </motion.div>
+              <motion.div
+                layout="position"
+                transition={{
+                  duration: 0.1,
+                }}
+                key="items-container"
+                className="flex flex-col gap-5 rounded bg-gray-500 p-3"
+              >
+                <AnimatePresence initial={false}>
+                  {exchangeType === 'market' && (
+                    <motion.div
+                      key="leverageSlider"
+                      initial={{ y: 20 }}
+                      animate={{ y: 0 }}
+                      exit={{ y: 5, opacity: 0 }}
+                      transition={{
+                        ease: 'easeIn',
+                        opacity: { duration: 0.4 },
+                        y: { duration: 0.4 },
+                      }}
+                      className="mb-4 flex flex-col gap-2 text-sm"
+                    >
+                      <div className="flex justify-between">
+                        <div className="text-xs font-normal text-gray-300">
+                          Leverage slider
+                        </div>
+                        <div className="text-sm text-primary">
+                          {leverageOption}x
+                        </div>
+                      </div>
+                      <CustomSlider
+                        option={leverageOption}
+                        setOption={setLeverageOption}
+                        marks={leverageMarks}
+                      />
+                    </motion.div>
+                  )}
+                  <motion.div key="other-items" className="flex flex-col gap-2">
+                    {infoItems.map((item) => (
+                      <div key={item.key} className="flex justify-between">
+                        <div className="text-xs font-normal text-gray-300">
+                          {item.label}
+                        </div>
+                        <div className="text-sm">{item.value}</div>
+                      </div>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          </LayoutGroup>
           <Button label={getSubmitBtnLabel()} size="lg" />
 
           <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">

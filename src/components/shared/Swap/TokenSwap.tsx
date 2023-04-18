@@ -4,6 +4,7 @@ import Select from '../Form/Select'
 import Button from '../Button'
 import { HiArrowsUpDown } from 'react-icons/hi2'
 import formatNumber from '@/utils/formatNumber'
+import { motion } from 'framer-motion'
 
 type TokenSwapProps = {
   tokens: { label: string; value: string }[]
@@ -13,6 +14,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
   const swap = () => {
     setFirstToken(secondToken)
     setSecondToken(firstToken)
+    setRotate((prev) => !prev)
   }
   const [firstToken, setFirstToken] = useState<{
     label: string
@@ -59,6 +61,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
     },
   ]
 
+  const [rotate, setRotate] = useState(false)
   return (
     <>
       <div className="relative flex flex-col gap-3">
@@ -86,12 +89,14 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
             />
           }
         />
-        <div
+        <motion.div
+          animate={{ rotate: rotate ? 180 : 0 }}
+          transition={{ duration: 0.4 }}
           className="absolute top-[43%] right-[44%] flex h-8 w-8 items-center justify-center rounded-full bg-primary hover:cursor-pointer"
           onClick={swap}
         >
           <HiArrowsUpDown size={20} color="black" />
-        </div>
+        </motion.div>
         <TokenSwapItem
           label={'Receive'}
           value={secondToken.quantity}

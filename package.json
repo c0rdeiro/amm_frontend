@@ -17,6 +17,7 @@
     "@tanstack/react-table": "^8.7.0",
     "dateformat": "^5.0.3",
     "ethers": "^5.7.2",
+    "framer-motion": "^10.12.3",
     "graphql": "^16.6.0",
     "lightweight-charts": "^4.0.1",
     "next": "13.0.2",
