@@ -4,17 +4,34 @@ import Select from '../Form/Select'
 import Button from '../Button'
 import { HiArrowsUpDown } from 'react-icons/hi2'
 import formatNumber from '@/utils/formatNumber'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 
 type TokenSwapProps = {
   tokens: { label: string; value: string }[]
   exchangeType: 'market' | 'limit'
 }
 const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
+  const [token1Ref, animateToken1] = useAnimate()
+  const [token2Ref, animateToken2] = useAnimate()
+  const [rotate, setRotate] = useState(false)
+
   const swap = () => {
     setFirstToken(secondToken)
     setSecondToken(firstToken)
-    setRotate((prev) => !prev)
+    setRotate((prev) => {
+      animateToken1(
+        'h4',
+        { opacity: [0.6, 1], x: prev ? [30, 0] : [-30, 0] },
+        { duration: 0.4 }
+      )
+      animateToken2(
+        'h4',
+        { opacity: [0.6, 1], x: prev ? [-30, 0] : [30, 0] },
+        { duration: 0.4 }
+      )
+
+      return !prev
+    })
   }
   const [firstToken, setFirstToken] = useState<{
     label: string
@@ -61,7 +78,6 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
     },
   ]
 
-  const [rotate, setRotate] = useState(false)
   return (
     <>
       <AnimatePresence>
@@ -95,6 +111,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
                   })
                 }
                 style="no-style"
+                textRef={token1Ref}
               />
             }
           />
@@ -127,6 +144,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
                   })
                 }
                 style="no-style"
+                textRef={token2Ref}
               />
             }
             isInputDisabled

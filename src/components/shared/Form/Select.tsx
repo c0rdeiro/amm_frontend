@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { Fragment } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import Switch from './Switch'
+import { AnimationScope, motion } from 'framer-motion'
 
 export type SelectItem<T> = {
   label: string
@@ -17,6 +18,7 @@ type SelectProps<T> =
       setSelectedItem: (arg: SelectItem<T>) => void
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
+      textRef?: AnimationScope<any> //used in gmx swap
     }
   | {
       items: SelectItem<T>[]
@@ -24,6 +26,7 @@ type SelectProps<T> =
       setSelectedItem: (arg: SelectItem<T>[]) => void
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
+      textRef?: AnimationScope<any> //used in gmx swap
     }
 
 function Select<T>({
@@ -32,8 +35,10 @@ function Select<T>({
   setSelectedItem,
   isDisabled = false,
   style = 'normal',
+  textRef,
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
+
   return (
     <div className="relative">
       <Listbox
@@ -51,9 +56,13 @@ function Select<T>({
               style === 'no-style',
           })}
         >
-          {Array.isArray(selectedItem)
-            ? selectedItem.map((item) => item.label).join(', ')
-            : selectedItem?.label}
+          <div ref={textRef}>
+            <h4>
+              {Array.isArray(selectedItem)
+                ? selectedItem.map((item) => item.label).join(', ')
+                : selectedItem?.label}
+            </h4>
+          </div>
           <MdOutlineKeyboardArrowDown size="1.5rem" />
         </Listbox.Button>
         <Transition
