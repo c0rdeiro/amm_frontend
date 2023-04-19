@@ -141,16 +141,19 @@ const GMXTrader = () => {
     return exchangeType === 'market' ? 'Enable Leverage' : 'Enable Orders'
   }
   return (
-    <div className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5 text-white">
-      <div className="flex flex-col gap-2">
-        <Tabs tabList={tabsLongShort} style="normal" />
-        <div className="flex w-min">
-          <Tabs tabList={tabsExchangeType} style="no-style" size="sm" />
+    <LayoutGroup>
+      <motion.div
+        layout
+        className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5 text-white"
+      >
+        <div className="flex flex-col gap-2">
+          <Tabs tabList={tabsLongShort} style="normal" />
+          <div className="flex w-min">
+            <Tabs tabList={tabsExchangeType} style="no-style" size="sm" />
+          </div>
         </div>
-      </div>
-      {strategy !== 'swap' && (
-        <>
-          <LayoutGroup>
+        {strategy !== 'swap' && (
+          <>
             <AnimatePresence initial={false}>
               {exchangeType === 'limit' && (
                 <motion.div
@@ -158,8 +161,7 @@ const GMXTrader = () => {
                   key="tokenswapprice"
                   animate={{ opacity: 1 }}
                   initial={{ opacity: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6 }}
+                  // exit={{ opacity: 0 }}
                 >
                   <TokenSwapItem
                     label={'Price'}
@@ -178,7 +180,9 @@ const GMXTrader = () => {
               <motion.div
                 key="tokenswapsize"
                 layout="position"
-                transition={{ layout: { duration: 0.3 } }}
+                transition={{ opacity: { duration: 5 } }}
+                animate={{ opacity: 1 }}
+                initial={{ opacity: 0 }}
               >
                 <TokenSwapItem
                   label={'Size'}
@@ -210,77 +214,71 @@ const GMXTrader = () => {
               <motion.div
                 layout="position"
                 transition={{
-                  duration: 0.1,
+                  duration: 0.3,
                 }}
                 key="items-container"
                 className="flex flex-col gap-5 rounded bg-gray-500 p-3"
               >
-                <AnimatePresence initial={false}>
-                  {exchangeType === 'market' && (
-                    <motion.div
-                      key="leverageSlider"
-                      initial={{ y: 20 }}
-                      animate={{ y: 0 }}
-                      exit={{ y: 5, opacity: 0 }}
-                      transition={{
-                        ease: 'easeIn',
-                        opacity: { duration: 0.4 },
-                        y: { duration: 0.4 },
-                      }}
-                      className="mb-4 flex flex-col gap-2 text-sm"
-                    >
-                      <div className="flex justify-between">
-                        <div className="text-xs font-normal text-gray-300">
-                          Leverage slider
-                        </div>
-                        <div className="text-sm text-primary">
-                          {leverageOption}x
-                        </div>
+                <div
+                  key="leverageSlider"
+                  className="mb-4 flex flex-col gap-2 text-sm"
+                >
+                  <div className="flex justify-between">
+                    <div className="text-xs font-normal text-gray-300">
+                      Leverage slider
+                    </div>
+                    <div className="text-sm text-primary">
+                      {leverageOption}x
+                    </div>
+                  </div>
+                  <CustomSlider
+                    option={leverageOption}
+                    setOption={setLeverageOption}
+                    marks={leverageMarks}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  {infoItems.map((item) => (
+                    <div key={item.key} className="flex justify-between">
+                      <div className="text-xs font-normal text-gray-300">
+                        {item.label}
                       </div>
-                      <CustomSlider
-                        option={leverageOption}
-                        setOption={setLeverageOption}
-                        marks={leverageMarks}
-                      />
-                    </motion.div>
-                  )}
-                  <motion.div key="other-items" className="flex flex-col gap-2">
-                    {infoItems.map((item) => (
-                      <div key={item.key} className="flex justify-between">
-                        <div className="text-xs font-normal text-gray-300">
-                          {item.label}
-                        </div>
-                        <div className="text-sm">{item.value}</div>
-                      </div>
-                    ))}
-                  </motion.div>
-                </AnimatePresence>
+                      <div className="text-sm">{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+              <motion.div id="gmxbtn" layout="position">
+                <Button label={getSubmitBtnLabel()} size="lg" />
               </motion.div>
             </AnimatePresence>
-          </LayoutGroup>
-          <Button label={getSubmitBtnLabel()} size="lg" />
 
-          <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
-            <div>
-              {strategy.charAt(0).toUpperCase() + strategy.slice(1)}{' '}
-              {market.label}
-            </div>
-            {extraInfoItems.map((item) => (
-              <div key={item.key} className="flex justify-between">
-                <div className="text-xs font-normal text-gray-300">
-                  {item.label}
-                </div>
-                <div className="text-sm">{item.value}</div>
+            <motion.div
+              layout
+              id="gmxextrainfo"
+              className="flex flex-col gap-2 rounded bg-gray-500 p-3"
+            >
+              <div>
+                {strategy.charAt(0).toUpperCase() + strategy.slice(1)}{' '}
+                {market.label}
               </div>
-            ))}
-          </div>
-        </>
-      )}
+              {extraInfoItems.map((item) => (
+                <div key={item.key} className="flex justify-between">
+                  <div className="text-xs font-normal text-gray-300">
+                    {item.label}
+                  </div>
+                  <div className="text-sm">{item.value}</div>
+                </div>
+              ))}
+            </motion.div>
+          </>
+        )}
 
-      {strategy === 'swap' && (
-        <TokenSwap tokens={tokens} exchangeType={exchangeType} />
-      )}
-    </div>
+        {strategy === 'swap' && (
+          <TokenSwap tokens={tokens} exchangeType={exchangeType} />
+        )}
+      </motion.div>
+    </LayoutGroup>
   )
 }
 

@@ -4,7 +4,7 @@ import Select from '../Form/Select'
 import Button from '../Button'
 import { HiArrowsUpDown } from 'react-icons/hi2'
 import formatNumber from '@/utils/formatNumber'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 
 type TokenSwapProps = {
   tokens: { label: string; value: string }[]
@@ -64,91 +64,123 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
   const [rotate, setRotate] = useState(false)
   return (
     <>
-      <div className="relative flex flex-col gap-3">
-        <TokenSwapItem
-          label={'Pay'}
-          value={firstToken.quantity}
-          placeholder="0.0"
-          onValueChange={(qt) =>
-            setFirstToken((prev) => ({ ...prev, quantity: qt }))
-          }
-          tokenSelect={
-            <Select
-              items={tokens.filter(
-                (token) => token.value !== secondToken.value
-              )}
-              selectedItem={firstToken}
-              setSelectedItem={(token: { label: string; value: string }) =>
-                setFirstToken({
-                  label: token.label,
-                  value: token.value,
-                  quantity: 0,
-                })
-              }
-              style="no-style"
-            />
-          }
-        />
+      <AnimatePresence>
         <motion.div
-          animate={{ rotate: rotate ? 180 : 0 }}
-          transition={{ duration: 0.4 }}
-          className="absolute top-[43%] right-[44%] flex h-8 w-8 items-center justify-center rounded-full bg-primary hover:cursor-pointer"
-          onClick={swap}
+          layout="position"
+          id="swap-items"
+          animate={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0 }}
+          className="relative flex flex-col gap-3"
         >
-          <HiArrowsUpDown size={20} color="black" />
+          <TokenSwapItem
+            label={'Pay'}
+            value={firstToken.quantity}
+            placeholder="0.0"
+            onValueChange={(qt) =>
+              setFirstToken((prev) => ({ ...prev, quantity: qt }))
+            }
+            tokenSelect={
+              <Select
+                items={tokens.filter(
+                  (token) => token.value !== secondToken.value
+                )}
+                selectedItem={firstToken}
+                setSelectedItem={(token: { label: string; value: string }) =>
+                  setFirstToken({
+                    label: token.label,
+                    value: token.value,
+                    quantity: 0,
+                  })
+                }
+                style="no-style"
+              />
+            }
+          />
+          <motion.div
+            animate={{ rotate: rotate ? 180 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute top-[43%] right-[44%] flex h-8 w-8 items-center justify-center rounded-full bg-primary hover:cursor-pointer"
+            onClick={swap}
+          >
+            <HiArrowsUpDown size={20} color="black" />
+          </motion.div>
+          <TokenSwapItem
+            label={'Receive'}
+            value={secondToken.quantity}
+            placeholder="0.0"
+            onValueChange={(qt) =>
+              setSecondToken((prev) => ({ ...prev, quantity: qt }))
+            }
+            tokenSelect={
+              <Select
+                items={tokens.filter(
+                  (token) => token.value !== firstToken.value
+                )}
+                selectedItem={secondToken}
+                setSelectedItem={(token: { label: string; value: string }) =>
+                  setSecondToken({
+                    label: token.label,
+                    value: token.value,
+                    quantity: 0,
+                  })
+                }
+                style="no-style"
+              />
+            }
+            isInputDisabled
+          />
         </motion.div>
-        <TokenSwapItem
-          label={'Receive'}
-          value={secondToken.quantity}
-          placeholder="0.0"
-          onValueChange={(qt) =>
-            setSecondToken((prev) => ({ ...prev, quantity: qt }))
-          }
-          tokenSelect={
-            <Select
-              items={tokens.filter((token) => token.value !== firstToken.value)}
-              selectedItem={secondToken}
-              setSelectedItem={(token: { label: string; value: string }) =>
-                setSecondToken({
-                  label: token.label,
-                  value: token.value,
-                  quantity: 0,
-                })
+      </AnimatePresence>
+      <AnimatePresence>
+        {exchangeType === 'limit' && (
+          <motion.div
+            key="swapprice"
+            layout="position"
+            transition={{ layout: { type: 'tween' }, duration: 0.3 }}
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+          >
+            <TokenSwapItem
+              label={'Price'}
+              value={price}
+              onValueChange={setPrice}
+              secondaryText={`Mark: 1,871.11`}
+              tokenSelect={
+                <span className="pr-2 text-sm font-normal text-gray-300">
+                  USD
+                </span>
               }
-              style="no-style"
+              placeholder="0.0"
             />
+          </motion.div>
+        )}
+        <motion.div
+          layout="position"
+          className="flex flex-col gap-5 rounded bg-gray-500 p-3"
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
+          transition={{ layout: { duration: 0.3 } }}
+        >
+          <div className="flex justify-between">
+            <div className="text-xs font-normal text-gray-300">Fees</div>
+            <div className="text-sm">-</div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+      <motion.div id="gmxswapbtn" layout="position">
+        <Button
+          label={
+            firstToken.quantity && firstToken.quantity > 0
+              ? 'Swap'
+              : 'Enter an amount'
           }
-          isInputDisabled
+          size="lg"
         />
-      </div>
-      {exchangeType === 'limit' && (
-        <TokenSwapItem
-          label={'Price'}
-          value={price}
-          onValueChange={setPrice}
-          secondaryText={`Mark: 1,871.11`}
-          tokenSelect={
-            <span className="pr-2 text-sm font-normal text-gray-300">USD</span>
-          }
-          placeholder="0.0"
-        />
-      )}
-      <div className="flex flex-col gap-5 rounded bg-gray-500 p-3">
-        <div className="flex justify-between">
-          <div className="text-xs font-normal text-gray-300">Fees</div>
-          <div className="text-sm">-</div>
-        </div>
-      </div>
-      <Button
-        label={
-          firstToken.quantity && firstToken.quantity <= 0
-            ? 'Enter an amount'
-            : 'Swap'
-        }
-        size="lg"
-      />
+      </motion.div>
       <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
-        <div>Swap {}</div>
+        <div>Swap </div>
         {extraInfoItems.map((item) => (
           <div key={item.key} className="flex justify-between">
             <div className="text-xs font-normal text-gray-300">
