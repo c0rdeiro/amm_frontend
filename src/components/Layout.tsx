@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <>
         <div className="flex h-screen min-h-screen w-screen flex-col overflow-hidden">
           <Header />
-          <main className="flex h-full w-full flex-row bg-gray-700">
+          <main className="flex h-full w-full flex-row items-center justify-center bg-gray-700">
             {children}
           </main>
         </div>
