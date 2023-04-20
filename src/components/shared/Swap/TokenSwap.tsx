@@ -19,16 +19,8 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
     setFirstToken(secondToken)
     setSecondToken(firstToken)
     setRotate((prev) => {
-      animateToken1(
-        'h4',
-        { opacity: [0.6, 1], x: prev ? [30, 0] : [-30, 0] },
-        { duration: 0.4 }
-      )
-      animateToken2(
-        'h4',
-        { opacity: [0.6, 1], x: prev ? [-30, 0] : [30, 0] },
-        { duration: 0.4 }
-      )
+      animateToken1('h4', { opacity: [0.2, 1] }, { duration: 0.6 })
+      animateToken2('h4', { opacity: [0.2, 1] }, { duration: 0.6 })
 
       return !prev
     })
