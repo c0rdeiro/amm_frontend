@@ -189,7 +189,10 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
           size="lg"
         />
       </motion.div>
-      <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
+      <motion.div
+        layout="position"
+        className="flex flex-col gap-2 rounded bg-gray-500 p-3"
+      >
         <div>Swap </div>
         {extraInfoItems.map((item) => (
           <div key={item.key} className="flex justify-between">
@@ -199,7 +202,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
             <div className="text-sm">{item.value}</div>
           </div>
         ))}
-      </div>
+      </motion.div>
     </>
   )
 }

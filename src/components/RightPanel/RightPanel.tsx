@@ -1,10 +1,9 @@
 import { PositionType, TabType } from '@/types/next'
 import Tabs from '../shared/Tabs'
-import OptionsExchange from './OptionsExchange'
-import PositionRightPanel from './PositionRightPanel'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import GMXTrader from './GMXTrader'
+import GMXTrader from './GMX/GMXTrader'
+import IVXTrader from './IVXTrader'
 
 type RightPanelProps = {
   position?: PositionType | undefined
@@ -58,11 +57,11 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
   const getOptionTab = () => {
     switch (activeTab) {
       case 0:
-        return <OptionsExchange />
+        return <IVXTrader />
       case 1:
         return <GMXTrader />
       default:
-        return <OptionsExchange />
+        return <IVXTrader />
     }
   }
   return (

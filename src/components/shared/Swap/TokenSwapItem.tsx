@@ -8,6 +8,7 @@ type TokenSwapItemProps = {
   secondaryText?: string
   isInputDisabled?: boolean
   placeholder?: string
+  complementaryComponent?: React.ReactNode
 }
 
 const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
@@ -18,6 +19,7 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
   secondaryText,
   isInputDisabled = false,
   placeholder,
+  complementaryComponent,
 }) => {
   return (
     <div className="flex flex-col gap-2 rounded bg-gray-500 p-3 ">
@@ -36,6 +38,7 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
         />
         {tokenSelect}
       </div>
+      {complementaryComponent}
     </div>
   )
 }

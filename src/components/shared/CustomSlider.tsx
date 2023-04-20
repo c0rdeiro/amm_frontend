@@ -6,6 +6,9 @@ type LeverageSliderProps = {
   option: number | number[]
   setOption: (leverage: number | number[]) => void
   marks: MarkMap
+  min: number
+  max: number
+  step: number
 }
 
 type MarkMap = {
@@ -21,14 +24,17 @@ const CustomSlider: React.FC<LeverageSliderProps> = ({
   option,
   setOption,
   marks,
+  min,
+  max,
+  step,
 }) => {
   const tw = resolveConfig(tailwindConfig)
 
   return (
     <Slider
-      min={1.1}
-      max={25}
-      step={0.1}
+      min={min}
+      max={max}
+      step={step}
       marks={marks}
       onChange={(value) => setOption(value)}
       defaultValue={option}

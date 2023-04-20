@@ -9,7 +9,7 @@ import Input from '../shared/Form/Input'
 import Select, { SelectItem } from '../shared/Form/Select'
 import Tabs from '../shared/Tabs'
 
-const OptionsExchange = () => {
+const IVXTrader = () => {
   const { setIsCall } = useOptionsActions()
   const [strikePrice, setStrikePrice] = useState<number>()
   const [quantity, setQuantity] = useState<number>(0)
@@ -109,4 +109,4 @@ const OptionsExchange = () => {
   )
 }
 
-export default OptionsExchange
+export default IVXTrader
