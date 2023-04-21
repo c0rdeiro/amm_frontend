@@ -4,7 +4,7 @@ import { IoWalletOutline } from 'react-icons/io5'
 import { RxExit } from 'react-icons/rx'
 import Image from 'next/image'
 
-const CustomConnectButton = () => {
+const CustomNetworkButton = () => {
   return (
     <ConnectButton.Custom>
       {({
@@ -94,4 +94,4 @@ const CustomConnectButton = () => {
   )
 }
 
-export default CustomConnectButton
+export default CustomNetworkButton
