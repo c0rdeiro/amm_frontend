@@ -1,12 +1,20 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Button from './shared/Button'
+import { IoWalletOutline } from 'react-icons/io5'
+import { RxExit } from 'react-icons/rx'
+import Image from 'next/image'
 
 const CustomConnectButton = () => {
   return (
     <ConnectButton.Custom>
-      {({ account, chain, openChainModal, openConnectModal, mounted }) => {
-        // Note: If your app doesn't use authentication, you
-        // can remove all 'authenticationStatus' checks
+      {({
+        account,
+        chain,
+        openChainModal,
+        openConnectModal,
+        openAccountModal,
+        mounted,
+      }) => {
         const ready = mounted
         const connected = ready && account && chain
 
@@ -28,6 +36,7 @@ const CustomConnectButton = () => {
                     onClick={openConnectModal}
                     label={'Connect Wallet'}
                     size="sm"
+                    rightIcon={<IoWalletOutline />}
                     styleType="monochromatic"
                   />
                 )
@@ -45,43 +54,34 @@ const CustomConnectButton = () => {
               }
 
               return (
-                <ConnectButton />
-                // <div style={{ display: 'flex', gap: 12 }}>
-                //   <button
-                //     onClick={openChainModal}
-                //     style={{ display: 'flex', alignItems: 'center' }}
-                //     type="button"
-                //   >
-                //     {chain.hasIcon && (
-                //       <div
-                //         style={{
-                //           background: chain.iconBackground,
-                //           width: 12,
-                //           height: 12,
-                //           borderRadius: 999,
-                //           overflow: 'hidden',
-                //           marginRight: 4,
-                //         }}
-                //       >
-                //         {chain.iconUrl && (
-                //           <img
-                //             alt={chain.name ?? 'Chain icon'}
-                //             src={chain.iconUrl}
-                //             style={{ width: 12, height: 12 }}
-                //           />
-                //         )}
-                //       </div>
-                //     )}
-                //     {chain.name}
-                //   </button>
-
-                //   <button onClick={openAccountModal} type="button">
-                //     {account.displayName}
-                //     {account.displayBalance
-                //       ? ` (${account.displayBalance})`
-                //       : ''}
-                //   </button>
-                // </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    onClick={openChainModal}
+                    label={''}
+                    rightIcon={
+                      chain.iconUrl ? (
+                        <Image
+                          src={chain.iconUrl}
+                          alt={'chain logo'}
+                          width={22}
+                          height={25}
+                        />
+                      ) : undefined
+                    }
+                    styleType="monochromatic"
+                  />
+                  <Button
+                    size="sm"
+                    onClick={openAccountModal}
+                    label={`${account.address.slice(
+                      0,
+                      5
+                    )}...${account.address.slice(account.address.length - 4)}`}
+                    styleType="monochromatic"
+                    rightIcon={<RxExit />}
+                  />
+                </div>
               )
             })()}
           </div>

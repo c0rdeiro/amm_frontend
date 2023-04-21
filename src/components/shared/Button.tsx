@@ -33,13 +33,12 @@ const Button: React.FC<ButtonProps> = ({
       className={clsx(
         {
           'w-29 h-7 gap-1.5 py-1.5 px-2': size === 'xs',
-          'h-10.5 w-35': size === 'sm',
+          'h-9 py-1 px-3 text-sm font-medium': size === 'sm',
           'h-13 w-44 py-4 px-6': size === 'md',
-          ' w-full py-3': size === 'lg',
+          'w-full py-3': size === 'lg',
           'bg-green-500 text-white hover:bg-green-400': styleType === 'green',
-          'bg-red-500 text-white hover:bg-red-400': styleType === 'red',
-          'bg-text-gray dark:bg-darkBg text-white':
-            styleType === 'monochromatic',
+          'bg-red-400 text-white ': styleType === 'red',
+          'bg-gray-500 text-white': styleType === 'monochromatic',
           'bg-primary text-sm font-medium text-gray-700 transition duration-500 hover:bg-primaryDarker':
             styleType === 'normal',
         },

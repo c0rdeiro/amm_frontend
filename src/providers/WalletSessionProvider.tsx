@@ -7,7 +7,7 @@ import {
 import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
 import { useContext } from 'react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { arbitrum } from 'wagmi/chains'
+import { arbitrum, bsc } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 
 import { ThemeContext } from './ThemeProvider'
@@ -22,7 +22,7 @@ type WalletProviderProps = {
 
 const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const { chains, provider } = configureChains(
-    [arbitrum],
+    [arbitrum, bsc],
     [
       // alchemyProvider({
       //   apiKey: process.env.ALCHEMY_ID ?? throwError('Invalid env ALCHEMY_ID'),
