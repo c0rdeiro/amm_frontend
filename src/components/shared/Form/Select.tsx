@@ -56,13 +56,11 @@ function Select<T>({
               style === 'no-style',
           })}
         >
-          <div ref={textRef}>
-            <h4>
-              {Array.isArray(selectedItem)
-                ? selectedItem.map((item) => item.label).join(', ')
-                : selectedItem?.label}
-            </h4>
-          </div>
+          <h4 ref={textRef}>
+            {Array.isArray(selectedItem)
+              ? selectedItem.map((item) => item.label).join(', ')
+              : selectedItem?.label}
+          </h4>
           <MdOutlineKeyboardArrowDown size="1.5rem" />
         </Listbox.Button>
         <Transition
