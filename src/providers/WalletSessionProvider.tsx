@@ -1,16 +1,14 @@
 import {
   connectorsForWallets,
   darkTheme,
-  lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
 import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
-import { useContext } from 'react'
+import tailwindConfig from 'tailwind.config.cjs'
+import resolveConfig from 'tailwindcss/resolveConfig'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { arbitrum } from 'wagmi/chains'
+import { arbitrum, bsc } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
-
-import { ThemeContext } from './ThemeProvider'
 
 type WalletProviderProps = {
   children: React.ReactNode
@@ -22,7 +20,7 @@ type WalletProviderProps = {
 
 const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const { chains, provider } = configureChains(
-    [arbitrum],
+    [arbitrum, bsc],
     [
       // alchemyProvider({
       //   apiKey: process.env.ALCHEMY_ID ?? throwError('Invalid env ALCHEMY_ID'),
@@ -43,14 +41,17 @@ const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
     connectors,
     provider,
   })
+  const tw = resolveConfig(tailwindConfig)
 
-  const { isDarkTheme } = useContext(ThemeContext)
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         coolMode
         chains={chains}
-        theme={isDarkTheme ? darkTheme() : lightTheme()}
+        theme={darkTheme({
+          accentColor: tw.theme.colors.primary,
+          accentColorForeground: tw.theme.colors.gray[700],
+        })}
       >
         {children}
       </RainbowKitProvider>

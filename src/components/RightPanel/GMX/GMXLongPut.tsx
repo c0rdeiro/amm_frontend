@@ -24,13 +24,13 @@ const sizeMarks = {
   100: { label: '100%', style: { color: '#A3a3b1' } },
 }
 
-type GMXLongPutProps = {
+type GMXLongShortProps = {
   tokens: { label: string; value: string }[]
   exchangeType: 'market' | 'limit'
-  strategy: 'long' | 'put'
+  strategy: 'long' | 'short'
 }
 
-const GMXLongPut: React.FC<GMXLongPutProps> = ({
+const GMXLongShort: React.FC<GMXLongShortProps> = ({
   tokens,
   exchangeType,
   strategy,
@@ -238,4 +238,4 @@ const GMXLongPut: React.FC<GMXLongPutProps> = ({
     </>
   )
 }
-export default GMXLongPut
+export default GMXLongShort

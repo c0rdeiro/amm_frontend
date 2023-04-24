@@ -19,7 +19,7 @@ type CustomPage = NextPage & {
 type MenuLinkType = {
   label: string
   link: string
-  icon: React.ReactNode
+  icon?: React.ReactNode
 }
 
 type MarketTokenType = {
