@@ -32,13 +32,26 @@ const CustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <Button
-                    onClick={openConnectModal}
-                    label={'Connect Wallet'}
-                    size="sm"
-                    rightIcon={<IoWalletOutline />}
-                    styleType="monochromatic"
-                  />
+                  <>
+                    <span className="hidden md:flex">
+                      <Button
+                        onClick={openConnectModal}
+                        label={'Connect Wallet'}
+                        size="sm"
+                        rightIcon={<IoWalletOutline />}
+                        styleType="monochromatic"
+                      />
+                    </span>
+
+                    <span className="flex md:hidden">
+                      <Button
+                        onClick={openConnectModal}
+                        label={'Connect Wallet'}
+                        size="sm"
+                        styleType="monochromatic"
+                      />
+                    </span>
+                  </>
                 )
               }
 

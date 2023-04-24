@@ -1,9 +1,13 @@
-import { IoCloseOutline } from 'react-icons/io5'
+import { IoCloseOutline, IoCopy } from 'react-icons/io5'
 import Modal from '../shared/Modal'
 import Image from 'next/image'
 import { DropdownMenuItem } from '../shared/DropdownMenu'
 import { MenuLinkType } from '@/types/next'
 import CustomConnectButton from '../CustomConnectButton'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import CustomNetworkButton from '../CustomNetworkButton'
+import { useAccount, useDisconnect } from 'wagmi'
+import { RxExit } from 'react-icons/rx'
 
 type HeaderOptionsProps = {
   isOpen: boolean
@@ -17,6 +21,13 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({
   links,
   additionalLinks,
 }) => {
+  const { address } = useAccount()
+  const { disconnect } = useDisconnect()
+
+  const copyAddressToClipboard = () => {
+    if (address) navigator.clipboard.writeText(address)
+  }
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex h-screen w-full flex-col gap-5 bg-gray-700 ring-8 ring-gray-700">
@@ -38,7 +49,26 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({
           <span className="text-xl font-normal text-gray-300">Net Worth</span>
           <span className="text-2xl font-bold text-white">$364k</span>
         </div>
-        <CustomConnectButton />
+        {address && (
+          <div
+            className="flex items-center gap-2 rounded bg-gray-500 py-2 px-3 text-gray-300"
+            onClick={copyAddressToClipboard}
+          >
+            <span className="text-sm text-white">{`${address?.slice(
+              0,
+              address.length / 2
+            )}...${address?.slice(address.length / 2 + 5)}`}</span>
+            <IoCopy size={24} />
+          </div>
+        )}
+        <div className="flex w-full flex-col items-start gap-2">
+          <h4 className="text-sm font-medium text-white">Network</h4>
+          <CustomNetworkButton
+            showAddress={false}
+            networkDisplay="full"
+            networkBtnSize="lg"
+          />
+        </div>
         <span className="w-full border border-gray-500" />
         <div className="flex flex-col items-start">
           {links.map((item) => (
@@ -58,6 +88,15 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({
               {item.label}
             </div>
           ))}
+          {address && (
+            <div
+              className="flex items-center gap-3 py-4 px-2 text-lg font-medium text-gray-300"
+              onClick={() => disconnect()}
+            >
+              <RxExit />
+              <span>Disconnect</span>
+            </div>
+          )}
         </div>
       </div>
     </Modal>

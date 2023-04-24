@@ -4,7 +4,19 @@ import { IoWalletOutline } from 'react-icons/io5'
 import { RxExit } from 'react-icons/rx'
 import Image from 'next/image'
 
-const CustomNetworkButton = () => {
+type CustomConnectButtonProps = {
+  showNetwork?: boolean
+  showAddress?: boolean
+  networkDisplay?: 'full' | 'icon'
+  networkBtnSize?: 'sm' | 'lg'
+}
+
+const CustomNetworkButton: React.FC<CustomConnectButtonProps> = ({
+  showNetwork = true,
+  showAddress = true,
+  networkDisplay = 'icon',
+  networkBtnSize = 'sm',
+}) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -13,6 +25,7 @@ const CustomNetworkButton = () => {
         openChainModal,
         openConnectModal,
         openAccountModal,
+
         mounted,
       }) => {
         const ready = mounted
@@ -20,6 +33,7 @@ const CustomNetworkButton = () => {
 
         return (
           <div
+            className="w-full"
             {...(!ready && {
               'aria-hidden': true,
               style: {
@@ -35,7 +49,7 @@ const CustomNetworkButton = () => {
                   <Button
                     onClick={openConnectModal}
                     label={'Connect Wallet'}
-                    size="sm"
+                    size={networkBtnSize}
                     rightIcon={<IoWalletOutline />}
                     styleType="monochromatic"
                   />
@@ -46,7 +60,7 @@ const CustomNetworkButton = () => {
                 return (
                   <Button
                     onClick={openChainModal}
-                    size="sm"
+                    size={networkBtnSize}
                     label="Wrong network"
                     styleType="red"
                   />
@@ -54,12 +68,16 @@ const CustomNetworkButton = () => {
               }
 
               return (
-                <div className="flex items-center gap-2">
-                  <span className="hidden md:flex">
+                <div className="flex w-full items-center gap-2">
+                  {showNetwork && (
                     <Button
-                      size="sm"
+                      size={networkBtnSize}
                       onClick={openChainModal}
-                      label={''}
+                      label={
+                        networkDisplay === 'full' && chain.name
+                          ? chain.name
+                          : ''
+                      }
                       rightIcon={
                         chain.iconUrl ? (
                           <Image
@@ -72,18 +90,22 @@ const CustomNetworkButton = () => {
                       }
                       styleType="monochromatic"
                     />
-                  </span>
+                  )}
 
-                  <Button
-                    size="sm"
-                    onClick={openAccountModal}
-                    label={`${account.address.slice(
-                      0,
-                      5
-                    )}...${account.address.slice(account.address.length - 4)}`}
-                    styleType="monochromatic"
-                    rightIcon={<RxExit />}
-                  />
+                  {showAddress && (
+                    <Button
+                      size="sm"
+                      onClick={openAccountModal}
+                      label={`${account.address.slice(
+                        0,
+                        5
+                      )}...${account.address.slice(
+                        account.address.length - 4
+                      )}`}
+                      styleType="monochromatic"
+                      rightIcon={<RxExit />}
+                    />
+                  )}
                 </div>
               )
             })()}
