@@ -1,16 +1,12 @@
-import { PositionType, TabType } from '@/types/next'
-import Tabs from '../shared/Tabs'
+import { TabType } from '@/types/next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+
+import Tabs from '../shared/Tabs'
 import GMXTrader from './GMX/GMXTrader'
 import IVXTrader from './IVXTrader'
 
-type RightPanelProps = {
-  position?: PositionType | undefined
-  isOption: boolean
-}
-
-const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
+const RightPanel = () => {
   const [activeTab, setActiveTab] = useState(0)
   const tabs: TabType[] = [
     {
@@ -56,31 +52,23 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
 
   const getOptionTab = () => {
     switch (activeTab) {
-      case 0:
-        return <IVXTrader />
       case 1:
         return <GMXTrader />
+      case 0:
       default:
         return <IVXTrader />
     }
   }
   return (
     <div className="mx-4 flex h-min min-w-82 flex-col font-medium">
-      {/* {isOption && (
-        <Tabs
-          tabList={tabs}
-          style="monochromatic"
-          size="sm"
-          roundStyle="folder"
-          defaultIndex={activeTab}
-        />
-      )} */}
-      <div>
-        <GMXTrader />
-        {/* {isOption
-          ? getOptionTab()
-          : position && <PositionRightPanel position={position} />} */}
-      </div>
+      <Tabs
+        tabList={tabs}
+        style="monochromatic"
+        size="sm"
+        roundStyle="folder"
+        defaultIndex={activeTab}
+      />
+      <div>{getOptionTab()}</div>
     </div>
   )
 }

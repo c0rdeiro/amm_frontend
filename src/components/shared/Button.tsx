@@ -14,6 +14,7 @@ type ButtonProps = {
     | 'red'
     | 'monochromatic'
   rightIcon?: React.ReactNode
+  leftIcon?: React.ReactNode
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   isDisabled = false,
   styleType = 'normal',
   rightIcon,
+  leftIcon,
 }: ButtonProps) => {
   return (
     <button
@@ -32,7 +34,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={clsx(
         {
-          'w-29 h-7 gap-1.5 py-1.5 px-2': size === 'xs',
+          'h-7 py-3 px-2 text-xs font-medium': size === 'xs',
           'h-9 py-1 px-3 text-sm font-medium': size === 'sm',
           'h-13 w-44 py-4 px-6': size === 'md',
           'w-full py-3': size === 'lg',
@@ -45,6 +47,7 @@ const Button: React.FC<ButtonProps> = ({
         'flex items-center justify-center gap-2 rounded disabled:opacity-30'
       )}
     >
+      {leftIcon}
       {label}
       {rightIcon}
     </button>

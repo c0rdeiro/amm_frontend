@@ -11,8 +11,8 @@ type ControllingTab = {
 type TabsProps = {
   tabList: TabType[]
   size?: 'sm' | 'md' | 'lg'
-  style?: 'normal' | 'monochromatic' | 'no-style'
-  roundStyle?: 'round' | 'straight' | 'folder'
+  style?: 'normal' | 'monochromatic' | 'no-style' | 'custom-color'
+  roundStyle?: 'round' | 'straight' | 'folder' | 'separate'
   defaultIndex?: number
   controllingTab?: ControllingTab
 }
@@ -32,40 +32,57 @@ const Tabs: React.FC<TabsProps> = ({
       onChange={controllingTab ? controllingTab.setCurrentTab : undefined}
     >
       <Tab.List
-        className={clsx(
-          {
-            'rounded-lg': roundStyle === 'round',
-            'rounded-none': roundStyle === 'straight',
-            'rounded-lg bg-gray-600': roundStyle === 'folder',
-            'bg-inherit': style === 'no-style',
-          },
-          'flex w-full gap-[2px]'
-        )}
+        className={clsx('flex w-full ', {
+          'gap-[5px]': roundStyle === 'separate',
+          'gap-[2px] rounded': roundStyle === 'round',
+          'gap-[2px] rounded-none': roundStyle === 'straight',
+          'bg-inherit gap-[2px]': style === 'no-style',
+        })}
       >
         {tabList.map((item) => (
           <Tab as={Fragment} key={item.key}>
             <button
+              disabled={item.isDisabled}
               onClick={item.action}
               className={clsx(
-                'ring-white focus:outline-none',
+                'ring-white transition duration-500 focus:outline-none',
                 'w-full font-medium',
-                'ui-not-selected:bg-transparent',
+                'ui-not-selected:bg-transparent ',
+
                 {
                   'px-3 py-1.5 text-sm': size === 'sm',
                   'px-5 py-2 text-xs': size === 'md',
                   'px-6 py-3': size === 'lg',
                 },
                 {
-                  'transition duration-500 first:rounded-l-md last:rounded-r-md ui-selected:bg-primary ui-selected:text-gray-600 ui-not-selected:bg-gray-500 ui-not-selected:text-gray-300 ui-not-selected:hover:bg-gray-400':
+                  '  ui-selected:bg-primary ui-selected:text-gray-600 ui-not-selected:bg-gray-500 ui-not-selected:text-gray-300 ui-not-selected:hover:bg-gray-400':
                     style === 'normal',
                   'ring-gray-500 ui-selected:bg-gray-600':
                     style === 'monochromatic',
                   'ui-selected:text-white ui-not-selected:text-gray-300':
                     style === 'no-style',
+                },
+                {
+                  ' text-white ui-not-selected:bg-gray-500':
+                    style === 'custom-color',
+                  ' ui-selected:bg-red-400':
+                    style === 'custom-color' && item.bgColor === 'red',
+                  ' ui-selected:bg-green-400':
+                    style === 'custom-color' && item.bgColor === 'green',
+                },
+                {
+                  'first:rounded-l-md last:rounded-r-md ':
+                    roundStyle === 'round',
+                  ' rounded px-1 ui-not-selected:bg-gray-600':
+                    roundStyle === 'separate',
+                },
+                {
+                  'ui-not-selected:bg-gray-600 ui-not-selected:text-gray-500 ui-not-selected:hover:bg-gray-600':
+                    item.isDisabled,
                 }
               )}
             >
-              <span className="flex w-full items-center justify-center gap-2 ">
+              <span className="flex w-full items-center justify-center gap-2">
                 {item.leftIcon}
                 {item.label}
                 {item.rightIcon}

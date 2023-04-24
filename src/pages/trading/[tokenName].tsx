@@ -13,7 +13,7 @@ const MarketTradingPage: React.FC<TradingPageProps> = ({ tokenName }) => {
         {/* <Chart />
         <TokenPositionsPanel /> */}
       </div>
-      <RightPanel isOption={true} />
+      <RightPanel />
     </div>
   )
 }

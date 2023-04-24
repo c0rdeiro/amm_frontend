@@ -40,6 +40,8 @@ type TabType = {
   action: () => void
   rightIcon?: React.ReactNode
   leftIcon?: React.ReactNode
+  isDisabled?: boolean
+  bgColor?: 'red' | 'green'
 }
 
 type OptionType = {
