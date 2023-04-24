@@ -9,13 +9,17 @@ import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 import TokenSwap from '../../shared/Swap/TokenSwap'
 import Tabs from '../../shared/Tabs'
 import GMXLongShort from './GMXLongPut'
+import ETHIcon from '@/Icons/tokens/eth'
+import BTCIcon from '@/Icons/tokens/btc'
+import USDTIcon from '@/Icons/tokens/usdt'
+import USDCIcon from '@/Icons/tokens/usdc'
 
 const GMXTrader = () => {
   const tokens = [
-    { label: 'ETH', value: 'ETH' },
-    { label: 'USDC', value: 'USDC' },
-    { label: 'USDT', value: 'USDT' },
-    { label: 'BTC', value: 'BTC' },
+    { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
+    { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
+    { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
+    { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
   ]
   const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
   const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')

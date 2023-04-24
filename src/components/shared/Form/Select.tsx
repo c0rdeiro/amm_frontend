@@ -3,11 +3,12 @@ import clsx from 'clsx'
 import { Fragment } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import Switch from './Switch'
-import { AnimationScope, motion } from 'framer-motion'
+import { AnimationScope } from 'framer-motion'
 
 export type SelectItem<T> = {
   label: string
   value: T
+  icon?: React.ReactNode
   isDisabled?: boolean
 }
 
@@ -91,6 +92,7 @@ function Select<T>({
                     )}
                   >
                     {multiple && <Switch enabled={selected} size="sm" />}
+                    {item.icon}
                     {item.label}
                   </span>
                 )}
