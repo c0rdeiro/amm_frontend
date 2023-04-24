@@ -62,7 +62,9 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({
           </div>
         )}
         <div className="flex w-full flex-col items-start gap-2">
-          <h4 className="text-sm font-medium text-white">Network</h4>
+          {address && (
+            <h4 className="text-sm font-medium text-white">Network</h4>
+          )}
           <CustomNetworkButton
             showAddress={false}
             networkDisplay="full"

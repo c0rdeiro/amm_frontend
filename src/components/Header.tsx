@@ -33,19 +33,19 @@ const Header: React.FC = () => {
     },
     {
       label: 'Github',
-      link: '',
+      link: 'https://github.com/IVX-FI',
       icon: <FaGithub />,
       newTab: true,
     },
     {
       label: 'Discord',
-      link: '',
+      link: 'https://discord.com/invite/ivx',
       icon: <FaDiscord />,
       newTab: true,
     },
     {
       label: 'Twitter',
-      link: '',
+      link: 'https://twitter.com/ivx_fi',
       icon: <FaTwitter />,
       newTab: true,
     },
