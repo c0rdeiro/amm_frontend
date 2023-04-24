@@ -8,7 +8,7 @@ import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 
 import TokenSwap from '../../shared/Swap/TokenSwap'
 import Tabs from '../../shared/Tabs'
-import GMXLongPut from './GMXLongPut'
+import GMXLongShort from './GMXLongPut'
 
 const GMXTrader = () => {
   const tokens = [
@@ -17,7 +17,7 @@ const GMXTrader = () => {
     { label: 'USDT', value: 'USDT' },
     { label: 'BTC', value: 'BTC' },
   ]
-  const [strategy, setStrategy] = useState<'long' | 'put' | 'swap'>('long')
+  const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
   const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')
   const tabsLongShort: TabType[] = [
     {
@@ -31,10 +31,10 @@ const GMXTrader = () => {
     },
     {
       key: 1,
-      label: 'Put',
+      label: 'Short',
       leftIcon: <IoTrendingDownSharp size="1.125rem" />,
       action: () => {
-        setStrategy('put')
+        setStrategy('short')
       },
     },
     {
@@ -77,7 +77,7 @@ const GMXTrader = () => {
           {strategy === 'swap' ? (
             <TokenSwap tokens={tokens} exchangeType={exchangeType} />
           ) : (
-            <GMXLongPut
+            <GMXLongShort
               tokens={tokens}
               exchangeType={exchangeType}
               strategy={strategy}

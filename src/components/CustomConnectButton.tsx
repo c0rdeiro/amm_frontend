@@ -3,6 +3,7 @@ import Button from './shared/Button'
 import { IoWalletOutline } from 'react-icons/io5'
 import { RxExit } from 'react-icons/rx'
 import Image from 'next/image'
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 
 const CustomConnectButton = () => {
   return (
@@ -75,12 +76,15 @@ const CustomConnectButton = () => {
                       label={''}
                       rightIcon={
                         chain.iconUrl ? (
-                          <Image
-                            src={chain.iconUrl}
-                            alt={'chain logo'}
-                            width={22}
-                            height={25}
-                          />
+                          <span className="flex w-full gap-2 text-gray-300">
+                            <Image
+                              src={chain.iconUrl}
+                              alt={'chain logo'}
+                              width={24}
+                              height={24}
+                            />
+                            <MdOutlineKeyboardArrowDown size={24} />
+                          </span>
                         ) : undefined
                       }
                       styleType="monochromatic"
