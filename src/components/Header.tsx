@@ -90,7 +90,7 @@ const Header: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center gap-5">
-          <span className="hidden md:flex">
+          <span className="hidden gap-5 md:flex">
             <div className="flex flex-col items-end">
               <span className="text-sm font-normal text-gray-300">
                 Net Worth
