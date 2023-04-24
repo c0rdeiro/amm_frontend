@@ -183,11 +183,11 @@ const IVXTrader = () => {
           </div>
         }
       />
-      <div className="flex flex-col gap-2 rounded bg-gray-500 p-3 ">
+      <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
         <div className="flex justify-between text-xs font-normal text-gray-300">
           <div>Strike</div>
         </div>
-        <Tabs tabList={strikePrices} roundStyle="separate" />
+        <Tabs tabList={strikePrices} roundStyle="separate" size="xs" />
         <div className="flex flex-col items-start justify-between gap-2 pt-3">
           <div className="flex w-full items-center justify-between font-medium">
             <h4 className="text-xs text-gray-300">Price</h4>

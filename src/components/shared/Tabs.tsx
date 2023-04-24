@@ -10,7 +10,7 @@ type ControllingTab = {
 
 type TabsProps = {
   tabList: TabType[]
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   style?: 'normal' | 'monochromatic' | 'no-style' | 'custom-color'
   roundStyle?: 'round' | 'straight' | 'folder' | 'separate'
   defaultIndex?: number
@@ -50,6 +50,7 @@ const Tabs: React.FC<TabsProps> = ({
                 'ui-not-selected:bg-transparent ',
 
                 {
+                  'px-1 py-1.5 text-xs': size === 'xs',
                   'px-3 py-1.5 text-sm': size === 'sm',
                   'px-5 py-2 text-xs': size === 'md',
                   'px-6 py-3': size === 'lg',
@@ -62,6 +63,7 @@ const Tabs: React.FC<TabsProps> = ({
                   'ui-selected:text-white ui-not-selected:text-gray-300':
                     style === 'no-style',
                 },
+
                 {
                   ' text-white ui-not-selected:bg-gray-500':
                     style === 'custom-color',
@@ -71,14 +73,14 @@ const Tabs: React.FC<TabsProps> = ({
                     style === 'custom-color' && item.bgColor === 'green',
                 },
                 {
-                  'first:rounded-l-md last:rounded-r-md ':
-                    roundStyle === 'round',
-                  ' rounded px-1 ui-not-selected:bg-gray-600':
-                    roundStyle === 'separate',
-                },
-                {
                   'ui-not-selected:bg-gray-600 ui-not-selected:text-gray-500 ui-not-selected:hover:bg-gray-600':
                     item.isDisabled,
+                },
+                {
+                  'first:rounded-l-md last:rounded-r-md ':
+                    roundStyle === 'round',
+                  ' rounded  ui-not-selected:bg-gray-600':
+                    roundStyle === 'separate',
                 }
               )}
             >
