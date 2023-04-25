@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, children }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="bg-select fixed inset-0 bg-opacity-25" />
+          <div className="fixed inset-0 bg-modal-bg  backdrop-blur-xs" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
