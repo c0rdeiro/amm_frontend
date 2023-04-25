@@ -17,6 +17,7 @@ import ETHIcon from '@/Icons/tokens/eth'
 import USDCIcon from '@/Icons/tokens/usdc'
 import USDTIcon from '@/Icons/tokens/usdt'
 import clsx from 'clsx'
+import IVXLeverageModal from '../Modals/IVXLeverageModal'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },
@@ -29,6 +30,8 @@ const IVXTrader = () => {
   const [strikePrice, setStrikePrice] = useState<number>()
   const [strategy, setStrategy] = useState<'call' | 'put' | 'straddle'>('call')
   const [isBuy, setIsBuy] = useState<boolean>(true)
+  const [isLeverageModalOpen, setIsLeverageModalOpen] = useState<boolean>(false)
+  const [leverage, setLeverage] = useState<number | number[]>(3)
 
   const strategyTabs: TabType[] = [
     {
@@ -125,110 +128,125 @@ const IVXTrader = () => {
   }>({ ...tokens[0]!, quantity: undefined })
 
   return (
-    <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-gray-500 bg-gray-600 p-5 text-white">
-      <div className="flex items-end justify-between gap-2">
-        <div className="flex flex-col items-start gap-1">
-          <h4 className="text-sm font-medium text-gray-300">
-            Available Margin
-          </h4>
-          <h2 className="text-xl font-bold">
-            {formatNumber(availableMargin, { symbol: '$', decimalCases: 2 })}
-          </h2>
-        </div>
-        <div className="flex items-start gap-2">
-          <Button
-            label={'Add Margin'}
-            styleType="monochromatic"
-            size={'xs'}
-            leftIcon={<IoAddOutline size={16} />}
-          />
-          <Button label={'3x'} styleType="monochromatic" size={'xs'} />
-        </div>
-      </div>
-      <span className="w-full border border-gray-500" />
-      <div className="flex flex-col items-start gap-4">
-        <Tabs tabList={strategyTabs} />
-        <Tabs tabList={buySellTabs} size="lg" style="custom-color" />
-      </div>
-      <TokenSwapItem
-        label={'Size'}
-        value={token.quantity}
-        placeholder="0.0"
-        onValueChange={(qt) => setToken((prev) => ({ ...prev, quantity: qt }))}
-        tokenSelect={
-          <Select
-            items={tokens}
-            selectedItem={token}
-            setSelectedItem={(token: { label: string; value: string }) =>
-              setToken({
-                label: token.label,
-                value: token.value,
-                quantity: 0,
-              })
-            }
-            style="no-style"
-          />
-        }
-        secondaryText={``}
-        complementaryComponent={
-          <div className="mx-2 mt-2 mb-6">
-            <CustomSlider
-              option={sizePercentage}
-              setOption={setSizePercentage} //TODO: this will alter the size
-              marks={sizeMarks}
-              min={0}
-              max={100}
-              step={0.1}
+    <>
+      <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-gray-500 bg-gray-600 p-5 text-white">
+        <div className="flex items-end justify-between gap-2">
+          <div className="flex flex-col items-start gap-1">
+            <h4 className="text-sm font-medium text-gray-300">
+              Available Margin
+            </h4>
+            <h2 className="text-xl font-bold">
+              {formatNumber(availableMargin, { symbol: '$', decimalCases: 2 })}
+            </h2>
+          </div>
+          <div className="flex items-start gap-2">
+            <Button
+              label={'Add Margin'}
+              styleType="monochromatic"
+              size={'xs'}
+              leftIcon={<IoAddOutline size={16} />}
+            />
+            <Button
+              label={'3x'}
+              styleType="monochromatic"
+              size={'xs'}
+              onClick={() => setIsLeverageModalOpen(true)}
             />
           </div>
-        }
+        </div>
+        <span className="w-full border border-gray-500" />
+        <div className="flex flex-col items-start gap-4">
+          <Tabs tabList={strategyTabs} />
+          <Tabs tabList={buySellTabs} size="lg" style="custom-color" />
+        </div>
+        <TokenSwapItem
+          label={'Size'}
+          value={token.quantity}
+          placeholder="0.0"
+          onValueChange={(qt) =>
+            setToken((prev) => ({ ...prev, quantity: qt }))
+          }
+          tokenSelect={
+            <Select
+              items={tokens}
+              selectedItem={token}
+              setSelectedItem={(token: { label: string; value: string }) =>
+                setToken({
+                  label: token.label,
+                  value: token.value,
+                  quantity: 0,
+                })
+              }
+              style="no-style"
+            />
+          }
+          secondaryText={``}
+          complementaryComponent={
+            <div className="mx-2 mt-2 mb-6">
+              <CustomSlider
+                option={sizePercentage}
+                setOption={setSizePercentage} //TODO: this will alter the size
+                marks={sizeMarks}
+                min={0}
+                max={100}
+                step={0.1}
+              />
+            </div>
+          }
+        />
+        <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
+          <div className="flex justify-between text-xs font-normal text-gray-300">
+            <div>Strike</div>
+          </div>
+          <Tabs tabList={strikePrices} roundStyle="separate" size="xs" />
+          <div className="flex flex-col items-start justify-between gap-2 pt-3">
+            <div className="flex w-full items-center justify-between font-medium">
+              <h4 className="text-xs text-gray-300">Price</h4>
+              <h4 className="text-xs text-white">
+                {formatNumber(price, { decimalCases: 2, symbol: '$' })}
+              </h4>
+            </div>
+            <div className="flex w-full items-center justify-between font-medium">
+              <h4 className="text-xs text-gray-300">Fees</h4>
+              <h4 className="text-xs text-white">
+                {formatNumber(fees, { decimalCases: 2, symbol: '$' })}
+              </h4>
+            </div>
+            <span className="w-full border-t border-gray-400" />
+            <div className="flex w-full items-center justify-between font-medium">
+              <h4 className="text-xs text-gray-300">Total</h4>
+              <h4 className="text-sm text-white">
+                {formatNumber(total, { decimalCases: 2, symbol: '$' })}
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 rounded bg-gray-500 p-3 ">
+          <div className="flex justify-between text-xs font-normal text-gray-300">
+            <div>Expected Profit / Loss</div>
+            <div
+              className={clsx('text-sm font-normal', {
+                'text-green-400': epnl > 0,
+                'text-red-400': epnl < 0,
+              })}
+            >
+              {formatNumber(epnl, {
+                decimalCases: 2,
+                displayPositive: true,
+                symbol: '$',
+              })}
+            </div>
+          </div>
+        </div>
+        <Button label={'Execute'} size="lg" />
+      </div>
+      <IVXLeverageModal
+        isOpen={isLeverageModalOpen}
+        setIsOpen={setIsLeverageModalOpen}
+        leverage={leverage}
+        setLeverage={setLeverage}
       />
-      <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
-        <div className="flex justify-between text-xs font-normal text-gray-300">
-          <div>Strike</div>
-        </div>
-        <Tabs tabList={strikePrices} roundStyle="separate" size="xs" />
-        <div className="flex flex-col items-start justify-between gap-2 pt-3">
-          <div className="flex w-full items-center justify-between font-medium">
-            <h4 className="text-xs text-gray-300">Price</h4>
-            <h4 className="text-xs text-white">
-              {formatNumber(price, { decimalCases: 2, symbol: '$' })}
-            </h4>
-          </div>
-          <div className="flex w-full items-center justify-between font-medium">
-            <h4 className="text-xs text-gray-300">Fees</h4>
-            <h4 className="text-xs text-white">
-              {formatNumber(fees, { decimalCases: 2, symbol: '$' })}
-            </h4>
-          </div>
-          <span className="w-full border-t border-gray-400" />
-          <div className="flex w-full items-center justify-between font-medium">
-            <h4 className="text-xs text-gray-300">Total</h4>
-            <h4 className="text-sm text-white">
-              {formatNumber(total, { decimalCases: 2, symbol: '$' })}
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 rounded bg-gray-500 p-3 ">
-        <div className="flex justify-between text-xs font-normal text-gray-300">
-          <div>Expected Profit / Loss</div>
-          <div
-            className={clsx('text-sm font-normal', {
-              'text-green-400': epnl > 0,
-              'text-red-400': epnl < 0,
-            })}
-          >
-            {formatNumber(epnl, {
-              decimalCases: 2,
-              displayPositive: true,
-              symbol: '$',
-            })}
-          </div>
-        </div>
-      </div>
-      <Button label={'Execute'} size="lg" />
-    </div>
+    </>
   )
 }
 
