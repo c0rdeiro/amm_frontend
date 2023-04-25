@@ -7,9 +7,8 @@ import {
   YAxis,
   ReferenceLine,
 } from 'recharts'
-import formatNumber from '@/utils/formatNumber'
-
-import clsx from 'clsx'
+import tailwindConfig from 'tailwind.config.cjs'
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 type LineChartProps = {
   data: { tokenPrice: number; payoff: number }[]
@@ -20,7 +19,7 @@ type LineChartProps = {
 }
 
 const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
-  // const fullConfig = resolveConfig(tailwindConfig)
+  const tw = resolveConfig(tailwindConfig)
 
   return (
     <ResponsiveContainer width="100%" height={100}>
@@ -37,7 +36,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
           // cursor={{ visibility: 'default', stroke: '#9A9AAF' }}
           cursor={false}
           active={true}
-          allowEscapeViewBox={{ x: true, y: true }}
+          // allowEscapeViewBox={{ x: true, y: true }}
           wrapperStyle={{ visibility: 'visible' }} // this is required
           isAnimationActive={false}
           // offset={0}
@@ -48,10 +47,16 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
 
             return null
           }}
-          // position={{ y: -25 }}
+          // position={{ y: 0 }}
         />
 
-        <Line type="linear" dataKey="payoff" stroke="#24ca49" dot={false} />
+        <Line
+          type="linear"
+          dataKey="payoff"
+          stroke={tw.theme.colors.primary}
+          dot={false}
+          activeDot={{ fill: tw.theme.colors.white }}
+        />
       </Chart>
     </ResponsiveContainer>
   )

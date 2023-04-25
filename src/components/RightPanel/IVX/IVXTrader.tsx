@@ -1,23 +1,27 @@
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import {
   IoAddOutline,
   IoTrendingDownSharp,
   IoTrendingUpSharp,
 } from 'react-icons/io5'
 
-import Button from '../shared/Button'
-import CustomSlider from '../shared/CustomSlider'
-import Select from '../shared/Form/Select'
-import Tabs from '../shared/Tabs'
-import TokenSwapItem from '../shared/Swap/TokenSwapItem'
+import Button from '../../shared/Button'
+import CustomSlider from '../../shared/CustomSlider'
+import Select from '../../shared/Form/Select'
+import Tabs from '../../shared/Tabs'
+import TokenSwapItem from '../../shared/Swap/TokenSwapItem'
 import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import USDCIcon from '@/Icons/tokens/usdc'
 import USDTIcon from '@/Icons/tokens/usdt'
 import clsx from 'clsx'
-import IVXLeverageModal from '../Modals/IVXLeverageModal'
+import IVXLeverageModal from '../../Modals/IVXLeverageModal'
+import { calcChartData } from '@/utils/lineChartHelperFunctions'
+import { useTokenPrice } from '@/store/tokenStore'
+import IVXLineChartWrapper from './IVXLineChartWrapper'
+import Spinner from '@/components/shared/Spinner'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },
@@ -26,8 +30,9 @@ const sizeMarks = {
   75: { label: '75%', style: { color: '#A3a3b1' } },
   100: { label: '100%', style: { color: '#A3a3b1' } },
 }
+
 const IVXTrader = () => {
-  const [strikePrice, setStrikePrice] = useState<number>()
+  const tokenPrice = useTokenPrice()
   const [strategy, setStrategy] = useState<'call' | 'put' | 'straddle'>('call')
   const [isBuy, setIsBuy] = useState<boolean>(true)
   const [isLeverageModalOpen, setIsLeverageModalOpen] = useState<boolean>(false)
@@ -81,31 +86,32 @@ const IVXTrader = () => {
 
   const strikePrices: TabType[] = [
     {
-      key: 0,
+      key: 1700,
       label: '1,700',
       action: () => setStrikePrice(1700),
     },
     {
-      key: 1,
+      key: 1750,
       label: '1,750',
       action: () => setStrikePrice(1750),
     },
     {
-      key: 2,
+      key: 1800,
       label: '1,800',
       action: () => setStrikePrice(1800),
     },
     {
-      key: 3,
+      key: 1850,
       label: '1,850',
       action: () => setStrikePrice(1850),
     },
     {
-      key: 4,
+      key: 1900,
       label: '1,900',
       action: () => setStrikePrice(1900),
     },
   ]
+  const [strikePrice, setStrikePrice] = useState<number>(strikePrices[0]!.key)
 
   const tokens = [
     { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
@@ -116,17 +122,27 @@ const IVXTrader = () => {
   const [sizePercentage, setSizePercentage] = useState<number | number[]>(0)
 
   const availableMargin = 364038.73 //TODO
-  const price = 24 //TODO
+  const pricePerOption = 24 //TODO
   const fees = 33 //TODO
   const total = 2204.43 //TODO
   const epnl = 2204.43 //TODO
+  const optionPrice = 1800 //TODO
 
   const [token, setToken] = useState<{
     label: string
     value: string
     quantity: number | undefined
   }>({ ...tokens[0]!, quantity: undefined })
+  const maxRange = (tokenPrice ?? 0) * 1.6
 
+  const lineChartData = calcChartData(
+    maxRange,
+    strikePrice ?? 0,
+    strategy === 'call',
+    isBuy,
+    optionPrice,
+    token.quantity ? token.quantity / pricePerOption : 0
+  )
   return (
     <>
       <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-gray-500 bg-gray-600 p-5 text-white">
@@ -203,7 +219,7 @@ const IVXTrader = () => {
             <div className="flex w-full items-center justify-between font-medium">
               <h4 className="text-xs text-gray-300">Price</h4>
               <h4 className="text-xs text-white">
-                {formatNumber(price, { decimalCases: 2, symbol: '$' })}
+                {formatNumber(pricePerOption, { decimalCases: 2, symbol: '$' })}
               </h4>
             </div>
             <div className="flex w-full items-center justify-between font-medium">
@@ -237,6 +253,9 @@ const IVXTrader = () => {
               })}
             </div>
           </div>
+          <Suspense fallback={<Spinner />}>
+            <IVXLineChartWrapper data={lineChartData} />
+          </Suspense>
         </div>
         <Button label={'Execute'} size="lg" />
       </div>

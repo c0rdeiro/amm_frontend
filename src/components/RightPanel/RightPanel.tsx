@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import Tabs from '../shared/Tabs'
 import GMXTrader from './GMX/GMXTrader'
-import IVXTrader from './IVXTrader'
+import IVXTrader from './IVX/IVXTrader'
 
 const RightPanel = () => {
   const [activeTab, setActiveTab] = useState(0)
