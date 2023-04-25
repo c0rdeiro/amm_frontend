@@ -147,7 +147,7 @@ const IVXTrader = () => {
               leftIcon={<IoAddOutline size={16} />}
             />
             <Button
-              label={'3x'}
+              label={`${leverage}x`}
               styleType="monochromatic"
               size={'xs'}
               onClick={() => setIsLeverageModalOpen(true)}

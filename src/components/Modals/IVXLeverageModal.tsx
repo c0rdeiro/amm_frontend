@@ -59,8 +59,10 @@ const IVXLeverageModal: React.FC<IVXLeverageModalProps> = ({
               positions and open orders.
             </li>
           </ul>
-          <div className="flex gap-1 text-start text-xs font-normal text-red-400">
-            <MdInfo size={18} />
+          <div className="flex items-start gap-1 text-start text-xs font-normal text-red-400">
+            <div>
+              <MdInfo size={16.5} />
+            </div>
             <p>
               Selecting higher leverage such as [10×] increases your liquidation
               risk. Always manage your risk levels. See our help article for
