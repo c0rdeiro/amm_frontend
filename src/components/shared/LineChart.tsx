@@ -9,6 +9,7 @@ import {
   YAxis,
   ReferenceLine,
 } from 'recharts'
+import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart'
 import tailwindConfig from 'tailwind.config.cjs'
 import resolveConfig from 'tailwindcss/resolveConfig'
 
@@ -43,7 +44,15 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
       <RLineChart
         data={data}
         margin={{ top: 5, right: 5, left: 10, bottom: 5 }}
-        onMouseEnter={() => setisHover(true)}
+        onMouseMove={(state: CategoricalChartState) => {
+          if (
+            !state ||
+            !state.activePayload ||
+            state.activePayload.length === 0
+          ) {
+            setisHover(true)
+          }
+        }}
         onMouseLeave={() => setisHover(false)}
       >
         <ReferenceLine
