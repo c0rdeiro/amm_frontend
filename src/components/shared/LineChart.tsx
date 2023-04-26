@@ -39,7 +39,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
   return (
     <ResponsiveContainer width="100%" height={100}>
       <Chart data={data} margin={{ top: 5, right: 5, left: 10, bottom: 5 }}>
-        <ReferenceLine y={0} stroke="white" strokeWidth={2} />
+        <ReferenceLine y={0} stroke="white" strokeWidth={1} />
         <XAxis
           dataKey="tokenPrice"
           type="number"
@@ -79,7 +79,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
           type="linear"
           dataKey="payoff"
           stroke="url(#payoffColor)"
-          strokeWidth={3}
+          strokeWidth={4}
           dot={false}
           activeDot={{ fill: tw.theme.colors.white }}
         />
