@@ -1,6 +1,6 @@
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import {
   IoAddOutline,
   IoTrendingDownSharp,
@@ -18,10 +18,9 @@ import USDCIcon from '@/Icons/tokens/usdc'
 import USDTIcon from '@/Icons/tokens/usdt'
 import clsx from 'clsx'
 import IVXLeverageModal from '../../Modals/IVXLeverageModal'
-import { calcChartData } from '@/utils/lineChartHelperFunctions'
+import { calcChartData } from '@/utils/optionsHelpers'
 import { useTokenPrice } from '@/store/tokenStore'
 import IVXLineChartWrapper from './IVXLineChartWrapper'
-import Spinner from '@/components/shared/Spinner'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },
@@ -122,11 +121,10 @@ const IVXTrader = () => {
   const [sizePercentage, setSizePercentage] = useState<number | number[]>(0)
 
   const availableMargin = 364038.73 //TODO
-  const pricePerOption = 24 //TODO
+  const pricePerOption = 100 //TODO
   const fees = 33 //TODO
   const total = 2204.43 //TODO
   const epnl = 2204.43 //TODO
-  const optionPrice = 1800 //TODO
 
   const [token, setToken] = useState<{
     label: string
@@ -135,14 +133,17 @@ const IVXTrader = () => {
   }>({ ...tokens[0]!, quantity: undefined })
   const maxRange = (tokenPrice ?? 0) * 1.6
 
-  const lineChartData = calcChartData(
-    maxRange,
-    strikePrice ?? 0,
-    strategy === 'call',
-    isBuy,
-    optionPrice,
-    token.quantity ? token.quantity / pricePerOption : 0
-  )
+  let lineChartData = undefined
+
+  if (token.quantity && strikePrice)
+    lineChartData = calcChartData(
+      maxRange,
+      strikePrice,
+      strategy === 'call',
+      isBuy,
+      pricePerOption,
+      token.quantity / pricePerOption
+    )
   return (
     <>
       <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-gray-500 bg-gray-600 p-5 text-white">
@@ -257,12 +258,7 @@ const IVXTrader = () => {
                 })}
               </div>
             </div>
-            <Suspense fallback={<Spinner />}>
-              <IVXLineChartWrapper
-                data={lineChartData}
-                currentPrice={tokenPrice ?? 0}
-              />
-            </Suspense>
+            {lineChartData && <IVXLineChartWrapper data={lineChartData} />}
           </div>
         </span>
         <Button label={'Execute'} size="lg" />

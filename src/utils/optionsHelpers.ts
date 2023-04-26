@@ -20,6 +20,14 @@ export const calcChartData = (
   numContracts: number
 ) => {
   const data: { tokenPrice: number; payoff: number }[] = []
+  console.log({
+    maxRange,
+    strike,
+    isCall,
+    isBuy,
+    optionPrice,
+    numContracts,
+  })
 
   for (let index = 0; index < maxRange; index += 5) {
     data.push({
