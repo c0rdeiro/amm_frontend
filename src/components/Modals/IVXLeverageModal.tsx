@@ -2,7 +2,7 @@ import { IoCloseOutline } from 'react-icons/io5'
 import Modal from '../shared/Modal'
 import CustomSlider from '../shared/CustomSlider'
 import { useState } from 'react'
-import { MdInfo, MdKeyboardArrowRight } from 'react-icons/md'
+import { MdInfo } from 'react-icons/md'
 import Button from '../shared/Button'
 
 type IVXLeverageModalProps = {
@@ -68,14 +68,6 @@ const IVXLeverageModal: React.FC<IVXLeverageModalProps> = ({
               risk. Always manage your risk levels. See our help article for
               more information.
             </p>
-          </div>
-          <div className="flex items-center gap-1 text-xs font-normal text-primary">
-            <p>Check on Leverage & Margin table</p>
-            <MdKeyboardArrowRight size={18} />
-          </div>
-          <div className="flex items-center gap-1 text-xs font-normal text-primary">
-            <p>Position Limit Enlarge</p>
-            <MdKeyboardArrowRight size={18} />
           </div>
         </div>
         <Button label="Confirm" onClick={confirm} size="lg" />
