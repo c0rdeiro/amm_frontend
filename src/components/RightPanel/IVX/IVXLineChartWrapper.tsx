@@ -1,11 +1,15 @@
 import LineChart from '@/components/shared/LineChart'
-import { useMarket } from '@/store/tokenStore'
+import { useMarket, useTokenPrice } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 
 type IVXLineChartWrapperProps = {
   data: { tokenPrice: number; payoff: number }[]
+  currentPrice: number
 }
-const IVXLineChartWrapper: React.FC<IVXLineChartWrapperProps> = ({ data }) => {
+const IVXLineChartWrapper: React.FC<IVXLineChartWrapperProps> = ({
+  data,
+  currentPrice,
+}) => {
   const market = useMarket()
   const renderChartTooltip = (payload: {
     tokenPrice: number
@@ -21,6 +25,12 @@ const IVXLineChartWrapper: React.FC<IVXLineChartWrapperProps> = ({ data }) => {
     )
   }
 
-  return <LineChart data={data} renderTooltip={renderChartTooltip} />
+  return (
+    <LineChart
+      data={data}
+      renderTooltip={renderChartTooltip}
+      currentPrice={currentPrice}
+    />
+  )
 }
 export default IVXLineChartWrapper

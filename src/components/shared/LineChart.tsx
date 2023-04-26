@@ -16,15 +16,20 @@ type LineChartProps = {
     tokenPrice: number
     payoff: number
   }) => React.ReactNode
+  currentPrice: number
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
+const LineChart: React.FC<LineChartProps> = ({
+  data,
+  renderTooltip,
+  currentPrice,
+}) => {
   const tw = resolveConfig(tailwindConfig)
 
   return (
     <ResponsiveContainer width="100%" height={100}>
       <Chart data={data} margin={{ top: 5, right: 5, left: 10, bottom: 5 }}>
-        <ReferenceLine y={0} stroke="#9A9AAF" strokeWidth={2} />
+        <ReferenceLine y={currentPrice} stroke="#9A9AAF" strokeWidth={2} />
         <XAxis
           dataKey="tokenPrice"
           type="number"

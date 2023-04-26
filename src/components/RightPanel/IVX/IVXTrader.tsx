@@ -210,53 +210,61 @@ const IVXTrader = () => {
             </div>
           }
         />
-        <div className="flex flex-col gap-2 rounded bg-gray-500 p-3">
-          <div className="flex justify-between text-xs font-normal text-gray-300">
-            <div>Strike</div>
-          </div>
-          <Tabs tabList={strikePrices} roundStyle="separate" size="xs" />
-          <div className="flex flex-col items-start justify-between gap-2 pt-3">
-            <div className="flex w-full items-center justify-between font-medium">
-              <h4 className="text-xs text-gray-300">Price</h4>
-              <h4 className="text-xs text-white">
-                {formatNumber(pricePerOption, { decimalCases: 2, symbol: '$' })}
-              </h4>
+        <span className="flex  w-full flex-col items-start gap-4 md:flex-row lg:flex-col">
+          <div className="flex h-auto w-full flex-col gap-2 rounded bg-gray-500 p-3 md:h-44 lg:h-44">
+            <div className="flex justify-between text-xs font-normal text-gray-300">
+              <div>Strike</div>
             </div>
-            <div className="flex w-full items-center justify-between font-medium">
-              <h4 className="text-xs text-gray-300">Fees</h4>
-              <h4 className="text-xs text-white">
-                {formatNumber(fees, { decimalCases: 2, symbol: '$' })}
-              </h4>
-            </div>
-            <span className="w-full border-t border-gray-400" />
-            <div className="flex w-full items-center justify-between font-medium">
-              <h4 className="text-xs text-gray-300">Total</h4>
-              <h4 className="text-sm text-white">
-                {formatNumber(total, { decimalCases: 2, symbol: '$' })}
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 rounded bg-gray-500 p-3 ">
-          <div className="flex justify-between text-xs font-normal text-gray-300">
-            <div>Expected Profit / Loss</div>
-            <div
-              className={clsx('text-sm font-normal', {
-                'text-green-400': epnl > 0,
-                'text-red-400': epnl < 0,
-              })}
-            >
-              {formatNumber(epnl, {
-                decimalCases: 2,
-                displayPositive: true,
-                symbol: '$',
-              })}
+            <Tabs tabList={strikePrices} roundStyle="separate" size="xs" />
+            <div className="flex flex-col items-start justify-between gap-2 pt-3">
+              <div className="flex w-full items-center justify-between font-medium">
+                <h4 className="text-xs text-gray-300">Price</h4>
+                <h4 className="text-xs text-white">
+                  {formatNumber(pricePerOption, {
+                    decimalCases: 2,
+                    symbol: '$',
+                  })}
+                </h4>
+              </div>
+              <div className="flex w-full items-center justify-between font-medium">
+                <h4 className="text-xs text-gray-300">Fees</h4>
+                <h4 className="text-xs text-white">
+                  {formatNumber(fees, { decimalCases: 2, symbol: '$' })}
+                </h4>
+              </div>
+              <span className="w-full border-t border-gray-400" />
+              <div className="flex w-full items-center justify-between font-medium">
+                <h4 className="text-xs text-gray-300">Total</h4>
+                <h4 className="text-sm text-white">
+                  {formatNumber(total, { decimalCases: 2, symbol: '$' })}
+                </h4>
+              </div>
             </div>
           </div>
-          <Suspense fallback={<Spinner />}>
-            <IVXLineChartWrapper data={lineChartData} />
-          </Suspense>
-        </div>
+          <div className="flex h-auto w-full flex-col gap-2 rounded bg-gray-500 p-3 md:h-44 lg:h-44">
+            <div className="flex justify-between text-xs font-normal text-gray-300">
+              <div>Expected Profit / Loss</div>
+              <div
+                className={clsx('text-sm font-normal', {
+                  'text-green-400': epnl > 0,
+                  'text-red-400': epnl < 0,
+                })}
+              >
+                {formatNumber(epnl, {
+                  decimalCases: 2,
+                  displayPositive: true,
+                  symbol: '$',
+                })}
+              </div>
+            </div>
+            <Suspense fallback={<Spinner />}>
+              <IVXLineChartWrapper
+                data={lineChartData}
+                currentPrice={tokenPrice ?? 0}
+              />
+            </Suspense>
+          </div>
+        </span>
         <Button label={'Execute'} size="lg" />
       </div>
       <IVXLeverageModal
