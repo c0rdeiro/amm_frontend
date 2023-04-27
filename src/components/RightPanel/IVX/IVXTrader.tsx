@@ -211,7 +211,7 @@ const IVXTrader = () => {
             </div>
           }
         />
-        <span className="flex  w-full flex-col items-start gap-4 md:flex-row lg:flex-col">
+        <span className="flex  w-full flex-col items-start gap-4 md:flex-row xl:flex-col">
           <div className="flex h-auto w-full flex-col gap-2 rounded bg-gray-500 p-3 md:h-44 lg:h-44">
             <div className="flex justify-between text-xs font-normal text-gray-300">
               <div>Strike</div>
