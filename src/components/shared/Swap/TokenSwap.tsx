@@ -187,6 +187,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
               : 'Enter an amount'
           }
           size="lg"
+          labelColor="dark"
         />
       </motion.div>
       <motion.div

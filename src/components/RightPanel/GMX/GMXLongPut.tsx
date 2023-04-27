@@ -214,7 +214,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
           </div>
         </motion.div>
         <motion.div id="gmxbtn" layout="position">
-          <Button label={getSubmitBtnLabel()} size="lg" />
+          <Button label={getSubmitBtnLabel()} size="lg" labelColor="dark" />
         </motion.div>
       </AnimatePresence>
 

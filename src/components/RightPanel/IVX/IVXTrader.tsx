@@ -158,15 +158,16 @@ const IVXTrader = () => {
           </div>
           <div className="flex items-start gap-2">
             <Button
-              label={'Add Margin'}
+              label={'Deposit / Withdraw'}
               styleType="monochromatic"
               size={'xs'}
-              leftIcon={<IoAddOutline size={16} />}
+              labelColor="gray"
             />
             <Button
               label={`${leverage}x`}
               styleType="monochromatic"
               size={'xs'}
+              labelColor="gray"
               onClick={() => setIsLeverageModalOpen(true)}
             />
           </div>
@@ -261,7 +262,7 @@ const IVXTrader = () => {
             {lineChartData && <IVXLineChartWrapper data={lineChartData} />}
           </div>
         </span>
-        <Button label={'Execute'} size="lg" />
+        <Button label={'Execute'} size="lg" labelColor="dark" />
       </div>
       <IVXLeverageModal
         isOpen={isLeverageModalOpen}
