@@ -16,9 +16,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Head>
 
       <>
-        <div className="flex h-screen min-h-screen w-screen flex-col overflow-auto overflow-x-hidden bg-gray-700">
+        <div className="flex h-full min-h-screen w-screen flex-col overflow-auto overflow-x-hidden bg-gray-700">
           <Header />
-          <main className="flex h-full w-full flex-row items-center justify-center ">
+          <main className="flex h-full w-full flex-row items-center justify-center">
             {children}
           </main>
         </div>
