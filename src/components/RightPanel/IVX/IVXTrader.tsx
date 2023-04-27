@@ -146,7 +146,7 @@ const IVXTrader = () => {
     )
   return (
     <>
-      <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-gray-500 bg-gray-600 p-5 text-white">
+      <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-t-0 border-gray-500 bg-gray-600 p-5 text-white">
         <div className="flex items-end justify-between gap-2">
           <div className="flex flex-col items-start gap-1">
             <h4 className="text-sm font-medium text-gray-300">

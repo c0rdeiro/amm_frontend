@@ -8,7 +8,7 @@ type TradingPageProps = {
 
 const MarketTradingPage: React.FC<TradingPageProps> = ({ tokenName }) => {
   return (
-    <div className="flex h-full w-full flex-col justify-between text-white xl:flex-row">
+    <div className="flex h-full w-full flex-col justify-between gap-5 pb-5 text-white lg:pb-0 xl:flex-row">
       <div className="w-full shrink pl-4 pt-4">
         <Chart />
         {/*<TokenPositionsPanel /> */}

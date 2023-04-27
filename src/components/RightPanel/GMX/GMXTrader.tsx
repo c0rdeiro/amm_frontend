@@ -69,7 +69,7 @@ const GMXTrader = () => {
       <AnimatePresence>
         <motion.div
           layout="position"
-          className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5 text-white"
+          className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-t-0 border-gray-500 bg-gray-600 p-5 text-white"
         >
           <div className="flex flex-col gap-2">
             <Tabs tabList={strategyTabs} style="normal" />

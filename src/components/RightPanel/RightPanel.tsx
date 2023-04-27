@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import Tabs from '../shared/Tabs'
 import GMXTrader from './GMX/GMXTrader'
 import IVXTrader from './IVX/IVXTrader'
+import FolderTabs from './FolderTabs'
 
 const RightPanel = () => {
   const [activeTab, setActiveTab] = useState(0)
@@ -16,8 +17,8 @@ const RightPanel = () => {
         <Image
           alt="ivx-logo"
           src="/IVX_Gradient.svg"
-          width={50}
-          height={9}
+          width={68}
+          height={23}
           quality={100}
         />
       ),
@@ -33,8 +34,8 @@ const RightPanel = () => {
         <Image
           alt="gmx-logo"
           src="/gmx_logo.svg"
-          width={25}
-          height={5}
+          width={63}
+          height={15}
           quality={100}
         />
       ),
@@ -61,13 +62,7 @@ const RightPanel = () => {
   }
   return (
     <div className="mx-4 flex h-min min-w-82 flex-col font-medium">
-      <Tabs
-        tabList={tabs}
-        style="monochromatic"
-        size="sm"
-        roundStyle="folder"
-        defaultIndex={activeTab}
-      />
+      <FolderTabs tabList={tabs} defaultIndex={activeTab} />
       <div>{getOptionTab()}</div>
     </div>
   )
