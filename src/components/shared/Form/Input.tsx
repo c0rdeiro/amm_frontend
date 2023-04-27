@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({
           'h-4 w-4 accent-primary': size === 'checkbox',
           'w-29 h-9': size === 'md',
           'h-12 w-full': size === 'lg',
-          'rounded-lg border border-solid border-input-border px-4':
+          'border-input-border rounded-lg border border-solid px-4':
             styleType === 'normal',
           'rounded bg-gray-600': styleType === 'discrete', //TODO: this bg should be inherit, look up why it doesnt apply that
         }

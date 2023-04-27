@@ -21,6 +21,7 @@ import IVXLeverageModal from '../../Modals/IVXLeverageModal'
 import { calcChartData } from '@/utils/optionsHelpers'
 import { useTokenPrice } from '@/store/tokenStore'
 import IVXLineChartWrapper from './IVXLineChartWrapper'
+import IVXDepositWithdrawModal from '@/components/Modals/IVXDepositWithdrawModal'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },
@@ -36,6 +37,8 @@ const IVXTrader = () => {
   const [isBuy, setIsBuy] = useState<boolean>(true)
   const [isLeverageModalOpen, setIsLeverageModalOpen] = useState<boolean>(false)
   const [leverage, setLeverage] = useState<number | number[]>(3)
+  const [isDepositWithdrawModalOpen, setIsDepositWithdrawModalOpen] =
+    useState<boolean>(false)
 
   const strategyTabs: TabType[] = [
     {
@@ -162,6 +165,7 @@ const IVXTrader = () => {
               styleType="monochromatic"
               size={'xs'}
               labelColor="gray"
+              onClick={() => setIsDepositWithdrawModalOpen(true)}
             />
             <Button
               label={`${leverage}x`}
@@ -269,6 +273,10 @@ const IVXTrader = () => {
         setIsOpen={setIsLeverageModalOpen}
         leverage={leverage}
         setLeverage={setLeverage}
+      />
+      <IVXDepositWithdrawModal
+        isOpen={isDepositWithdrawModalOpen}
+        setIsOpen={setIsDepositWithdrawModalOpen}
       />
     </>
   )
