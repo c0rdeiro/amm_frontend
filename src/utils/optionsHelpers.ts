@@ -2,12 +2,26 @@ export const calcPayoff = (
   tokenPrice: number,
   strike: number,
   pricePerOption: number,
-  isCall: boolean
+  isCall: boolean,
+  isBuy: boolean,
+  numContracts: number
 ) => {
-  if (isCall) {
-    return Math.max(0, tokenPrice - strike) - pricePerOption
+  if (isBuy) {
+    if (isCall) {
+      return (Math.max(0, tokenPrice - strike) - pricePerOption) * numContracts
+    } else {
+      return (Math.max(0, strike - tokenPrice) - pricePerOption) * numContracts
+    }
   } else {
-    return Math.max(0, strike - tokenPrice) - pricePerOption
+    if (isCall) {
+      return (
+        -1 * (Math.max(0, tokenPrice - strike) - pricePerOption) * numContracts
+      )
+    } else {
+      return (
+        -1 * (Math.max(0, strike - tokenPrice) - pricePerOption) * numContracts
+      )
+    }
   }
 }
 
@@ -24,10 +38,14 @@ export const calcChartData = (
   for (let index = 0; index < maxRange; index += 5) {
     data.push({
       tokenPrice: index,
-      payoff:
-        (isBuy
-          ? calcPayoff(index, strike, optionPrice, isCall)
-          : -1 * calcPayoff(index, strike, optionPrice, isCall)) * numContracts,
+      payoff: calcPayoff(
+        index,
+        strike,
+        optionPrice,
+        isCall,
+        isBuy,
+        numContracts
+      ),
     })
   }
 

@@ -249,6 +249,10 @@ const IVXTrader = () => {
               strike={strikePrice}
               premium={pricePerOption}
               isCall={strategy === 'call'}
+              isBuy={isBuy}
+              numContracts={
+                token.quantity ? token.quantity / pricePerOption : 1
+              }
             />
           )}
         </span>

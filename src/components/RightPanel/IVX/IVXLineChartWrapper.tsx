@@ -10,12 +10,16 @@ type IVXLineChartWrapperProps = {
   strike: number
   premium: number
   isCall: boolean
+  isBuy: boolean
+  numContracts: number
 }
 const IVXLineChartWrapper: React.FC<IVXLineChartWrapperProps> = ({
   data,
   strike,
   premium,
   isCall,
+  isBuy,
+  numContracts,
 }) => {
   const market = useMarket()
   const tokenPrice = useTokenPrice()
@@ -24,9 +28,11 @@ const IVXLineChartWrapper: React.FC<IVXLineChartWrapperProps> = ({
 
   useEffect(() => {
     if (tokenPrice && !isHover) {
-      setEpnl(calcPayoff(tokenPrice, strike, premium, isCall))
+      setEpnl(
+        calcPayoff(tokenPrice, strike, premium, isCall, isBuy, numContracts)
+      )
     }
-  }, [tokenPrice, isHover])
+  }, [tokenPrice, isHover, strike, premium, isCall, isBuy, numContracts])
 
   const renderChartTooltip = (payload?: {
     tokenPrice: number
