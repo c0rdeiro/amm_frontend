@@ -1,27 +1,22 @@
-import { TabType } from '@/types/next'
-import formatNumber from '@/utils/formatNumber'
-import { useState } from 'react'
-import {
-  IoAddOutline,
-  IoTrendingDownSharp,
-  IoTrendingUpSharp,
-} from 'react-icons/io5'
-
-import Button from '../../shared/Button'
-import CustomSlider from '../../shared/CustomSlider'
-import Select from '../../shared/Form/Select'
-import Tabs from '../../shared/Tabs'
-import TokenSwapItem from '../../shared/Swap/TokenSwapItem'
+import IVXDepositWithdrawModal from '@/components/Modals/IVXDepositWithdrawModal'
 import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import USDCIcon from '@/Icons/tokens/usdc'
 import USDTIcon from '@/Icons/tokens/usdt'
-import clsx from 'clsx'
-import IVXLeverageModal from '../../Modals/IVXLeverageModal'
-import { calcChartData } from '@/utils/optionsHelpers'
 import { useTokenPrice } from '@/store/tokenStore'
+import { TabType } from '@/types/next'
+import formatNumber from '@/utils/formatNumber'
+import { calcChartData } from '@/utils/optionsHelpers'
+import { useEffect, useState } from 'react'
+import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
+
+import IVXLeverageModal from '../../Modals/IVXLeverageModal'
+import Button from '../../shared/Button'
+import CustomSlider from '../../shared/CustomSlider'
+import Select from '../../shared/Form/Select'
+import TokenSwapItem from '../../shared/Swap/TokenSwapItem'
+import Tabs from '../../shared/Tabs'
 import IVXLineChartWrapper from './IVXLineChartWrapper'
-import IVXDepositWithdrawModal from '@/components/Modals/IVXDepositWithdrawModal'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },
@@ -127,7 +122,6 @@ const IVXTrader = () => {
   const pricePerOption = 100 //TODO
   const fees = 33 //TODO
   const total = 2204.43 //TODO
-  const epnl = 2204.43 //TODO
 
   const [token, setToken] = useState<{
     label: string
@@ -147,6 +141,7 @@ const IVXTrader = () => {
       pricePerOption,
       token.quantity ? token.quantity / pricePerOption : 1
     )
+
   return (
     <>
       <div className="flex w-full flex-col gap-3 rounded-r-lg rounded-bl-lg border border-t-0 border-gray-500 bg-gray-600 p-5 text-white">
@@ -247,24 +242,15 @@ const IVXTrader = () => {
               </div>
             </div>
           </div>
-          <div className="flex h-auto w-full flex-col gap-2 rounded bg-gray-500 p-3 md:h-44 lg:h-44">
-            <div className="flex justify-between text-xs font-normal text-gray-300">
-              <div>Expected Profit / Loss</div>
-              <div
-                className={clsx('text-sm font-normal', {
-                  'text-green-400': epnl > 0,
-                  'text-red-400': epnl < 0,
-                })}
-              >
-                {formatNumber(epnl, {
-                  decimalCases: 2,
-                  displayPositive: true,
-                  symbol: '$',
-                })}
-              </div>
-            </div>
-            {lineChartData && <IVXLineChartWrapper data={lineChartData} />}
-          </div>
+
+          {lineChartData && (
+            <IVXLineChartWrapper
+              data={lineChartData}
+              strike={strikePrice}
+              premium={pricePerOption}
+              isCall={strategy === 'call'}
+            />
+          )}
         </span>
         <Button label={'Execute'} size="lg" labelColor="dark" />
       </div>
