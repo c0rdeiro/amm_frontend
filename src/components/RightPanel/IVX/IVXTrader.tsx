@@ -138,14 +138,14 @@ const IVXTrader = () => {
 
   let lineChartData = undefined
 
-  if (token.quantity && strikePrice)
+  if (strikePrice)
     lineChartData = calcChartData(
       maxRange,
       strikePrice,
       strategy === 'call',
       isBuy,
       pricePerOption,
-      token.quantity / pricePerOption
+      token.quantity ? token.quantity / pricePerOption : 1
     )
   return (
     <>

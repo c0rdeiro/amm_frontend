@@ -9,19 +9,25 @@ import {
   YAxis,
   ReferenceLine,
 } from 'recharts'
-import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart'
 import tailwindConfig from 'tailwind.config.cjs'
 import resolveConfig from 'tailwindcss/resolveConfig'
 
 type LineChartProps = {
   data: { tokenPrice: number; payoff: number }[]
+  isHover: boolean
+  setIsHover: (flag: boolean) => void
   renderTooltip: (payload?: {
     tokenPrice: number
     payoff: number
   }) => React.ReactNode
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
+const LineChart: React.FC<LineChartProps> = ({
+  data,
+  renderTooltip,
+  isHover,
+  setIsHover,
+}) => {
   const tw = resolveConfig(tailwindConfig)
   const tokenPrice = useTokenPrice()
   const gradientOffset = () => {
@@ -38,22 +44,17 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
     return dataMax / (dataMax - dataMin)
   }
   const off = gradientOffset()
-  const [isHover, setisHover] = useState(false)
   return (
     <ResponsiveContainer width="100%" height={100}>
       <RLineChart
         data={data}
         margin={{ top: 5, right: 5, left: 10, bottom: 5 }}
-        onMouseMove={(state: CategoricalChartState) => {
-          if (
-            !state ||
-            !state.activePayload ||
-            state.activePayload.length === 0
-          ) {
-            setisHover(true)
-          }
+        onMouseMove={() => {
+          setIsHover(true)
         }}
-        onMouseLeave={() => setisHover(false)}
+        onMouseLeave={() => {
+          setIsHover(false)
+        }}
       >
         <ReferenceLine
           x={tokenPrice}
@@ -79,13 +80,13 @@ const LineChart: React.FC<LineChartProps> = ({ data, renderTooltip }) => {
           cursor={{ visibility: 'default', stroke: '#606571', strokeWidth: 2 }}
           // active={true}
           // allowEscapeViewBox={{ x: true, y: true }}
-          wrapperStyle={{ visibility: 'visible' }} // this is required
+          // wrapperStyle={{ visibility: 'visible' }} // this is required
           isAnimationActive={false}
           // offset={0}
           content={(prop) => {
             if (prop.payload && prop.payload.length) {
               return renderTooltip(prop.payload[0]?.payload)
-            } else return renderTooltip()
+            }
           }}
           position={{ y: 0 }}
         />
