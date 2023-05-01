@@ -1,6 +1,6 @@
 import Spinner from '@/components/shared/Spinner'
 import { getTokenData } from '@/lib/getTokenData'
-import { useGraphVisibleRange, useMarket } from '@/store/tokenStore'
+import { useChartVisibleRange, useMarket } from '@/store/tokenStore'
 import { useQuery } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 
@@ -15,7 +15,7 @@ const Chart: React.FC = () => {
     }
   )
 
-  const frequency = useGraphVisibleRange()
+  const frequency = useChartVisibleRange()
   const marketToken = useMarket()
 
   const { data } = useQuery({

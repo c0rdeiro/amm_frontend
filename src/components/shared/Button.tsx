@@ -4,7 +4,7 @@ type ButtonProps = {
   label: string
   type?: 'submit' | 'reset' | 'button'
   onClick?: (e: React.MouseEvent<HTMLElement>) => void
-  size?: 'xs' | 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'nopadding'
   isDisabled?: boolean
   styleType?:
     | 'normal'

@@ -40,6 +40,7 @@ const TokenSelect: React.FC = () => {
           }}
           fontSize="lg"
           style="no-style"
+          textColor="white"
         />
 
         <TokenPrice />
