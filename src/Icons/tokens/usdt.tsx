@@ -8,7 +8,7 @@ const USDTIcon: React.FC<TokenIconProps> = ({ size }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_392_2)">
+    <g clipPath="url(#clip0_392_2)">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
