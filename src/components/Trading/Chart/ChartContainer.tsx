@@ -11,14 +11,16 @@ import {
   useLayoutEffect,
   useRef,
 } from 'react'
+import tailwindConfig from 'tailwind.config.cjs'
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
   grid: {
     vertLines: {
-      color: 'rgba(154, 154, 175, 0.1)',
+      color: '#1F2227',
     },
     horzLines: {
-      color: 'rgba(154, 154, 175, 0.1)',
+      color: '#1F2227',
     },
   },
   timeScale: {
@@ -54,6 +56,7 @@ type ChartContainerProps = {
 
 const ChartContainer = forwardRef<any, ChartContainerProps>(
   ({ children, container }, ref) => {
+    const { theme } = resolveConfig(tailwindConfig)
     const chartApiRef = useRef<{
       api: () => any
       free: () => void
@@ -71,17 +74,20 @@ const ChartContainer = forwardRef<any, ChartContainerProps>(
               },
               fontFamily: "'Inter', sans-serif",
               fontSize: 12,
-              textColor: '#9A9AAF',
+              textColor: theme.colors.gray[300],
             },
             crosshair: {
               mode: 0,
               vertLine: {
-                color: '#9A9AAF66', //tailwind?.theme?.colors?['purple'] //TODO: import colors from tailwind
-                width: 2,
+                color: theme.colors.white,
+                style: 2,
+                width: 1,
               },
               horzLine: {
-                color: '#9A9AAF66',
-                width: 2,
+                color: theme.colors.white,
+                labelBackgroundColor: theme.colors.white,
+                style: 2,
+                width: 1,
               },
             },
 

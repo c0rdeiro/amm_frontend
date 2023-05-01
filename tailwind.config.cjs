@@ -19,9 +19,11 @@ module.exports = {
       'primaryDarker': '#BF9D22',
       'green': {
         400: '#0DAC86',
+        500: '#143f38'
       },
       'red': {
         400: '#E35759',
+        500: '#4a292d'
       },
       'modal-bg': 'rgba(0, 0, 0, 0.4)'
       

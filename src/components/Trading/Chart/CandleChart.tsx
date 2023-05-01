@@ -15,6 +15,8 @@ import { useEffect, useRef } from 'react'
 import ChartWrapper from './ChartWrapper'
 import { animateValue } from './Header/TokenPrice'
 import Series from './Series'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from 'tailwind.config.cjs'
 
 interface ChartProps {
   candlesData: OhlcData[]
@@ -27,6 +29,7 @@ const CandleChart: React.FC<ChartProps> = ({
 }: ChartProps) => {
   const candleSeries = useRef<ISeriesApi<'Candlestick'>>(null)
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
+  const { theme } = resolveConfig(tailwindConfig)
   const market = useMarket()
   const interval = useCandlesInterval()
   const { setTokenPrice } = useTokenActions()
@@ -74,7 +77,10 @@ const CandleChart: React.FC<ChartProps> = ({
         volumeSeries.current?.update({
           time: (raw_data.k.t / 1000) as UTCTimestamp,
           value: +raw_data.k.v,
-          color: +raw_data.k.o > +raw_data.k.c ? '#952f34' : '#197148',
+          color:
+            +raw_data.k.o > +raw_data.k.c
+              ? theme.colors.red[500]
+              : theme.colors.green[500],
         })
     }
     return () => {

@@ -15,6 +15,8 @@ import {
   useRef,
 } from 'react'
 import { ChartContext } from './ChartContainer'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from 'tailwind.config.cjs'
 
 type SeriesProps =
   | {
@@ -29,6 +31,7 @@ type SeriesProps =
 const Series = forwardRef<ISeriesApi<'Candlestick' | 'Histogram'>, SeriesProps>(
   ({ type, initialData }, ref) => {
     const { setChartHoverInfo, clearChartHoverInfo } = useTokenActions()
+    const { theme } = resolveConfig(tailwindConfig)
 
     const parent = useContext(ChartContext)
     const context = useRef<{
@@ -42,10 +45,10 @@ const Series = forwardRef<ISeriesApi<'Candlestick' | 'Histogram'>, SeriesProps>(
           this.series =
             type === 'candles'
               ? parent.api().addCandlestickSeries({
-                  upColor: '#20b26c',
-                  downColor: '#ef454a',
-                  wickUpColor: '#20b26c',
-                  wickDownColor: '#ef454a',
+                  upColor: theme.colors.green[400],
+                  downColor: theme.colors.red[400],
+                  wickUpColor: theme.colors.green[400],
+                  wickDownColor: theme.colors.red[400],
                   borderVisible: false,
                 })
               : parent.api().addHistogramSeries({
