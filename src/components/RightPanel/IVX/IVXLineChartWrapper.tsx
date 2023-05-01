@@ -81,7 +81,12 @@ const IVXLineChartWrapper: React.FC<IVXLineChartWrapperProps> = ({
           setIsHover={setisHover}
         />
         {tokenPrice && !isHover && (
-          <div className="absolute right-14 top-0 flex items-center justify-center rounded bg-gray-400 py-1 px-2 text-xs font-normal text-white sm:right-40 xl:right-14">
+          <div
+            className={clsx(
+              'absolute right-14 flex items-center justify-center rounded bg-gray-400 py-1 px-2 text-xs font-normal text-white sm:right-40 xl:right-14',
+              { 'top-0': isBuy, 'top-20': !isBuy }
+            )}
+          >
             <p>
               {market.label} Price Now
               {formatNumber(tokenPrice, {
