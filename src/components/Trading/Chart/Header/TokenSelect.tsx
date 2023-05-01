@@ -1,51 +1,47 @@
+import Select from '@/components/shared/Form/Select'
 import Spinner from '@/components/shared/Spinner'
-import { markets } from '@/constants'
 import tokenIcon from '@/hooks/tokenIcon'
+import BTCIcon from '@/Icons/tokens/btc'
+import ETHIcon from '@/Icons/tokens/eth'
 import { useMarket, useTokenActions } from '@/store/tokenStore'
-import { Listbox, Transition } from '@headlessui/react'
+import { Market } from '@/types/next'
 import { useRouter } from 'next/router'
-import { Fragment, Suspense } from 'react'
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
+import { Suspense } from 'react'
 
 import TokenPrice from './TokenPrice'
 
 const TokenSelect: React.FC = () => {
   const { setMarket: setMarket } = useTokenActions()
-  const router = useRouter()
+  const { push } = useRouter()
   const market = useMarket()
 
+  const markets: Market[] = [
+    {
+      value: 'ETHUSDT',
+      label: 'ETH / USDT',
+      icon: <ETHIcon size={18} />,
+    },
+    {
+      value: 'BTCUSDT',
+      label: 'BTC / USDT',
+      icon: <BTCIcon size={18} />,
+    },
+  ]
   return (
     <Suspense fallback={<Spinner />}>
-      <div className="flex flex-row items-start gap-2 text-2xl font-semibold xl:text-2.5xl">
+      <div className="flex flex-row items-center gap-4">
         {market ? tokenIcon(market, 36) : undefined}
-        <Listbox value={market.symbol}>
-          <Listbox.Button className="flex flex-row items-center gap-1">
-            {market.label} <MdOutlineKeyboardArrowDown size="1.5rem" />
-          </Listbox.Button>
-          <Transition
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Listbox.Options className="text-text-default absolute mt-10 ml-10 min-w-min gap-4 overflow-auto rounded-lg bg-white py-4 pl-2 pr-4 text-base font-medium shadow-dark focus:outline-none dark:bg-darkSecondary dark:text-white dark:shadow-none">
-              {markets?.map((item, idx) => (
-                <Listbox.Option
-                  key={idx}
-                  value={item}
-                  onClick={() => {
-                    router.push(`/trading/${item.label.toLowerCase()}`)
-                    setMarket(item)
-                  }}
-                  className="flex items-center gap-2 px-2 py-2 hover:cursor-pointer"
-                >
-                  {tokenIcon(item, 20)}
-                  {item.label}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
-          </Transition>
-        </Listbox>
+        <Select
+          items={markets}
+          selectedItem={market}
+          setSelectedItem={(market: Market) => {
+            setMarket(market)
+            push(`/trading/${market.value.toLowerCase()}`)
+          }}
+          fontSize="lg"
+          style="no-style"
+        />
+
         <TokenPrice />
       </div>
     </Suspense>

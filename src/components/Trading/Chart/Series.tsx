@@ -71,25 +71,21 @@ const Series = forwardRef<ISeriesApi<'Candlestick' | 'Histogram'>, SeriesProps>(
                     label: 'Open',
                     type: '$',
                     value: val.open,
-                    colorMode: 'gray',
                   },
                   {
                     label: 'High',
                     type: '$',
                     value: val.high,
-                    colorMode: 'gray',
                   },
                   {
                     label: 'Low',
                     type: '$',
                     value: val.low,
-                    colorMode: 'gray',
                   },
                   {
                     label: 'Close',
                     type: '$',
                     value: val.close,
-                    colorMode: 'gray',
                   },
                 ]
                 setChartHoverInfo(items)
@@ -100,7 +96,7 @@ const Series = forwardRef<ISeriesApi<'Candlestick' | 'Histogram'>, SeriesProps>(
           } else {
             this.series.priceScale().applyOptions({
               scaleMargins: {
-                top: 0.8, // highest point of the series will be 70% away from the top
+                top: 0.9, // highest point of the series will be 70% away from the top
                 bottom: 0,
               },
             })

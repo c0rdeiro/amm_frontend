@@ -61,7 +61,7 @@ const RightPanel = () => {
     }
   }
   return (
-    <div className="mx-4 flex h-min min-w-82 flex-col font-medium">
+    <div className="mx-5 flex h-min min-w-82 flex-col font-medium">
       <FolderTabs tabList={tabs} defaultIndex={activeTab} />
       <div>{getOptionTab()}</div>
     </div>

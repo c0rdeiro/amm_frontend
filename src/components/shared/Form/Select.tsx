@@ -22,6 +22,7 @@ type SelectProps<T> =
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
       size?: 'md' | 'lg'
+      fontSize?: 'md' | 'lg'
       textRef?: AnimationScope<any> //used in gmx swap
     }
   | {
@@ -31,6 +32,7 @@ type SelectProps<T> =
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
       size?: 'md' | 'lg'
+      fontSize?: 'md' | 'lg'
       textRef?: AnimationScope<any> //used in gmx swap
     }
 
@@ -42,6 +44,7 @@ function Select<T>({
   style = 'normal',
   textRef,
   size = 'md',
+  fontSize = 'md',
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   const tw = resolveConfig(tailwindConfig)
@@ -61,9 +64,10 @@ function Select<T>({
           className={clsx('relative flex h-12 items-center gap-2 font-medium', {
             'bg-gray-300': isDisabled,
             'rounded bg-gray-600 px-4 py-2 text-white': style === 'normal',
-            'bg-inherit text-sm font-normal text-gray-300':
-              style === 'no-style',
+            'bg-inherit text-gray-300': style === 'no-style',
             'flex w-full items-center justify-between': size === 'lg',
+            'text-sm font-normal': fontSize === 'md',
+            'text-lg font-bold text-white': fontSize === 'lg',
           })}
         >
           <h4 ref={textRef}>
@@ -88,7 +92,7 @@ function Select<T>({
                 key={item.label}
                 value={item}
                 disabled={!!item.isDisabled}
-                className="hover:cursor-pointer hover:rounded hover:bg-gray-400"
+                className="whitespace-nowrap hover:cursor-pointer hover:rounded hover:bg-gray-400"
               >
                 {({ selected }) => (
                   <span

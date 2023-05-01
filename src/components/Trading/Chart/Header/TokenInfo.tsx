@@ -13,10 +13,10 @@ const TokenInfo: React.FC = () => {
 
   const { data } = useQuery<Token24hData>({
     queryKey: ['24h', marketToken],
-    queryFn: () => getToken24h(marketToken.symbol),
+    queryFn: () => getToken24h(marketToken.value),
   })
 
-  const { data: chainLinkData } = useChainlinkPricesQuery(marketToken.symbol)
+  const { data: chainLinkData } = useChainlinkPricesQuery(marketToken.value)
 
   const items: TokenInfoType[] = [
     {
@@ -55,7 +55,7 @@ const TokenInfo: React.FC = () => {
   const chartHoverInfo = useTokenChartHoverInfo()
 
   return (
-    <div className="flex flex-row items-start gap-6">
+    <div className="flex flex-row items-center gap-6">
       {chartHoverInfo
         ? chartHoverInfo.map((item, index) => (
             <TokenInfoItem key={index} tokenInfo={item} />

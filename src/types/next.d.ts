@@ -5,8 +5,9 @@ import React from 'react'
 type SupportedMarketSymbols = 'ETHUSDT' | 'BTCUSDT'
 
 type Market = {
-  symbol: SupportedMarketSymbols
+  value: SupportedMarketSymbols
   label: string
+  icon?: React.ReactNode
 }
 
 type CandlesIntervals = '15m' | '1h' | '4h' | '8h' | '1d'
@@ -31,7 +32,7 @@ type TokenInfoType = {
   label: string | React.ReactNode
   value: number
   type: '$' | '%'
-  colorMode?: 'default' | 'redgreen' | 'blue' | 'gray'
+  colorMode?: 'default' | 'redgreen' | 'gray'
 }
 
 type TabType = {

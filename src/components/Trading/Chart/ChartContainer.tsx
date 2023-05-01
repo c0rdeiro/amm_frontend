@@ -32,7 +32,7 @@ const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
   },
   rightPriceScale: {
     scaleMargins: {
-      top: 0.1,
+      top: 0.25,
       bottom: 0.2,
     },
     entireTextOnly: true,

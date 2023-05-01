@@ -20,12 +20,12 @@ const Chart: React.FC = () => {
 
   const { data } = useQuery({
     queryKey: [marketToken, frequency],
-    queryFn: () => getTokenData(frequency, marketToken.symbol),
+    queryFn: () => getTokenData(frequency, marketToken.value),
   })
 
   return (
-    <div className="flex h-[65dvh] flex-col items-start pl-8 ">
-      <>
+    <div className="ml-5 flex h-[62dvh] flex-col items-start rounded-lg border border-gray-500 bg-gray-600 p-5">
+      <div className="relative h-full w-full rounded-lg bg-gray-700 px-2 pb-4">
         <ChartHeader />
         {data ? (
           <CandleChart
@@ -35,7 +35,7 @@ const Chart: React.FC = () => {
         ) : (
           <Spinner />
         )}
-      </>
+      </div>
     </div>
   )
 }
