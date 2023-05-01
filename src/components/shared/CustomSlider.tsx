@@ -8,7 +8,7 @@ type LeverageSliderProps = {
   marks: MarkMap
   min: number
   max: number
-  step: number
+  step: number | null
 }
 
 type MarkMap = {

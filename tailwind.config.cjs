@@ -23,10 +23,7 @@ module.exports = {
       'red': {
         400: '#E35759',
       },
-      'input-border': 'rgba(154, 154, 175, 0.2)',
-      headerDark: '#17181e',
-      sectionsBGDark: '#101014',
-      darkSecondary: '#202124',
+      'modal-bg': 'rgba(0, 0, 0, 0.4)'
       
     },
 
@@ -43,6 +40,9 @@ module.exports = {
       zIndex: {
         '100': '100',
       },
+      blur:{
+        'xs': '1.5px'
+      }
       
     },
   },

@@ -1,5 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import Button from './shared/Button'
+import Button from './Button'
 import { IoWalletOutline } from 'react-icons/io5'
 import { RxExit } from 'react-icons/rx'
 import Image from 'next/image'

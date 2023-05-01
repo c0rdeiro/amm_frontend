@@ -23,7 +23,7 @@ const GMXTrader = () => {
   ]
   const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
   const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')
-  const tabsLongShort: TabType[] = [
+  const strategyTabs: TabType[] = [
     {
       key: 0,
       label: 'Long',
@@ -69,10 +69,10 @@ const GMXTrader = () => {
       <AnimatePresence>
         <motion.div
           layout="position"
-          className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-gray-500 bg-gray-600 p-5 text-white"
+          className="flex w-full flex-col gap-3 rounded-l-lg rounded-br-lg border border-t-0 border-gray-500 bg-gray-600 p-5 text-white"
         >
           <div className="flex flex-col gap-2">
-            <Tabs tabList={tabsLongShort} style="normal" />
+            <Tabs tabList={strategyTabs} style="normal" />
             <div className="flex w-min">
               <Tabs tabList={tabsExchangeType} style="no-style" size="sm" />
             </div>

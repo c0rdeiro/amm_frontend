@@ -7,7 +7,6 @@ import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 
 import DataTable from '../../shared/DataTable'
 import { DataTableContentItem } from '../../shared/DataTableContentItem'
-import PositionsExpandedRow from '../PositionsExpandedRow'
 
 type PositionsCompactTableProps = {
   data: PositionType[]
@@ -95,18 +94,6 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
     }),
   ]
 
-  const [isConfirming, setIsConfirming] = useState<boolean>(false)
-  const renderSubComponent = ({ row }: { row: Row<PositionType> }) => {
-    return (
-      <PositionsExpandedRow
-        row={row}
-        onClosePosition={() => {
-          setIsConfirming(true)
-        }}
-        isConfirmingBtn={isConfirming}
-      />
-    )
-  }
   return (
     <DataTable
       colorScheme="white"
@@ -115,7 +102,6 @@ const PositionsCompactTable: React.FC<PositionsCompactTableProps> = ({
       getRowCanExpand={(row: Row<PositionType>) =>
         row.original.status === 'Open'
       }
-      renderSubComponent={renderSubComponent}
       showHeader={showTableHeader}
     />
   )

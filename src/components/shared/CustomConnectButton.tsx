@@ -1,9 +1,9 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import Button from './shared/Button'
 import { IoWalletOutline } from 'react-icons/io5'
 import { RxExit } from 'react-icons/rx'
 import Image from 'next/image'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
+import Button from './Button'
 
 const CustomConnectButton = () => {
   return (

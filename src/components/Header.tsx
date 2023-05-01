@@ -1,6 +1,5 @@
 import Image from 'next/image'
 
-import CustomConnectButton from './CustomConnectButton'
 import { MenuLinkType } from '@/types/next'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
@@ -11,6 +10,7 @@ import { FaDiscord, FaGithub, FaTwitter } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { useState } from 'react'
 import HeaderOptionsModal from './Modals/HeaderOptionsModal'
+import CustomConnectButton from './shared/CustomConnectButton'
 
 const Header: React.FC = () => {
   const headerLinks: MenuLinkType[] = [

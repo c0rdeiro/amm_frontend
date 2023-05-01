@@ -1,16 +1,13 @@
-import { PositionType, TabType } from '@/types/next'
-import Tabs from '../shared/Tabs'
+import { TabType } from '@/types/next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+
+import Tabs from '../shared/Tabs'
 import GMXTrader from './GMX/GMXTrader'
-import IVXTrader from './IVXTrader'
+import IVXTrader from './IVX/IVXTrader'
+import FolderTabs from './FolderTabs'
 
-type RightPanelProps = {
-  position?: PositionType | undefined
-  isOption: boolean
-}
-
-const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
+const RightPanel = () => {
   const [activeTab, setActiveTab] = useState(0)
   const tabs: TabType[] = [
     {
@@ -20,8 +17,8 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
         <Image
           alt="ivx-logo"
           src="/IVX_Gradient.svg"
-          width={50}
-          height={9}
+          width={68}
+          height={23}
           quality={100}
         />
       ),
@@ -37,8 +34,8 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
         <Image
           alt="gmx-logo"
           src="/gmx_logo.svg"
-          width={25}
-          height={5}
+          width={63}
+          height={15}
           quality={100}
         />
       ),
@@ -56,31 +53,17 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
 
   const getOptionTab = () => {
     switch (activeTab) {
-      case 0:
-        return <IVXTrader />
       case 1:
         return <GMXTrader />
+      case 0:
       default:
         return <IVXTrader />
     }
   }
   return (
     <div className="mx-4 flex h-min min-w-82 flex-col font-medium">
-      {/* {isOption && (
-        <Tabs
-          tabList={tabs}
-          style="monochromatic"
-          size="sm"
-          roundStyle="folder"
-          defaultIndex={activeTab}
-        />
-      )} */}
-      <div>
-        <GMXTrader />
-        {/* {isOption
-          ? getOptionTab()
-          : position && <PositionRightPanel position={position} />} */}
-      </div>
+      <FolderTabs tabList={tabs} defaultIndex={activeTab} />
+      <div>{getOptionTab()}</div>
     </div>
   )
 }

@@ -14,6 +14,8 @@ type ButtonProps = {
     | 'red'
     | 'monochromatic'
   rightIcon?: React.ReactNode
+  leftIcon?: React.ReactNode
+  labelColor?: 'white' | 'gray' | 'dark'
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,6 +26,8 @@ const Button: React.FC<ButtonProps> = ({
   isDisabled = false,
   styleType = 'normal',
   rightIcon,
+  leftIcon,
+  labelColor = 'white',
 }: ButtonProps) => {
   return (
     <button
@@ -32,19 +36,23 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={clsx(
         {
-          'w-29 h-7 gap-1.5 py-1.5 px-2': size === 'xs',
+          'text-white': labelColor === 'white',
+          'text-gray-300': labelColor === 'gray',
+          'text-gray-700 ': labelColor === 'dark',
+          'h-7 py-3 px-2 text-xs font-medium': size === 'xs',
           'h-9 py-1 px-3 text-sm font-medium': size === 'sm',
           'h-13 w-44 py-4 px-6': size === 'md',
           'w-full py-3': size === 'lg',
-          'bg-green-500 text-white hover:bg-green-400': styleType === 'green',
-          'bg-red-400 text-white ': styleType === 'red',
-          'bg-gray-500 text-white': styleType === 'monochromatic',
-          'bg-primary text-sm font-medium text-gray-700 transition duration-500 hover:bg-primaryDarker':
+          'bg-green-500 hover:bg-green-400': styleType === 'green',
+          'bg-red-400 ': styleType === 'red',
+          'bg-gray-500': styleType === 'monochromatic',
+          'bg-primary text-sm font-medium transition duration-500 hover:bg-primaryDarker':
             styleType === 'normal',
         },
         'flex items-center justify-center gap-2 rounded disabled:opacity-30'
       )}
     >
+      {leftIcon}
       {label}
       {rightIcon}
     </button>

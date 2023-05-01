@@ -4,6 +4,8 @@ import { Fragment } from 'react'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import Switch from './Switch'
 import { AnimationScope } from 'framer-motion'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from 'tailwind.config.cjs'
 
 export type SelectItem<T> = {
   label: string
@@ -19,6 +21,7 @@ type SelectProps<T> =
       setSelectedItem: (arg: SelectItem<T>) => void
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
+      size?: 'md' | 'lg'
       textRef?: AnimationScope<any> //used in gmx swap
     }
   | {
@@ -27,6 +30,7 @@ type SelectProps<T> =
       setSelectedItem: (arg: SelectItem<T>[]) => void
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
+      size?: 'md' | 'lg'
       textRef?: AnimationScope<any> //used in gmx swap
     }
 
@@ -37,11 +41,16 @@ function Select<T>({
   isDisabled = false,
   style = 'normal',
   textRef,
+  size = 'md',
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
-
+  const tw = resolveConfig(tailwindConfig)
   return (
-    <div className="relative">
+    <div
+      className={clsx('relative', {
+        'w-full': size === 'lg',
+      })}
+    >
       <Listbox
         value={selectedItem}
         onChange={setSelectedItem}
@@ -51,10 +60,10 @@ function Select<T>({
         <Listbox.Button
           className={clsx('relative flex h-12 items-center gap-2 font-medium', {
             'bg-gray-300': isDisabled,
-            'dark:hover:bg-darkBg rounded-lg border border-solid border-input-border bg-white px-4 py-2 dark:bg-darkSecondary':
-              style === 'normal',
+            'rounded bg-gray-600 px-4 py-2 text-white': style === 'normal',
             'bg-inherit text-sm font-normal text-gray-300':
               style === 'no-style',
+            'flex w-full items-center justify-between': size === 'lg',
           })}
         >
           <h4 ref={textRef}>
@@ -62,7 +71,10 @@ function Select<T>({
               ? selectedItem.map((item) => item.label).join(', ')
               : selectedItem?.label}
           </h4>
-          <MdOutlineKeyboardArrowDown size="1.5rem" />
+          <MdOutlineKeyboardArrowDown
+            size="1.5rem"
+            color={tw.theme.colors.gray[300]}
+          />
         </Listbox.Button>
         <Transition
           as={Fragment}
@@ -70,7 +82,7 @@ function Select<T>({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute z-100 mt-1 flex flex-col gap-2 overflow-visible rounded border border-gray-500 bg-gray-600 p-2 text-sm font-medium focus:outline-none">
+          <Listbox.Options className="absolute z-100 mt-1 flex flex-col gap-2 overflow-visible rounded border border-gray-500 bg-gray-600 p-2 text-sm font-medium text-white focus:outline-none">
             {items.map((item) => (
               <Listbox.Option
                 key={item.label}
