@@ -19,12 +19,12 @@ const TokenSelect: React.FC = () => {
     {
       value: 'ETHUSDT',
       label: 'ETH / USDT',
-      icon: <ETHIcon size={18} />,
+      // icon: <ETHIcon size={18} />,
     },
     {
       value: 'BTCUSDT',
       label: 'BTC / USDT',
-      icon: <BTCIcon size={18} />,
+      // icon: <BTCIcon size={18} />,
     },
   ]
   return (

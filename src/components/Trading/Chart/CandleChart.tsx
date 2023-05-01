@@ -31,9 +31,12 @@ const CandleChart: React.FC<ChartProps> = ({
   const interval = useCandlesInterval()
   const { setTokenPrice } = useTokenActions()
   const prevAux = useRef<number | undefined>(undefined)
+
   useEffect(() => {
     const websocket = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${market.value.toLowerCase()}@kline_${interval}`
+      `wss://stream.binance.com:9443/ws/${market.value.toLowerCase()}@kline_${
+        interval.value
+      }`
     )
     websocket.onmessage = (event) => {
       const raw_data: KlineData = JSON.parse(event.data)

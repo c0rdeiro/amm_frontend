@@ -2,12 +2,10 @@ import Button from '@/components/shared/Button'
 import Select from '@/components/shared/Form/Select'
 import { useCandlesInterval, useTokenActions } from '@/store/tokenStore'
 import { CandlesIntervals } from '@/types/next'
-import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import { AiOutlineLineChart } from 'react-icons/ai'
 
 const ChartOptions: React.FC = () => {
-  const { setChartVisibleRange: setVisibleRange, setCandlesInterval } =
-    useTokenActions()
+  const { setCandlesInterval } = useTokenActions()
   const candlesInterval = useCandlesInterval()
 
   const intervalOptions: {

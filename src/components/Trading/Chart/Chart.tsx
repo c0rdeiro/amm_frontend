@@ -19,7 +19,7 @@ const Chart: React.FC = () => {
   const marketToken = useMarket()
 
   const { data } = useQuery({
-    queryKey: [marketToken, frequency],
+    queryKey: [marketToken.value, frequency],
     queryFn: () => getTokenData(frequency, marketToken.value),
   })
 
