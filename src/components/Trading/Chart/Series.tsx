@@ -81,6 +81,12 @@ const Series = forwardRef<
               wickDownColor: theme.colors.red[400],
               borderVisible: false,
             })
+            this.series.priceScale().applyOptions({
+              scaleMargins: {
+                top: 0.3, // highest point of the series will be 70% away from the top
+                bottom: 0.2,
+              },
+            })
             parent.chart.subscribeCrosshairMove((param: MouseEventParams) => {
               if (this.series && param.seriesData.get(this.series)) {
                 const val = param.seriesData.get(this.series) as BarData

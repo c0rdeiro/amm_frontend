@@ -46,16 +46,16 @@ const TokenInfo: React.FC = () => {
       value: data?.low ?? 0,
       type: '$',
     },
-    {
-      label: 'Open Interest',
-      value: 0,
-      type: '$',
-    },
+    // {
+    //   label: 'Open Interest',
+    //   value: 0,
+    //   type: '$',
+    // },
   ]
   const chartHoverInfo = useTokenChartHoverInfo()
 
   return (
-    <div className="flex flex-row items-center gap-6">
+    <div className="flex flex-row items-center gap-4  lg:gap-6">
       {chartHoverInfo
         ? chartHoverInfo.map((item, index) => (
             <TokenInfoItem key={index} tokenInfo={item} />

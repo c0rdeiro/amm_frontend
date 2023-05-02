@@ -24,7 +24,7 @@ const Chart: React.FC = () => {
   })
 
   return (
-    <div className="ml-5 flex h-[62dvh] flex-col items-start rounded-lg border border-gray-500 bg-gray-600 p-5">
+    <div className="ml-0 flex h-[80dvh] flex-col items-start rounded-lg border border-gray-500 bg-gray-600 p-5 lg:ml-5 lg:h-[62dvh]">
       <div className="relative h-full w-full rounded-lg bg-gray-700 px-2 pb-4">
         <ChartHeader />
         {data ? (
