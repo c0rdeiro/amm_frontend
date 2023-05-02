@@ -5,6 +5,7 @@ import {
 } from '@/store/tokenStore'
 import { KlineData } from '@/types/next'
 import {
+  AreaData,
   HistogramData,
   ISeriesApi,
   OhlcData,
@@ -29,6 +30,7 @@ const CandleChart: React.FC<ChartProps> = ({
 }: ChartProps) => {
   const candleSeries = useRef<ISeriesApi<'Candlestick'>>(null)
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
+  const pnlSeries = useRef<ISeriesApi<'Area'>>(null)
   const { theme } = resolveConfig(tailwindConfig)
   const market = useMarket()
   const interval = useCandlesInterval()
@@ -88,10 +90,16 @@ const CandleChart: React.FC<ChartProps> = ({
     }
   }, [market, interval])
 
+  const pnlData: AreaData[] = candlesData.map((candle) => ({
+    time: candle.time,
+    value: 1840,
+  })) // TODO value pnl
   return (
     <ChartWrapper>
       <Series ref={candleSeries} type={'candles'} initialData={candlesData} />
       <Series ref={volumeSeries} type={'volume'} initialData={volumeData} />
+      <Series ref={pnlSeries} type={'pnlUp'} initialData={pnlData} />
+      <Series ref={pnlSeries} type={'pnlDown'} initialData={pnlData} />
     </ChartWrapper>
   )
 }
