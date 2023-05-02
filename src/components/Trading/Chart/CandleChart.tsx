@@ -22,11 +22,13 @@ import tailwindConfig from 'tailwind.config.cjs'
 interface ChartProps {
   candlesData: OhlcData[]
   volumeData: HistogramData[]
+  pnlPrice: number
 }
 
 const CandleChart: React.FC<ChartProps> = ({
   candlesData,
   volumeData,
+  pnlPrice,
 }: ChartProps) => {
   const candleSeries = useRef<ISeriesApi<'Candlestick'>>(null)
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
@@ -92,7 +94,7 @@ const CandleChart: React.FC<ChartProps> = ({
 
   const pnlData: AreaData[] = candlesData.map((candle) => ({
     time: candle.time,
-    value: 1840,
+    value: pnlPrice,
   })) // TODO value pnl
   return (
     <ChartWrapper>

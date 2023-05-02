@@ -24,13 +24,14 @@ const Chart: React.FC = () => {
   })
 
   return (
-    <div className="ml-0 flex h-[80dvh] flex-col items-start rounded-lg border border-gray-500 bg-gray-600 p-5 lg:ml-5 lg:h-[62dvh]">
+    <div className="mx-3 flex h-[80dvh] flex-col items-start rounded-lg border border-gray-500 bg-gray-600 p-2 md:p-5 lg:mx-0 lg:ml-5 lg:h-[62dvh]">
       <div className="relative h-full w-full rounded-lg bg-gray-700 px-2 pb-4">
         <ChartHeader />
         {data ? (
           <CandleChart
             candlesData={data.candles ?? []}
             volumeData={data.volume ?? []}
+            pnlPrice={1840}
           />
         ) : (
           <Spinner />
