@@ -68,18 +68,21 @@ function Select<T>({
         disabled={isDisabled}
       >
         <Listbox.Button
-          className={clsx('relative flex h-12 items-center gap-2 font-medium', {
-            'bg-gray-300': isDisabled,
-            'rounded bg-gray-600 px-4 py-2': style === 'normal',
-            'bg-inherit text-gray-300 ': style === 'no-style',
-            'flex w-full items-center justify-between': size === 'lg',
-            'text-sm font-normal': fontSize === 'md',
-            'text-lg font-bold': fontSize === 'lg',
-            'text-white': textColor === 'white',
-            'text-gray-300': textColor === 'gray',
-          })}
+          className={clsx(
+            'relative flex h-12 items-center gap-2  font-medium',
+            {
+              'bg-gray-300': isDisabled,
+              'rounded bg-gray-600 px-4 py-2': style === 'normal',
+              'bg-inherit text-gray-300 ': style === 'no-style',
+              'flex w-full items-center justify-between': size === 'lg',
+              'text-sm font-normal': fontSize === 'md',
+              'text-lg font-bold': fontSize === 'lg',
+              'text-white': textColor === 'white',
+              'text-gray-300': textColor === 'gray',
+            }
+          )}
         >
-          <h4 ref={textRef}>
+          <h4 ref={textRef} className="whitespace-nowrap">
             {Array.isArray(selectedItem)
               ? selectedItem.map((item) => item.label).join(', ')
               : selectedItem?.label}
