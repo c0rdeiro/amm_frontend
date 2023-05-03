@@ -60,6 +60,10 @@ const MarketChart: React.FC<ChartProps> = ({
             low: +raw_data.k.l,
             close: close,
           })
+          areaSeries.current?.update({
+            time: (raw_data.k.t / 1000) as UTCTimestamp,
+            value: close,
+          })
         } catch (err) {}
       }
 
