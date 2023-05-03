@@ -25,6 +25,10 @@ type SeriesProps =
       initialData: OhlcData[]
     }
   | {
+      type: 'area'
+      initialData: AreaData[]
+    }
+  | {
       type: 'volume'
       initialData: HistogramData[]
     }
@@ -54,6 +58,21 @@ const Series = forwardRef<
     api() {
       if (!this.series) {
         switch (type) {
+          case 'area':
+            this.series = parent.api().addAreaSeries({
+              lineColor: theme.colors.primary,
+
+              topColor: 'rgba(255, 217, 83, 0.2)',
+              bottomColor: 'rgba(255, 217, 83, 0)',
+            })
+            this.series.priceScale().applyOptions({
+              scaleMargins: {
+                top: 0.3, // highest point of the series will be 70% away from the top
+                bottom: 0.2,
+              },
+            })
+
+            break
           case 'pnlUp':
             this.series = parent.api().addAreaSeries({
               lastValueVisible: false, // hide the last value marker for this series
@@ -124,6 +143,7 @@ const Series = forwardRef<
               }
             })
             break
+
           case 'volume':
             this.series = parent.api().addHistogramSeries({
               priceFormat: {

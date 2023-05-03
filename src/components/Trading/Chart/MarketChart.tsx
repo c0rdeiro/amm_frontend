@@ -19,18 +19,21 @@ import Series from './Series'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from 'tailwind.config.cjs'
 
-interface ChartProps {
+type ChartProps = {
   candlesData: OhlcData[]
   volumeData: HistogramData[]
   pnlPrice: number
+  isCandleChart: boolean
 }
 
-const CandleChart: React.FC<ChartProps> = ({
+const MarketChart: React.FC<ChartProps> = ({
   candlesData,
   volumeData,
   pnlPrice,
+  isCandleChart,
 }: ChartProps) => {
   const candleSeries = useRef<ISeriesApi<'Candlestick'>>(null)
+  const areaSeries = useRef<ISeriesApi<'Area'>>(null)
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
   const pnlSeries = useRef<ISeriesApi<'Area'>>(null)
   const { theme } = resolveConfig(tailwindConfig)
@@ -98,7 +101,18 @@ const CandleChart: React.FC<ChartProps> = ({
   })) // TODO value pnl
   return (
     <ChartWrapper>
-      <Series ref={candleSeries} type={'candles'} initialData={candlesData} />
+      {isCandleChart ? (
+        <Series ref={candleSeries} type={'candles'} initialData={candlesData} />
+      ) : (
+        <Series
+          ref={areaSeries}
+          type={'area'}
+          initialData={candlesData.map((candle) => ({
+            time: candle.time,
+            value: candle.close,
+          }))}
+        />
+      )}
       <Series ref={volumeSeries} type={'volume'} initialData={volumeData} />
       <Series ref={pnlSeries} type={'pnlUp'} initialData={pnlData} />
       <Series ref={pnlSeries} type={'pnlDown'} initialData={pnlData} />
@@ -106,4 +120,4 @@ const CandleChart: React.FC<ChartProps> = ({
   )
 }
 
-export default CandleChart
+export default MarketChart

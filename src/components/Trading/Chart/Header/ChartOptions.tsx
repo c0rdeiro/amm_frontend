@@ -2,9 +2,19 @@ import Button from '@/components/shared/Button'
 import Select from '@/components/shared/Form/Select'
 import { useCandlesInterval, useTokenActions } from '@/store/tokenStore'
 import { CandlesIntervals } from '@/types/next'
+import { Dispatch, SetStateAction } from 'react'
 import { AiOutlineLineChart } from 'react-icons/ai'
+import { BiCandles } from 'react-icons/bi'
 
-const ChartOptions: React.FC = () => {
+type ChartOptionsProps = {
+  isCandleChart: boolean
+  setIsCandleChart: Dispatch<SetStateAction<boolean>>
+}
+
+const ChartOptions: React.FC<ChartOptionsProps> = ({
+  isCandleChart,
+  setIsCandleChart,
+}) => {
   const { setCandlesInterval } = useTokenActions()
   const candlesInterval = useCandlesInterval()
 
@@ -45,7 +55,14 @@ const ChartOptions: React.FC = () => {
         label=""
         styleType="monochromatic"
         size="nopadding"
-        rightIcon={<AiOutlineLineChart size={20} />}
+        rightIcon={
+          isCandleChart ? (
+            <AiOutlineLineChart size={20} />
+          ) : (
+            <BiCandles size={20} />
+          )
+        }
+        onClick={() => setIsCandleChart((prev) => !prev)}
       />
     </div>
   )
