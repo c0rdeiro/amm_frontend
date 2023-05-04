@@ -9,12 +9,12 @@ export default function tokenIcon(
   market: Market,
   size: number
 ): React.ReactNode {
-  switch (market?.label.toLowerCase()) {
+  switch (market?.value.toLowerCase()) {
     case 'eth':
-    case 'weth':
+    case 'ethusdt':
       return <ETHIcon size={size} />
-    case 'wbtc':
     case 'btc':
+    case 'btcusdt':
       return <BTCIcon size={size} />
     case 'avax':
       return <AVAXIcon size={size} />

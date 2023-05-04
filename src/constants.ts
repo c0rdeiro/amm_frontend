@@ -2,11 +2,11 @@ import { Market } from './types/next'
 
 export const markets: Market[] = [
   {
-    symbol: 'ETHUSDT',
-    label: 'ETH',
+    value: 'ETHUSDT',
+    label: 'ETH / USDT',
   },
   {
-    symbol: 'BTCUSDT',
-    label: 'BTC',
+    value: 'BTCUSDT',
+    label: 'BTC / USDT',
   },
 ]

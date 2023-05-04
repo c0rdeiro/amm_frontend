@@ -10,6 +10,7 @@ import tailwindConfig from 'tailwind.config.cjs'
 export type SelectItem<T> = {
   label: string
   value: T
+  insideLabel?: string
   icon?: React.ReactNode
   isDisabled?: boolean
 }
@@ -22,7 +23,10 @@ type SelectProps<T> =
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
       size?: 'md' | 'lg'
+      fontSize?: 'md' | 'lg'
+      textColor?: 'white' | 'gray'
       textRef?: AnimationScope<any> //used in gmx swap
+      hideArrow?: boolean
     }
   | {
       items: SelectItem<T>[]
@@ -31,7 +35,10 @@ type SelectProps<T> =
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
       size?: 'md' | 'lg'
+      fontSize?: 'md' | 'lg'
+      textColor?: 'white' | 'gray'
       textRef?: AnimationScope<any> //used in gmx swap
+      hideArrow?: boolean
     }
 
 function Select<T>({
@@ -42,6 +49,9 @@ function Select<T>({
   style = 'normal',
   textRef,
   size = 'md',
+  fontSize = 'md',
+  textColor = 'gray',
+  hideArrow = false,
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   const tw = resolveConfig(tailwindConfig)
@@ -58,23 +68,31 @@ function Select<T>({
         disabled={isDisabled}
       >
         <Listbox.Button
-          className={clsx('relative flex h-12 items-center gap-2 font-medium', {
-            'bg-gray-300': isDisabled,
-            'rounded bg-gray-600 px-4 py-2 text-white': style === 'normal',
-            'bg-inherit text-sm font-normal text-gray-300':
-              style === 'no-style',
-            'flex w-full items-center justify-between': size === 'lg',
-          })}
+          className={clsx(
+            'relative flex h-12 items-center gap-2  font-medium',
+            {
+              'bg-gray-300': isDisabled,
+              'rounded bg-gray-600 px-4 py-2': style === 'normal',
+              'bg-inherit text-gray-300 ': style === 'no-style',
+              'flex w-full items-center justify-between': size === 'lg',
+              'text-sm font-normal': fontSize === 'md',
+              'text-lg font-bold': fontSize === 'lg',
+              'text-white': textColor === 'white',
+              'text-gray-300': textColor === 'gray',
+            }
+          )}
         >
-          <h4 ref={textRef}>
+          <h4 ref={textRef} className="whitespace-nowrap">
             {Array.isArray(selectedItem)
               ? selectedItem.map((item) => item.label).join(', ')
               : selectedItem?.label}
           </h4>
-          <MdOutlineKeyboardArrowDown
-            size="1.5rem"
-            color={tw.theme.colors.gray[300]}
-          />
+          {!hideArrow && (
+            <MdOutlineKeyboardArrowDown
+              size="1.5rem"
+              color={tw.theme.colors.gray[300]}
+            />
+          )}
         </Listbox.Button>
         <Transition
           as={Fragment}
@@ -88,7 +106,7 @@ function Select<T>({
                 key={item.label}
                 value={item}
                 disabled={!!item.isDisabled}
-                className="hover:cursor-pointer hover:rounded hover:bg-gray-400"
+                className="whitespace-nowrap hover:cursor-pointer hover:rounded hover:bg-gray-400"
               >
                 {({ selected }) => (
                   <span
@@ -105,7 +123,7 @@ function Select<T>({
                   >
                     {multiple && <Switch enabled={selected} size="sm" />}
                     {item.icon}
-                    {item.label}
+                    {item.insideLabel ?? item.label}
                   </span>
                 )}
               </Listbox.Option>

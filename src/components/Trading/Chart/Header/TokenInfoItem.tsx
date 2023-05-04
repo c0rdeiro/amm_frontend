@@ -10,18 +10,15 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
   tokenInfo,
 }: TokenInfoItemProps) => {
   return (
-    <div className="ml-1 flex flex-col items-start gap-0.5 2xl:ml-2">
-      <div className="text-xs font-medium text-text-purple">
-        {tokenInfo.label}
-      </div>
+    <div className="ml-1 flex flex-col items-start gap-1 text-sm 2xl:ml-2 ">
+      <div className="font-normal text-gray-300">{tokenInfo.label}</div>
       <div
-        className={clsx('w-16 font-medium', {
-          'text-green-500':
+        className={clsx('w-16 font-bold', {
+          'text-green-400':
             tokenInfo.colorMode === 'redgreen' && tokenInfo.value > 0,
-          'text-red-500':
+          'text-red-400':
             tokenInfo.colorMode === 'redgreen' && tokenInfo.value < 0,
-          'text-primary': tokenInfo.colorMode === 'blue',
-          'text-text-gray': tokenInfo.colorMode === 'gray',
+          'text-gray-300': tokenInfo.colorMode === 'gray',
         })}
       >
         {formatNumber(tokenInfo.value, {

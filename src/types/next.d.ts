@@ -5,7 +5,7 @@ import React from 'react'
 type SupportedMarketSymbols = 'ETHUSDT' | 'BTCUSDT'
 
 type Market = {
-  symbol: SupportedMarketSymbols
+  value: SupportedMarketSymbols
   label: string
 }
 
@@ -31,7 +31,7 @@ type TokenInfoType = {
   label: string | React.ReactNode
   value: number
   type: '$' | '%'
-  colorMode?: 'default' | 'redgreen' | 'blue' | 'gray'
+  colorMode?: 'default' | 'redgreen' | 'gray'
 }
 
 type TabType = {

@@ -1,3 +1,4 @@
+import { useTokenActions } from '@/store/tokenStore'
 import { CandlesIntervals, SupportedMarketSymbols } from '@/types/next'
 import getDefaultPeriodFromRange from '@/utils/getDefaultPeriodFromRange'
 import {
@@ -41,8 +42,7 @@ export async function getTokenData(
     candles: [],
     volume: [],
   }
-
-  candles.map((candle: BinanceCandleData) => {
+  candles.forEach((candle: BinanceCandleData, idx: number) => {
     res.candles.push({
       time: (candle[0] / 1000) as UTCTimestamp, //has to be divided by 1000 bc chart takes unix in seconds and binances gives unix in milliseconds
       open: +candle[1],

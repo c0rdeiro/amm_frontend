@@ -19,7 +19,7 @@ const TokenPrice = () => {
   }, [tokenPrice])
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row text-2xl font-bold">
       {displayPrice ? (
         formatNumber(displayPrice, {
           decimalCases: 2,
