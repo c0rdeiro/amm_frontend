@@ -19,7 +19,7 @@ type TokenStore = {
   actions: {
     setMarket: (market: Market) => void
     setTokenAddress: (tokenAddress: string) => void
-    setTokenPrice: (tokenPrice: number) => void
+    setTokenPrice: (tokenPrice: number | undefined) => void
     setChartVisibleRange: (range: TimeRange) => void
     setCandlesInterval: (candlesInterval: {
       value: CandlesIntervals

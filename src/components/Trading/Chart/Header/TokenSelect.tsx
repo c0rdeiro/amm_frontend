@@ -4,7 +4,7 @@ import tokenIcon from '@/hooks/tokenIcon'
 import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import { useMarket, useTokenActions } from '@/store/tokenStore'
-import { Market } from '@/types/next'
+import { SupportedMarketSymbols } from '@/types/next'
 import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 
@@ -15,18 +15,15 @@ const TokenSelect: React.FC = () => {
   const { push } = useRouter()
   const market = useMarket()
 
-  const markets: Market[] = [
-    {
-      value: 'ETHUSDT',
-      label: 'ETH / USDT',
-      // icon: <ETHIcon size={18} />,
-    },
-    {
-      value: 'BTCUSDT',
-      label: 'BTC / USDT',
-      // icon: <BTCIcon size={18} />,
-    },
+  const markets: {
+    label: string
+    value: SupportedMarketSymbols
+    icon: JSX.Element
+  }[] = [
+    { label: 'ETH / USDT', value: 'ETHUSDT', icon: <ETHIcon size={18} /> },
+    { label: 'BTC / USDT', value: 'BTCUSDT', icon: <BTCIcon size={18} /> },
   ]
+
   return (
     <Suspense fallback={<Spinner />}>
       <div className="flex flex-row items-center gap-4">
@@ -34,8 +31,11 @@ const TokenSelect: React.FC = () => {
         <Select
           items={markets}
           selectedItem={market}
-          setSelectedItem={(market: Market) => {
-            setMarket(market)
+          setSelectedItem={(market: {
+            label: string
+            value: SupportedMarketSymbols
+          }) => {
+            setMarket({ label: market.label, value: market.value })
             push(`/trading/${market.value.toLowerCase()}`)
           }}
           fontSize="lg"

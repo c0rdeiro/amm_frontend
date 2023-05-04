@@ -7,7 +7,6 @@ type SupportedMarketSymbols = 'ETHUSDT' | 'BTCUSDT'
 type Market = {
   value: SupportedMarketSymbols
   label: string
-  icon?: React.ReactNode
 }
 
 type CandlesIntervals = '15m' | '1h' | '4h' | '8h' | '1d'
