@@ -1,7 +1,7 @@
 import Button from '@/components/shared/Button'
 import Select from '@/components/shared/Form/Select'
 import { useCandlesInterval, useTokenActions } from '@/store/tokenStore'
-import { CandlesIntervals } from '@/types/next'
+import { CandlesInterval } from '@/types/next'
 import { Dispatch, SetStateAction } from 'react'
 import { AiOutlineLineChart } from 'react-icons/ai'
 import { BiCandles } from 'react-icons/bi'
@@ -19,7 +19,7 @@ const ChartOptions: React.FC<ChartOptionsProps> = ({
   const candlesInterval = useCandlesInterval()
 
   const intervalOptions: {
-    value: CandlesIntervals
+    value: CandlesInterval
     label: string
     insideLabel?: string
   }[] = [

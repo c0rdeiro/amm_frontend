@@ -1,9 +1,9 @@
-import { CandlesIntervals } from '@/types/next'
+import { CandlesInterval } from '@/types/next'
 import { TimeRange } from 'lightweight-charts'
 
 export default function getDefaultPeriodFromRange(
   timeRange: TimeRange
-): CandlesIntervals {
+): CandlesInterval {
   const hours =
     (parseFloat(timeRange.to.toString()) -
       parseFloat(timeRange.from.toString())) /
