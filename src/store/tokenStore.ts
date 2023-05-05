@@ -1,5 +1,5 @@
 import { markets } from '@/constants'
-import { CandlesIntervals, Market, TokenInfoType } from '@/types/next'
+import { CandlesInterval, Market, TokenInfoType } from '@/types/next'
 import getTimeRangeFromDays from '@/utils/getTimeRangeFromDays'
 import getVisibleRangeFromCandleInterval from '@/utils/getVisibleRangeFromCandleInterval'
 import { TimeRange } from 'lightweight-charts'
@@ -11,7 +11,7 @@ type TokenStore = {
   tokenPrice: number | undefined
   chartVisibleRange: TimeRange
   candlesInterval: {
-    value: CandlesIntervals
+    value: CandlesInterval
     label: string
     insideLabel?: string
   }
@@ -22,7 +22,7 @@ type TokenStore = {
     setTokenPrice: (tokenPrice: number | undefined) => void
     setChartVisibleRange: (range: TimeRange) => void
     setCandlesInterval: (candlesInterval: {
-      value: CandlesIntervals
+      value: CandlesInterval
       label: string
       insideLabel?: string
     }) => void
@@ -52,7 +52,7 @@ const useTokenStore = create<TokenStore>((set) => ({
     setChartVisibleRange: (range: TimeRange) =>
       set(() => ({ chartVisibleRange: range })),
     setCandlesInterval: (candlesInterval: {
-      value: CandlesIntervals
+      value: CandlesInterval
       label: string
       insideLabel?: string
     }) =>

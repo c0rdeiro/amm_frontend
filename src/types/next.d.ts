@@ -9,7 +9,7 @@ type Market = {
   label: string
 }
 
-type CandlesIntervals = '15m' | '1h' | '4h' | '8h' | '1d'
+type CandlesInterval = '15m' | '1h' | '4h' | '8h' | '1d'
 
 type CustomPage = NextPage & {
   title: string
