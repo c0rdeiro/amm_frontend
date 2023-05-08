@@ -1,3 +1,4 @@
+import { useChartVisibleRange } from '@/store/tokenStore'
 import {
   ChartOptions,
   ColorType,
@@ -7,6 +8,7 @@ import {
 import {
   createContext,
   forwardRef,
+  useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
@@ -57,6 +59,7 @@ type ChartContainerProps = {
 const ChartContainer = forwardRef<any, ChartContainerProps>(
   ({ children, container }, ref) => {
     const { theme } = resolveConfig(tailwindConfig)
+    const visibleRange = useChartVisibleRange()
     const chartApiRef = useRef<{
       api: () => any
       free: () => void
@@ -125,6 +128,13 @@ const ChartContainer = forwardRef<any, ChartContainerProps>(
     }, [])
 
     useImperativeHandle(ref, () => chartApiRef.current.api(), [])
+
+    useEffect(() => {
+      if (visibleRange) {
+        const chart = chartApiRef.current.api()
+        chart.timeScale().setVisibleRange(visibleRange)
+      }
+    }, [visibleRange])
 
     return (
       <ChartContext.Provider value={chartApiRef.current}>

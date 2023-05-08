@@ -1,8 +1,8 @@
-import { CandlesIntervals } from '@/types/next'
+import { CandlesInterval } from '@/types/next'
 import getTimeRangeFromDays from './getTimeRangeFromDays'
 
 export default function getVisibleRangeFromCandleInterval(
-  candlesInterval: CandlesIntervals
+  candlesInterval: CandlesInterval
 ) {
   switch (candlesInterval) {
     case '15m':

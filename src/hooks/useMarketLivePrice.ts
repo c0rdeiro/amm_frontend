@@ -1,5 +1,5 @@
 import {
-  CandlesIntervals,
+  CandlesInterval,
   KlineData,
   SupportedMarketSymbols,
 } from '@/types/next'
@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 
 export default function useMarketLivePrice(
   market: SupportedMarketSymbols,
-  interval: CandlesIntervals
+  interval: CandlesInterval
 ): (OhlcData & { volume: number }) | undefined {
   let data: (OhlcData & { volume: number }) | undefined = undefined
 

@@ -1,6 +1,6 @@
 import Spinner from '@/components/shared/Spinner'
 import { getTokenData } from '@/lib/getTokenData'
-import { useChartVisibleRange, useMarket } from '@/store/tokenStore'
+import { useCandlesInterval, useMarket } from '@/store/tokenStore'
 import { useQuery } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 
@@ -16,12 +16,12 @@ const Chart: React.FC = () => {
     }
   )
 
-  const frequency = useChartVisibleRange()
+  const candlesInterval = useCandlesInterval()
   const marketToken = useMarket()
 
   const { data } = useQuery({
-    queryKey: [marketToken.value, frequency],
-    queryFn: () => getTokenData(frequency, marketToken.value),
+    queryKey: [marketToken.value, candlesInterval.value],
+    queryFn: () => getTokenData(marketToken.value, candlesInterval.value),
   })
   const [isCandleChart, setIsCandleChart] = useState<boolean>(true)
 
