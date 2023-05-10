@@ -16,6 +16,7 @@ import {
 } from 'react-icons/io5'
 import formatDateTime from '@/utils/formatDateTime'
 import Button from '../shared/Button'
+import { HiShare } from 'react-icons/hi2'
 
 type OpenPositionsTableProps = {
   data: PositionType[]
@@ -223,10 +224,10 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
           <button
-            className="flex cursor-pointer gap-1 rounded bg-gray-500 p-2 text-sm font-normal text-white transition duration-200 hover:bg-red-400"
+            className="flex cursor-pointer items-center gap-1 rounded bg-gray-500 p-2 text-sm font-normal text-white transition duration-200 hover:bg-red-400"
             onClick={() => closePosition(info.row.original)}
           >
-            <IoCloseOutline size={18} />
+            <IoCloseOutline size={16} />
             Close
           </button>
         </DataTableContentItem>
@@ -234,17 +235,18 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       header: () => <span></span>,
       enableSorting: false,
     }),
-    // columnHelper.accessor('key', {
-    //   id: 'actions',
-    //   cell: (info) => (
-    //     <DataTableContentItem clickType="no-action" row={info.row}>
-    //       <span className="hover:cursor-pointer">
-    //         <HiOutlineDotsVertical />
-    //       </span>
-    //     </DataTableContentItem>
-    //   ),
-    //   header: () => <span></span>,
-    // }),
+    columnHelper.accessor('id', {
+      id: 'share',
+      cell: (info) => (
+        <DataTableContentItem clickType="no-action" row={info.row}>
+          <span className="cursor-pointer text-gray-400 transition duration-200 hover:text-white">
+            <HiShare size={16} />
+          </span>
+        </DataTableContentItem>
+      ),
+      header: () => <span></span>,
+      enableSorting: false,
+    }),
   ]
 
   return (

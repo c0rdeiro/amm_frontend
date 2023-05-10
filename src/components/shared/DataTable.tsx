@@ -59,10 +59,7 @@ function DataTable<T>({
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="pl-6 text-left text-sm text-text-purple"
-                >
+                <th key={header.id} className="pl-6 text-left text-sm">
                   {header.isPlaceholder ? null : (
                     <div
                       className={clsx('flex items-center', {
@@ -117,23 +114,9 @@ function DataTable<T>({
             <tr
               key={row.id}
               onClick={() => (rowClickAction ? rowClickAction(row) : undefined)}
-              className={clsx(
-                'active:rounded-lg active:ring-1',
-                { 'rounded-lg ring-1': row.getIsSelected() },
-                {
-                  'hover:bg-primary/[.05] active:border-primary/[0.6] active:bg-gradient-to-r  active:from-primary/[.08] active:via-primary/[.1] active:to-primary/[.08] active:text-primary active:shadow-blue':
-                    colorScheme === 'blue',
-                },
-                {
-                  'border-primary/[0.6] bg-gradient-to-r from-primary/[.08]  via-primary/[.1] to-primary/[.08] text-primary shadow-blue hover:bg-primary/[.05]':
-                    row.getIsSelected(),
-                },
-                {
-                  'hover:bg-white dark:hover:bg-darkSecondary':
-                    colorScheme === 'white',
-                },
-                { ' bg-white dark:bg-darkSecondary': row.getIsExpanded() }
-              )}
+              className={clsx('active:rounded-lg active:ring-1', {
+                'rounded-lg ring-1': row.getIsSelected(),
+              })}
             >
               {row.getVisibleCells().map((cell) => (
                 <td
@@ -149,7 +132,7 @@ function DataTable<T>({
             </tr>
 
             {row.getIsExpanded() && renderSubComponent && (
-              <tr className=" bg-white shadow-table-white dark:bg-darkSecondary dark:shadow-none">
+              <tr className=" shadow-table-white dark:bg-darkSecondary bg-white dark:shadow-none">
                 {/* 2nd row is a custom 1 cell row */}
                 <td
                   colSpan={row.getVisibleCells().length}
@@ -165,7 +148,7 @@ function DataTable<T>({
           <tr>
             <td
               colSpan={columns.length}
-              className="text-md py-4 text-center text-text-purple"
+              className="text-md text-text-purple py-4 text-center"
             >
               No data do display
             </td>
