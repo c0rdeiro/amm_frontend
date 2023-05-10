@@ -11,6 +11,7 @@ import {
   VisibilityState,
 } from '@tanstack/react-table'
 import clsx from 'clsx'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Fragment } from 'react'
 import { RiArrowUpSFill, RiArrowDownSFill } from 'react-icons/ri'
 
@@ -61,50 +62,57 @@ function DataTable<T>({
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="pl-6 text-left text-sm">
-                  {header.isPlaceholder ? null : (
-                    <div
-                      className={clsx('flex items-center', {
-                        'cursor-pointer select-none':
-                          header.column.getCanSort(),
-                      })}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {header.column.getCanSort() && (
-                        <div className="relative flex flex-col items-center">
-                          <span className="absolute -top-4 left-1">
-                            <RiArrowUpSFill
-                              size={24}
-                              color={
-                                header.column.getIsSorted() === 'asc'
-                                  ? 'white'
-                                  : undefined
-                              }
-                            />
-                          </span>
-                          <span className="absolute -top-2 left-1">
-                            <RiArrowDownSFill
-                              size={24}
-                              color={
-                                header.column.getIsSorted() === 'desc'
-                                  ? 'white'
-                                  : undefined
-                              }
-                            />
-                          </span>
-                        </div>
-                      )}
-                      {/* {{
+                <AnimatePresence initial={false}>
+                  <motion.th
+                    transition={{ duration: 0.7, type: 'spring' }}
+                    layout="position"
+                    key={header.id}
+                    className="pl-6 text-left text-sm"
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div
+                        className={clsx('flex items-center', {
+                          'cursor-pointer select-none':
+                            header.column.getCanSort(),
+                        })}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {header.column.getCanSort() && (
+                          <div className="relative flex flex-col items-center">
+                            <span className="absolute -top-4 left-1">
+                              <RiArrowUpSFill
+                                size={24}
+                                color={
+                                  header.column.getIsSorted() === 'asc'
+                                    ? 'white'
+                                    : undefined
+                                }
+                              />
+                            </span>
+                            <span className="absolute -top-2 left-1">
+                              <RiArrowDownSFill
+                                size={24}
+                                color={
+                                  header.column.getIsSorted() === 'desc'
+                                    ? 'white'
+                                    : undefined
+                                }
+                              />
+                            </span>
+                          </div>
+                        )}
+                        {/* {{
                         asc: ,
                         desc: ,
                       }[header.column.getIsSorted() as string] ?? null} */}
-                    </div>
-                  )}
-                </th>
+                      </div>
+                    )}
+                  </motion.th>
+                </AnimatePresence>
               ))}
             </tr>
           ))}
@@ -113,25 +121,29 @@ function DataTable<T>({
       <tbody>
         {table.getRowModel().rows.map((row) => (
           <Fragment key={row.id}>
-            <tr
-              key={row.id}
-              onClick={() => (rowClickAction ? rowClickAction(row) : undefined)}
-              className={clsx('active:rounded-lg active:ring-1', {
-                'rounded-lg ring-1': row.getIsSelected(),
-              })}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className={clsx(
-                    'text-sm font-medium first:rounded-l-lg last:rounded-r-lg',
-                    { '!rounded-b-none': row.getIsExpanded() }
-                  )}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
+            <AnimatePresence>
+              <motion.tr
+                key={row.id}
+                onClick={() =>
+                  rowClickAction ? rowClickAction(row) : undefined
+                }
+                className={clsx('active:rounded-lg active:ring-1', {
+                  'rounded-lg ring-1': row.getIsSelected(),
+                })}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <motion.td
+                    key={cell.id}
+                    className={clsx(
+                      'text-sm font-medium first:rounded-l-lg last:rounded-r-lg',
+                      { '!rounded-b-none': row.getIsExpanded() }
+                    )}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </motion.td>
+                ))}
+              </motion.tr>
+            </AnimatePresence>
 
             {row.getIsExpanded() && renderSubComponent && (
               <tr className=" shadow-table-white dark:bg-darkSecondary bg-white dark:shadow-none">
