@@ -15,12 +15,12 @@ import {
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
 
-type OpenPositionsTableProps = {
+type PositionsTableProps = {
   data: PositionType[]
   isOpen: boolean
   showTableHeader?: boolean
 }
-const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
+const PositionsTable: React.FC<PositionsTableProps> = ({
   data,
   isOpen,
   showTableHeader = true,
@@ -295,15 +295,8 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
           isOpen={isCloseModalOpen}
           setIsOpen={setisCloseModalOpen}
         />
-      )}
-      {currentPosition && (
-        <PositionTypeCollateralModal
-          position={currentPosition}
-          isOpen={isCollateralModalOpen}
-          setIsOpen={setisCollateralModalOpen}
-        />
-      )} */}
+      )}*/}
     </>
   )
 }
-export default OpenPositionsTable
+export default PositionsTable

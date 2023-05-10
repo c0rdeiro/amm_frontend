@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import LINKIcon from '@/Icons/tokens/link'
 import Switch from '@/components/shared/Form/Switch'
-import OpenPositionsTable from '../OpenPositionsTable'
+import PositionsTable from '../PositionsTable'
 import { Market } from '@/types/next'
 
 const TokenPositionsPanel = () => {
@@ -85,7 +85,7 @@ const TokenPositionsPanel = () => {
 
   const getSelectedTable = () => {
     if (tableType === 'positions') {
-      return <OpenPositionsTable data={dummyPositions} isOpen={isOpen} />
+      return <PositionsTable data={dummyPositions} isOpen={isOpen} />
     }
   }
   return (
