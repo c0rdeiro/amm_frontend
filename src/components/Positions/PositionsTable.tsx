@@ -7,7 +7,7 @@ import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { HiShare } from 'react-icons/hi2'
 import {
-  IoCloseOutline,
+  IoClose,
   IoTrendingDownSharp,
   IoTrendingUpSharp,
 } from 'react-icons/io5'
@@ -44,7 +44,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
                 'flex items-center justify-center gap-2 rounded px-2 py-1',
                 {
                   'bg-[#0dac8626]': info.row.original.strategy === 'Long',
-                  'bg-[#e3575926]]': info.row.original.strategy === 'Short',
+                  'bg-[#e3575926]': info.row.original.strategy === 'Short',
                 }
               )}
             >
@@ -67,7 +67,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
                 'flex items-center justify-center gap-2 rounded px-2 py-1',
                 {
                   'bg-[#0dac8626]': info.row.original.strategy === 'Long',
-                  'bg-[#e3575926]]': info.row.original.strategy === 'Short',
+                  'bg-[#e3575926]': info.row.original.strategy === 'Short',
                 }
               )}
             >
@@ -233,7 +233,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
             className="flex cursor-pointer items-center gap-1 rounded bg-gray-500 p-2 text-sm font-normal text-white transition duration-200 hover:bg-red-400"
             onClick={() => closePosition(info.row.original)}
           >
-            <IoCloseOutline size={16} />
+            <IoClose size={16} />
             Close
           </button>
         </DataTableContentItem>

@@ -121,7 +121,9 @@ const TokenPositionsPanel = () => {
               <LINKIcon size={15} /> Price
             </div>
           </div>
-          <Tabs tabList={openClosedTabs} style="b&w" size="sm" />
+          {tableType === 'positions' && (
+            <Tabs tabList={openClosedTabs} style="b&w" size="sm" />
+          )}
         </div>
       </div>
       {getSelectedTable()}

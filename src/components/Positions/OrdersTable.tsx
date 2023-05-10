@@ -6,11 +6,11 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { HiShare } from 'react-icons/hi2'
 import {
-  IoCloseOutline,
+  IoClose,
   IoTrendingDownSharp,
   IoTrendingUpSharp,
 } from 'react-icons/io5'
-
+import { MdEdit } from 'react-icons/md'
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
 
@@ -33,7 +33,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
                 'flex items-center justify-center gap-2 rounded px-2 py-1',
                 {
                   'bg-[#0dac8626]': info.row.original.strategy === 'Long',
-                  'bg-[#e3575926]]': info.row.original.strategy === 'Short',
+                  'bg-[#e3575926]': info.row.original.strategy === 'Short',
                 }
               )}
             >
@@ -94,22 +94,19 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
       id: 'close',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          <button className="flex cursor-pointer items-center gap-1 rounded bg-gray-500 p-2 text-sm font-normal text-white transition duration-200 hover:bg-red-400">
-            <IoCloseOutline size={16} />
-            Close
-          </button>
-        </DataTableContentItem>
-      ),
-      header: () => <span></span>,
-      enableSorting: false,
-    }),
-    columnHelper.accessor('id', {
-      id: 'share',
-      cell: (info) => (
-        <DataTableContentItem clickType="no-action" row={info.row}>
-          <span className="cursor-pointer text-gray-400 transition duration-200 hover:text-white">
-            <HiShare size={16} />
-          </span>
+          <div className="flex items-center gap-5">
+            <button className="flex cursor-pointer items-center gap-1 rounded bg-gray-500 p-2 text-sm font-normal text-white transition duration-200 hover:bg-white hover:bg-opacity-80 hover:font-medium hover:text-gray-700">
+              <MdEdit size={16} />
+              Edit
+            </button>
+            <button className="flex cursor-pointer items-center gap-1 rounded bg-gray-500 p-2 text-sm font-normal text-white transition duration-200 hover:bg-red-400 hover:font-medium">
+              <IoClose size={16} />
+              Close
+            </button>
+            <span className="cursor-pointer text-gray-400 transition duration-200 hover:text-white">
+              <HiShare size={16} />
+            </span>
+          </div>
         </DataTableContentItem>
       ),
       header: () => <span></span>,
