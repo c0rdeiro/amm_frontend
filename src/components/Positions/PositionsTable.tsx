@@ -18,13 +18,8 @@ import { DataTableContentItem } from '../shared/DataTableContentItem'
 type PositionsTableProps = {
   data: PositionType[]
   isOpen: boolean
-  showTableHeader?: boolean
 }
-const PositionsTable: React.FC<PositionsTableProps> = ({
-  data,
-  isOpen,
-  showTableHeader = true,
-}) => {
+const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [isCloseModalOpen, setisCloseModalOpen] = useState(false)
   const [currentPosition, setCurrentPosition] = useState<
@@ -284,7 +279,6 @@ const PositionsTable: React.FC<PositionsTableProps> = ({
       <DataTable
         data={data}
         columns={columns}
-        showHeader={showTableHeader}
         sorting={sorting}
         setSorting={setSorting}
         columnVisibility={columnVisibility}

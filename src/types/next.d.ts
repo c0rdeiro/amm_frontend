@@ -70,15 +70,26 @@ type PositionType = {
   markPrice: number
   liqPrice: number
   profit: number
-  impliedVolatility: number
-  delta: number
-  vega: number
-  gamma: number
-  theta: number
-  openInterest: number
+  impliedVolatility?: number
+  delta?: number
+  vega?: number
+  gamma?: number
+  theta?: number
+  openInterest?: number
   openDate: Date
   closePrice?: number
   closeDate?: Date
+}
+
+type Order = {
+  id: number
+  token: Market
+  strategy: 'Long' | 'Short'
+  n: number
+  type: 'Market' | 'Limit'
+  price: number
+  priceAbove: boolean
+  markPrice: number
 }
 
 type TokenIconProps = {

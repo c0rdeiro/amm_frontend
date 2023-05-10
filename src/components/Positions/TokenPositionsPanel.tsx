@@ -1,12 +1,13 @@
 import Tabs from '@/components/shared/Tabs'
-import { PositionType, TabType } from '@/types/next'
+import { Order, PositionType, TabType } from '@/types/next'
 import { BigNumber } from 'ethers'
 import { useState } from 'react'
 
 import LINKIcon from '@/Icons/tokens/link'
 import Switch from '@/components/shared/Form/Switch'
-import PositionsTable from '../PositionsTable'
+import PositionsTable from './PositionsTable'
 import { Market } from '@/types/next'
+import OrdersTable from './OrdersTable'
 
 const TokenPositionsPanel = () => {
   const [isOpen, setIsOpen] = useState(true)
@@ -81,12 +82,27 @@ const TokenPositionsPanel = () => {
     },
   ]
 
+  const dummyOrders: Order[] = [
+    {
+      id: 0,
+      token: ethToken,
+      strategy: 'Long',
+      n: 1600,
+      type: 'Market',
+      price: 1870,
+      priceAbove: false,
+      markPrice: 1875,
+    },
+  ]
+
   const [isChainlinkPrice, setIsChainlinkPrice] = useState(false)
 
   const getSelectedTable = () => {
-    if (tableType === 'positions') {
-      return <PositionsTable data={dummyPositions} isOpen={isOpen} />
-    }
+    return tableType === 'positions' ? (
+      <PositionsTable data={dummyPositions} isOpen={isOpen} />
+    ) : (
+      <OrdersTable data={dummyOrders} />
+    )
   }
   return (
     <div className="flex w-full flex-col items-center gap-5 rounded-lg border border-gray-500 bg-gray-600 py-5 pr-5">

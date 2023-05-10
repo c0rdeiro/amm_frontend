@@ -62,11 +62,10 @@ function DataTable<T>({
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <AnimatePresence initial={false}>
+                <AnimatePresence initial={false} key={header.id}>
                   <motion.th
                     transition={{ duration: 0.7, type: 'spring' }}
                     layout="position"
-                    key={header.id}
                     className="pl-6 text-left text-sm"
                   >
                     {header.isPlaceholder ? null : (
