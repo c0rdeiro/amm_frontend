@@ -106,11 +106,11 @@ const TokenPositionsPanel = () => {
   }
   return (
     <div className="flex w-full flex-col items-center gap-5 rounded-lg border border-gray-500 bg-gray-600 py-5 pr-5">
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full flex-col items-start justify-between md:flex-row md:items-center">
         <div>
           <Tabs tabList={tableTypeTabs} style="no-style" size="lg" />
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex flex-row-reverse items-center gap-5 md:flex-row">
           <div className="flex items-center gap-2">
             <Switch
               enabled={isChainlinkPrice}
