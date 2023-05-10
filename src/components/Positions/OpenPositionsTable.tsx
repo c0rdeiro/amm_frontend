@@ -1,46 +1,38 @@
-import formatNumber from '@/utils/formatNumber'
-import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import clsx from 'clsx'
-import { useState } from 'react'
-import { AiOutlineEdit } from 'react-icons/ai'
-
-import DataTable from '../shared/DataTable'
-import { DataTableContentItem } from '../shared/DataTableContentItem'
 import { PositionType } from '@/types/next'
-import getTokenIcon from '@/utils/getTokenIcon'
+import formatDateTime from '@/utils/formatDateTime'
+import formatNumber from '@/utils/formatNumber'
 import getIconFancyIcon from '@/utils/getIconFancyIcon'
+import { createColumnHelper, SortingState } from '@tanstack/react-table'
+import clsx from 'clsx'
+import { useEffect, useState } from 'react'
+import { HiShare } from 'react-icons/hi2'
 import {
   IoCloseOutline,
   IoTrendingDownSharp,
   IoTrendingUpSharp,
 } from 'react-icons/io5'
-import formatDateTime from '@/utils/formatDateTime'
-import Button from '../shared/Button'
-import { HiShare } from 'react-icons/hi2'
+
+import DataTable from '../shared/DataTable'
+import { DataTableContentItem } from '../shared/DataTableContentItem'
 
 type OpenPositionsTableProps = {
   data: PositionType[]
+  isOpen: boolean
   showTableHeader?: boolean
 }
 const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
   data,
+  isOpen,
   showTableHeader = true,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([])
-  const showPnlAfterFees = false //TODO
   const [isCloseModalOpen, setisCloseModalOpen] = useState(false)
-  const [isCollateralModalOpen, setisCollateralModalOpen] = useState(false)
   const [currentPosition, setCurrentPosition] = useState<
     PositionType | undefined
   >()
 
   const closePosition = (position: PositionType) => {
     setisCloseModalOpen(true)
-    setCurrentPosition(position)
-  }
-
-  const editColateral = (position: PositionType) => {
-    setisCollateralModalOpen(true)
     setCurrentPosition(position)
   }
 
@@ -92,7 +84,6 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       header: () => <span className="text-sm text-gray-300">Position</span>,
       enableSorting: false,
     }),
-
     columnHelper.accessor('size', {
       id: 'size',
       cell: (info) => (
@@ -104,7 +95,6 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       enableSorting: false,
       sortingFn: 'basic',
     }),
-
     columnHelper.accessor('collateral', {
       id: 'collateral',
       cell: (info) => (
@@ -117,7 +107,6 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       ),
       enableSorting: false,
     }),
-
     columnHelper.accessor('entryPrice', {
       id: 'entryPrice',
       cell: (info) => (
@@ -128,7 +117,6 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       header: () => <span className="text-sm text-gray-300">Entry Price</span>,
       enableSorting: false,
     }),
-
     columnHelper.accessor('markPrice', {
       id: 'markPrice',
       cell: (info) => (
@@ -147,6 +135,18 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
         </DataTableContentItem>
       ),
       header: () => <span className="text-sm text-gray-300">Liq. Price</span>,
+      enableSorting: false,
+    }),
+    columnHelper.accessor('closePrice', {
+      id: 'closePrice',
+      cell: (info) => (
+        <DataTableContentItem clickType="no-action" row={info.row}>
+          {info.getValue()
+            ? formatNumber(info.getValue()!, { decimalCases: 2 })
+            : '-'}
+        </DataTableContentItem>
+      ),
+      header: () => <span className="text-sm text-gray-300">Close Price</span>,
       enableSorting: false,
     }),
     columnHelper.accessor('unrealisedPnl', {
@@ -210,7 +210,7 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       enableSorting: false,
     }),
     columnHelper.accessor('expiryTime', {
-      id: 'expiryTime',
+      id: 'expiry',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
           {info.getValue()}
@@ -218,6 +218,17 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
       ),
       header: () => <span className="text-sm text-gray-300">Expiry</span>,
       enableSorting: false,
+    }),
+    columnHelper.accessor('closeDate', {
+      id: 'closeDate',
+      cell: (info) => (
+        <DataTableContentItem clickType="no-action" row={info.row}>
+          {info.getValue() ? formatDateTime(info.getValue()!) : '-'}
+        </DataTableContentItem>
+      ),
+      header: () => <span className="text-sm text-gray-300">Closed Date</span>,
+      enableSorting: false,
+      enableHiding: true,
     }),
     columnHelper.accessor('id', {
       id: 'close',
@@ -249,15 +260,34 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
     }),
   ]
 
+  const [columnVisibility, setColumnVisibility] = useState({
+    collateral: isOpen,
+    markPrice: isOpen,
+    liqPrice: isOpen,
+    unrealisedPnl: isOpen,
+    expiry: isOpen,
+    closeDate: !isOpen,
+  })
+  useEffect(() => {
+    setColumnVisibility({
+      collateral: isOpen,
+      markPrice: isOpen,
+      liqPrice: isOpen,
+      unrealisedPnl: isOpen,
+      expiry: isOpen,
+      closeDate: !isOpen,
+    })
+  }, [isOpen])
+
   return (
     <>
       <DataTable
-        colorScheme="white"
         data={data}
         columns={columns}
         showHeader={showTableHeader}
         sorting={sorting}
         setSorting={setSorting}
+        columnVisibility={columnVisibility}
       />
       {/* {currentPosition && (
         <GMXClosePositionModal

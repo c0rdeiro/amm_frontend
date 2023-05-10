@@ -8,6 +8,7 @@ import {
   SortingState,
   OnChangeFn,
   getSortedRowModel,
+  VisibilityState,
 } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { Fragment } from 'react'
@@ -19,11 +20,11 @@ type DataTableProps<T> = {
   rowClickAction?: (row: Row<T>) => void
   renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement
   getRowCanExpand?: (row: Row<T>) => boolean
-  colorScheme?: 'white' | 'blue'
   enableMultiRowSelection?: boolean
   showHeader?: boolean
   sorting?: SortingState
   setSorting?: OnChangeFn<SortingState>
+  columnVisibility?: VisibilityState
 }
 
 function DataTable<T>({
@@ -32,11 +33,11 @@ function DataTable<T>({
   rowClickAction,
   renderSubComponent,
   getRowCanExpand,
-  colorScheme = 'blue',
   enableMultiRowSelection = false,
   showHeader = true,
   sorting,
   setSorting,
+  columnVisibility,
 }: DataTableProps<T>) {
   const table = useReactTable({
     columns,
@@ -48,6 +49,7 @@ function DataTable<T>({
     enableMultiRowSelection,
     state: {
       sorting,
+      columnVisibility,
     },
     onSortingChange: setSorting,
   })

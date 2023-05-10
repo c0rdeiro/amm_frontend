@@ -77,6 +77,7 @@ type PositionType = {
   theta: number
   openInterest: number
   openDate: Date
+  closePrice?: number
   closeDate?: Date
 }
 

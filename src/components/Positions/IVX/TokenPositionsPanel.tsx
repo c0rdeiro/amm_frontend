@@ -82,6 +82,12 @@ const TokenPositionsPanel = () => {
   ]
 
   const [isChainlinkPrice, setIsChainlinkPrice] = useState(false)
+
+  const getSelectedTable = () => {
+    if (tableType === 'positions') {
+      return <OpenPositionsTable data={dummyPositions} isOpen={isOpen} />
+    }
+  }
   return (
     <div className="flex w-full flex-col items-center gap-5 rounded-lg border border-gray-500 bg-gray-600 py-5 pr-5">
       <div className="flex w-full items-center justify-between">
@@ -102,7 +108,7 @@ const TokenPositionsPanel = () => {
           <Tabs tabList={openClosedTabs} style="b&w" size="sm" />
         </div>
       </div>
-      <OpenPositionsTable data={dummyPositions} />
+      {getSelectedTable()}
     </div>
   )
 }
