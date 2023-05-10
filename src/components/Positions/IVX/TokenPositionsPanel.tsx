@@ -1,133 +1,108 @@
 import Tabs from '@/components/shared/Tabs'
-import { TabType } from '@/types/next'
+import { PositionType, TabType } from '@/types/next'
 import { BigNumber } from 'ethers'
 import { useState } from 'react'
 
-import GMXPositionsTable from '../GMXPositionsTable'
-import PositionsCompactTable from './PositionsCompactTable'
+import LINKIcon from '@/Icons/tokens/link'
+import Switch from '@/components/shared/Form/Switch'
+import OpenPositionsTable from '../OpenPositionsTable'
+import { Market } from '@/types/next'
 
 const TokenPositionsPanel = () => {
-  const tableTabs: TabType[] = [
+  const [isOpen, setIsOpen] = useState(true)
+  const openClosedTabs: TabType[] = [
     {
       key: 0,
-      label: 'Open (0)',
-      action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+      label: 'Open',
+      action: () => {
+        setIsOpen(true)
+      },
     },
     {
       key: 1,
       label: 'Closed',
-      action: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+      action: () => {
+        setIsOpen(false)
+      },
+    },
+  ]
+  const [tableType, setTableType] = useState<'positions' | 'orders'>(
+    'positions'
+  )
+
+  const tableTypeTabs: TabType[] = [
+    {
+      key: 0,
+      label: 'Positions',
+      action: () => {
+        setTableType('positions')
+      },
+    },
+    {
+      key: 1,
+      label: 'Orders',
+      action: () => {
+        setTableType('orders')
+      },
     },
   ]
 
-  const [currentTab, setCurrentTab] = useState<'IVX' | 'GMX'>('GMX')
-
-  const ethToken: GMXToken = {
-    name: 'Eth',
-    symbol: 'ETH',
-    decimals: 18,
-    address: '0x0000000000000000000000000000000000000000',
+  const ethToken: Market = {
+    value: 'ETHUSDT',
+    label: 'ETH',
   }
-
-  const dummyPositions: GMXPosition[] = [
+  const dummyPositions: PositionType[] = [
     {
-      key: 'position1',
-      contractKey: 'contract1',
-      collateralToken: ethToken,
-      indexToken: ethToken,
-      isLong: true,
-      size: BigNumber.from(50),
-      collateral: BigNumber.from(1),
-      averagePrice: BigNumber.from(1),
-      entryFundingRate: BigNumber.from(1),
-      cumulativeFundingRate: BigNumber.from(1),
-      hasRealisedProfit: true,
-      realisedPnl: BigNumber.from(1),
-      lastIncreasedTime: 1649798400000,
-      hasProfit: false,
-      delta: BigNumber.from(1),
-      markPrice: BigNumber.from(1),
-      fundingFee: BigNumber.from(1),
-      collateralAfterFee: BigNumber.from(1),
-      closingFee: BigNumber.from(1),
-      positionFee: BigNumber.from(1),
-      totalFees: BigNumber.from(1),
-      pendingDelta: BigNumber.from(1),
-      hasLowCollateral: false,
-      deltaPercentage: BigNumber.from(-1),
-      deltaStr: '-$1',
-      deltaPercentageStr: '-1%',
-      deltaBeforeFeesStr: '1',
-      hasProfitAfterFees: true,
-      pendingDeltaAfterFees: BigNumber.from(1),
-      deltaPercentageAfterFees: BigNumber.from(1),
-      deltaAfterFeesStr: '0.5 DT',
-      deltaAfterFeesPercentageStr: '5%',
-      netValue: BigNumber.from(1),
-      leverage: BigNumber.from(1),
-      leverageStr: '1.10x',
-      entryPrice: BigNumber.from(1),
-      liqPrice: BigNumber.from(1),
-    },
-    {
-      key: 'position2',
-      collateralToken: ethToken,
-      indexToken: ethToken,
-      isLong: false,
-      size: BigNumber.from(1),
-      collateral: BigNumber.from(1),
-      averagePrice: BigNumber.from(1),
-      entryFundingRate: BigNumber.from(1),
-      cumulativeFundingRate: BigNumber.from(1),
-      hasRealisedProfit: false,
-      realisedPnl: BigNumber.from(1),
-      lastIncreasedTime: 1649798400000,
-      hasProfit: true,
-      delta: BigNumber.from(1),
-      markPrice: BigNumber.from(1),
-      fundingFee: BigNumber.from(1),
-      collateralAfterFee: BigNumber.from(1),
-      closingFee: BigNumber.from(1),
-      positionFee: BigNumber.from(1),
-      totalFees: BigNumber.from(1),
-      pendingDelta: BigNumber.from(1),
-      hasLowCollateral: false,
-      deltaPercentage: BigNumber.from(1),
-      deltaStr: '$1',
-      deltaPercentageStr: '1%',
-      deltaBeforeFeesStr: '1',
-      hasProfitAfterFees: true,
-      pendingDeltaAfterFees: BigNumber.from(1),
-      deltaPercentageAfterFees: BigNumber.from(1),
-      deltaAfterFeesStr: '0.5 DT',
-      deltaAfterFeesPercentageStr: '5%',
-      netValue: BigNumber.from(1),
-      leverage: BigNumber.from(1),
-      leverageStr: '1.10x',
-      entryPrice: BigNumber.from(1),
-      liqPrice: BigNumber.from(1),
+      id: 123456,
+      isOpen: true,
+      token: ethToken,
+      operation: 'Call',
+      strategy: 'Long',
+      strike: 1800,
+      expiryTime: 1654321010,
+      value: 3500,
+      size: 10,
+      pnl: 100,
+      unrealisedPnl: 50,
+      costPerOption: 5,
+      price: 10,
+      collateral: 15000,
+      entryPrice: 8,
+      markPrice: 9,
+      liqPrice: 7,
+      profit: 200,
+      impliedVolatility: 0.3,
+      delta: 0.7,
+      vega: 0.1,
+      gamma: 0.05,
+      theta: 0.02,
+      openInterest: 100,
+      openDate: new Date('2023-05-01T09:30:00Z'),
     },
   ]
 
-  const getCurrentTable = () => {
-    switch (currentTab) {
-      case 'GMX':
-        return <GMXPositionsTable data={dummyPositions} />
-      case 'IVX':
-      default:
-        return <PositionsCompactTable data={[]} />
-    }
-  }
-
+  const [isChainlinkPrice, setIsChainlinkPrice] = useState(false)
   return (
-    <div className="flex w-full items-start gap-8 overflow-y-auto pb-14">
-      <div className="flex w-full flex-col items-start rounded-lg py-2 px-6 ">
-        <div className="flex w-64 items-center  pb-4 ">
-          <Tabs tabList={tableTabs} size="sm" style="monochromatic" />
+    <div className="flex w-full flex-col items-center gap-5 rounded-lg border border-gray-500 bg-gray-600 py-5 pr-5">
+      <div className="flex w-full items-center justify-between">
+        <div>
+          <Tabs tabList={tableTypeTabs} style="no-style" size="lg" />
         </div>
-
-        {getCurrentTable()}
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2">
+            <Switch
+              enabled={isChainlinkPrice}
+              setEnabled={setIsChainlinkPrice}
+              size="sm"
+            />
+            <div className="flex items-center gap-1 text-sm">
+              <LINKIcon size={15} /> Price
+            </div>
+          </div>
+          <Tabs tabList={openClosedTabs} style="b&w" size="sm" />
+        </div>
       </div>
+      <OpenPositionsTable data={dummyPositions} />
     </div>
   )
 }

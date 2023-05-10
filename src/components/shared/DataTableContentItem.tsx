@@ -25,7 +25,7 @@ export function DataTableContentItem<T>({
 
   return (
     <div
-      className="flex items-center gap-1 py-2  pl-6 "
+      className="flex items-center gap-1 py-2 pl-6 "
       onClick={getOnClickFunction}
     >
       {children}

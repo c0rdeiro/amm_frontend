@@ -21,11 +21,11 @@ const Switch: React.FC<SwitchProps> = ({
       disabled={isDisabled}
       className={clsx(
         {
-          'bg-primary': enabled,
-          'bg-select/[.5]': !enabled,
-          'h-4 w-6.5': size === 'sm',
-          'h-5 w-8.5': size === 'md',
-          'h-7 w-12.5': size === 'lg',
+          'bg-blue': enabled,
+          'bg-gray-300': !enabled,
+          'h-4 w-6': size === 'sm',
+          'h-5 w-8': size === 'md',
+          'h-7 w-12': size === 'lg',
         },
         'relative inline-flex items-center rounded-full'
       )}
@@ -33,11 +33,11 @@ const Switch: React.FC<SwitchProps> = ({
       <span
         className={clsx(
           {
-            'translate-x-1': !enabled,
-            'h-2 w-2': size === 'sm',
+            'translate-x-[2px]': !enabled,
+            'h-3 w-3': size === 'sm',
             'h-4 w-4': size === 'md',
             'h-6 w-6': size === 'lg',
-            'translate-x-4': ['md', 'sm'].includes(size) && enabled,
+            'translate-x-[10px]': ['md', 'sm'].includes(size) && enabled,
             'translate-x-6': size === 'lg' && enabled,
           },
           'inline-block transform rounded-full bg-white transition'
