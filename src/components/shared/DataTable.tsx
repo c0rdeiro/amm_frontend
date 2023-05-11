@@ -58,7 +58,7 @@ function DataTable<T>({
   return (
     <table className="w-full table-auto">
       {showHeader && (
-        <thead>
+        <thead className="">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -66,7 +66,7 @@ function DataTable<T>({
                   <motion.th
                     transition={{ duration: 0.7, type: 'spring' }}
                     layout="position"
-                    className="pl-6 text-left text-sm"
+                    className="border-b border-gray-500 pl-6 pb-2 text-left text-sm"
                   >
                     {header.isPlaceholder ? null : (
                       <div
