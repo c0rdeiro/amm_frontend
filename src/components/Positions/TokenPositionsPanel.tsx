@@ -105,12 +105,12 @@ const TokenPositionsPanel = () => {
     )
   }
   return (
-    <div className="flex w-full flex-col items-center gap-5 rounded-lg border border-gray-500 bg-gray-600 py-5 pr-5">
+    <div className="mx-3 flex w-full flex-col items-center gap-5 overflow-x-auto rounded-lg border border-gray-500 bg-gray-600 py-5 pr-5 md:mx-0">
       <div className="flex w-full flex-col items-start justify-between md:flex-row md:items-center">
         <div>
           <Tabs tabList={tableTypeTabs} style="no-style" size="lg" />
         </div>
-        <div className="flex flex-row-reverse items-center gap-5 md:flex-row">
+        <div className="ml-5 flex flex-row-reverse items-center gap-5 md:flex-row">
           <div className="flex items-center gap-2">
             <Switch
               enabled={isChainlinkPrice}
@@ -126,7 +126,8 @@ const TokenPositionsPanel = () => {
           )}
         </div>
       </div>
-      {getSelectedTable()}
+
+      <div className="w-full overflow-auto">{getSelectedTable()}</div>
     </div>
   )
 }
