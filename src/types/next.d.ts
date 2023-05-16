@@ -22,11 +22,6 @@ type MenuLinkType = {
   icon?: React.ReactNode
 }
 
-type MarketTokenType = {
-  symbol: string
-  price: number
-}
-
 type TokenInfoType = {
   label: string | React.ReactNode
   value: number
@@ -57,25 +52,44 @@ type OptionType = {
 }
 
 type PositionType = {
-  token: MarketTokenType
+  id: number
+  isOpen: boolean
+  token: Market
   operation: 'Call' | 'Put'
-  numContracts: number
+  strategy: 'Long' | 'Short'
   strike: number
   expiryTime: number
   value: number
   size: number
   pnl: number
+  unrealisedPnl: number
   costPerOption: number
   price: number
+  collateral: number
+  entryPrice: number
+  markPrice: number
+  liqPrice: number
   profit: number
-  status: 'Open' | 'Closed'
-  impliedVolatility: number
-  delta: number
-  vega: number
-  gamma: number
-  theta: number
-  openInterest: number
+  impliedVolatility?: number
+  delta?: number
+  vega?: number
+  gamma?: number
+  theta?: number
+  openInterest?: number
   openDate: Date
+  closePrice?: number
+  closeDate?: Date
+}
+
+type Order = {
+  id: number
+  token: Market
+  strategy: 'Long' | 'Short'
+  n: number
+  type: 'Market' | 'Limit'
+  price: number
+  priceAbove: boolean
+  markPrice: number
 }
 
 type TokenIconProps = {

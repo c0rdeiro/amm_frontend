@@ -11,8 +11,8 @@ type ControllingTab = {
 type TabsProps = {
   tabList: TabType[]
   size?: 'xs' | 'sm' | 'md' | 'lg'
-  style?: 'normal' | 'monochromatic' | 'no-style' | 'custom-color'
-  roundStyle?: 'round' | 'straight' | 'folder' | 'separate'
+  style?: 'normal' | 'monochromatic' | 'no-style' | 'custom-color' | 'b&w'
+  roundStyle?: 'round' | 'straight' | 'separate'
   defaultIndex?: number
   controllingTab?: ControllingTab
 }
@@ -71,6 +71,10 @@ const Tabs: React.FC<TabsProps> = ({
                     style === 'custom-color' && item.bgColor === 'red',
                   ' ui-selected:bg-green-400':
                     style === 'custom-color' && item.bgColor === 'green',
+                },
+                {
+                  'ui-selected:bg-white ui-selected:text-gray-600 ui-not-selected:bg-gray-500 ui-not-selected:text-gray-300':
+                    style === 'b&w',
                 },
                 {
                   'ui-not-selected:bg-gray-600 ui-not-selected:text-gray-500 ui-not-selected:hover:bg-gray-600':
