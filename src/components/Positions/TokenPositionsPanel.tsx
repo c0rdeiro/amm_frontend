@@ -79,6 +79,8 @@ const TokenPositionsPanel = () => {
       theta: 0.02,
       openInterest: 100,
       openDate: new Date('2023-05-01T09:30:00Z'),
+      breakeven: 100,
+      fees: 5,
     },
   ]
 

@@ -22,7 +22,7 @@ const TokenSwapItem: React.FC<TokenSwapItemProps> = ({
   complementaryComponent,
 }) => {
   return (
-    <div className="flex flex-col gap-2 rounded bg-gray-500 p-3 ">
+    <div className="flex w-full flex-col gap-2 rounded bg-gray-500 p-3 ">
       <div className="flex justify-between text-xs font-normal text-gray-300">
         <div>{label}</div>
         <div>{secondaryText}</div>

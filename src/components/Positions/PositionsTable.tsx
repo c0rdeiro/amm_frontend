@@ -14,6 +14,7 @@ import {
 
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
+import ClosePositionModal from './ClosePositionModal'
 
 type PositionsTableProps = {
   data: PositionType[]
@@ -283,13 +284,13 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
         setSorting={setSorting}
         columnVisibility={columnVisibility}
       />
-      {/* {currentPosition && (
-        <GMXClosePositionModal
+      {currentPosition && (
+        <ClosePositionModal
           position={currentPosition}
           isOpen={isCloseModalOpen}
           setIsOpen={setisCloseModalOpen}
         />
-      )}*/}
+      )}
     </>
   )
 }

@@ -69,7 +69,9 @@ type PositionType = {
   entryPrice: number
   markPrice: number
   liqPrice: number
+  breakeven: number
   profit: number
+  fees: number
   impliedVolatility?: number
   delta?: number
   vega?: number
