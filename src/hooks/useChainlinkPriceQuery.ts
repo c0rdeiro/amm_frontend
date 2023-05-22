@@ -1,6 +1,6 @@
 import { SupportedMarketSymbols } from '@/types/next'
 import GET_CHAINLINK_BTC_PRICE from '@/utils/apollo/getChainlinkBtc.query'
-import GET_CHAINLINK_ETH_PRICE from '@/utils/apollo/getChainlinkPrice.query'
+import GET_CHAINLINK_ETH_PRICE from '@/utils/apollo/getChainlinkEth.query'
 import { useQuery } from '@apollo/client'
 
 type ChainlinkMarketPrice = { id: number; price: bigint }

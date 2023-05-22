@@ -2,7 +2,6 @@ import { TabType } from '@/types/next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import Tabs from '../shared/Tabs'
 import GMXTrader from './GMX/GMXTrader'
 import IVXTrader from './IVX/IVXTrader'
 import FolderTabs from './FolderTabs'

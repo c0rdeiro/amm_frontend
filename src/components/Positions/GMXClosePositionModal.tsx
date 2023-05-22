@@ -1,17 +1,17 @@
-import Modal from '../shared/Modal'
-import { RxCross2 } from 'react-icons/rx'
-import Tabs from '../shared/Tabs'
 import { TabType } from '@/types/next'
-import { useState } from 'react'
-import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import formatNumber from '@/utils/formatNumber'
-import Button from '../shared/Button'
-import Input from '../shared/Form/Input'
-import { formatEther } from 'ethers/lib/utils.js'
-import Select from '../shared/Form/Select'
-import { IoCloseOutline } from 'react-icons/io5'
-import CustomSlider from '../shared/CustomSlider'
 import clsx from 'clsx'
+import { formatEther } from 'ethers/lib/utils.js'
+import { useState } from 'react'
+import { IoCloseOutline } from 'react-icons/io5'
+
+import Button from '../shared/Button'
+import CustomSlider from '../shared/CustomSlider'
+import Input from '../shared/Form/Input'
+import Select from '../shared/Form/Select'
+import Modal from '../shared/Modal'
+import TokenSwapItem from '../shared/Swap/TokenSwapItem'
+import Tabs from '../shared/Tabs'
 
 type GMXClosePositionModalProps = {
   position: GMXPosition
@@ -47,7 +47,6 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
   ]
 
   const [quantity, setQuantity] = useState(0)
-  const [price, setPrice] = useState(0)
   const [keepLeverage, setkeepLeverage] = useState(true)
   const [allowSlippage, setallowSlippage] = useState(false)
   const [allowedSlippage, setAllowedSlippage] = useState(0.003)

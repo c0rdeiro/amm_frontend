@@ -121,7 +121,7 @@ const ChartContainer = forwardRef<any, ChartContainerProps>(
       return () => {
         window.removeEventListener('resize', handleResize)
       }
-    }, [])
+    }, [container.clientWidth])
     useLayoutEffect(() => {
       const currentRef = chartApiRef.current
       currentRef.api()

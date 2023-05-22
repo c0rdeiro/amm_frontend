@@ -1,4 +1,3 @@
-import { Market } from '@/types/next'
 import getTokenIcon from './getTokenIcon'
 import clsx from 'clsx'
 

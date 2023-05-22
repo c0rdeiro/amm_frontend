@@ -3,7 +3,7 @@ import Spinner from '@/components/shared/Spinner'
 import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import { useMarket, useTokenActions } from '@/store/tokenStore'
-import { Market, SupportedMarketSymbols } from '@/types/next'
+import { Market } from '@/types/next'
 import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 
