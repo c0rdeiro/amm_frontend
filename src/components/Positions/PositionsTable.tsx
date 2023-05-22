@@ -13,7 +13,7 @@ import {
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
 import ClosePositionModal from './ClosePositionModal'
-import getIconFancyIconFromToken from '@/utils/getIconFancyIconFromToken'
+import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import { formatEther } from 'viem'
 import isIVXPosition from '@/utils/positions/isIVXPosition'
 import GMXClosePositionModal from './GMXClosePositionModal'
@@ -57,7 +57,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
           <div className="flex items-center gap-1 text-sm">
-            {getIconFancyIconFromToken(info.getValue())}
+            {getIconFancyIcon(info.getValue())}
             <span
               className={clsx(
                 'flex items-center justify-center gap-2 rounded px-2 py-1',

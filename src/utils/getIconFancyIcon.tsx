@@ -2,7 +2,7 @@ import { Market } from '@/types/next'
 import getTokenIcon from './getTokenIcon'
 import clsx from 'clsx'
 
-export default function getIconFancyIconFromToken(token: Token) {
+export default function getIconFancyIcon(token: Token) {
   return (
     <span
       className={clsx(
@@ -13,7 +13,7 @@ export default function getIconFancyIconFromToken(token: Token) {
         }
       )}
     >
-      {/* {getTokenIcon(token, 20)} */}
+      {getTokenIcon(token, 20)}
     </span>
   )
 }

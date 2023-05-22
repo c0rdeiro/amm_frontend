@@ -5,7 +5,7 @@ import React from 'react'
 type SupportedMarketSymbols = 'ETHUSDT' | 'BTCUSDT'
 
 type Market = {
-  value: SupportedMarketSymbols
+  symbol: SupportedMarketSymbols
   label: string
 }
 

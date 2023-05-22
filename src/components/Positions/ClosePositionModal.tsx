@@ -16,7 +16,7 @@ import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import CustomSlider from '../shared/CustomSlider'
 import clsx from 'clsx'
 import formatNumber from '@/utils/formatNumber'
-import getIconFancyIconFromToken from '@/utils/getIconFancyIconFromToken'
+import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import { formatEther } from 'viem'
 
 type ClosePositionModalProps = {
@@ -100,7 +100,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
             >
               {position.operation}
             </span>
-            {getIconFancyIconFromToken(position.token)}
+            {getIconFancyIcon(position.token)}
             <span>{position.token.symbol}</span>
           </div>
         </div>

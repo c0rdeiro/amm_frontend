@@ -3,10 +3,10 @@ import ETHIcon from '@/Icons/tokens/eth'
 import { Market } from '@/types/next'
 
 export default function tokenIcon(
-  entry: Market,
+  entry: Market | Token,
   size: number
 ): React.ReactNode {
-  switch (entry.value.toLowerCase()) {
+  switch (entry.symbol?.toLowerCase()) {
     case 'eth':
     case 'ethusdt':
       return <ETHIcon size={size} />

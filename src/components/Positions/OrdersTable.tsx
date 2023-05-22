@@ -1,6 +1,6 @@
 import { Order } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
-import getIconFancyIconFromToken from '@/utils/getIconFancyIconFromToken'
+import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import { createColumnHelper, SortingState } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useState } from 'react'
@@ -28,7 +28,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ data }) => {
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
           <div className="flex items-center gap-1 text-sm">
-            {getIconFancyIconFromToken(info.getValue())}
+            {getIconFancyIcon(info.getValue())}
             <span
               className={clsx(
                 'flex items-center justify-center gap-2 rounded px-2 py-1',
