@@ -1,13 +1,12 @@
-import Tabs from '@/components/shared/Tabs'
-import { Order, PositionType, TabType } from '@/types/next'
-import { BigNumber } from 'ethers'
-import { useState } from 'react'
-
-import LINKIcon from '@/Icons/tokens/link'
 import Switch from '@/components/shared/Form/Switch'
-import PositionsTable from './PositionsTable'
-import { Market } from '@/types/next'
+import Tabs from '@/components/shared/Tabs'
+import LINKIcon from '@/Icons/tokens/link'
+import { Order, TabType } from '@/types/next'
+import { useState } from 'react'
+import { parseEther } from 'viem'
+
 import OrdersTable from './OrdersTable'
+import PositionsTable from './PositionsTable'
 
 const TokenPositionsPanel = () => {
   const [isOpen, setIsOpen] = useState(true)
@@ -48,40 +47,91 @@ const TokenPositionsPanel = () => {
     },
   ]
 
-  const ethToken: Market = {
-    value: 'ETHUSDT',
-    label: 'ETH',
+  const ethToken: Token = {
+    name: 'Ethereum',
+    symbol: 'ETH',
   }
-  const dummyPositions: PositionType[] = [
-    {
-      id: 123456,
-      isOpen: true,
-      token: ethToken,
-      operation: 'Call',
-      strategy: 'Long',
-      strike: 1800,
-      expiryTime: 1654321010,
-      value: 3500,
-      size: 10,
-      pnl: 100,
-      unrealisedPnl: 50,
-      costPerOption: 5,
-      price: 10,
-      collateral: 15000,
-      entryPrice: 8,
-      markPrice: 9,
-      liqPrice: 7,
-      profit: 200,
-      impliedVolatility: 0.3,
-      delta: 0.7,
-      vega: 0.1,
-      gamma: 0.05,
-      theta: 0.02,
-      openInterest: 100,
-      openDate: new Date('2023-05-01T09:30:00Z'),
-      breakeven: 100,
-      fees: 5,
-    },
+
+  const dummyIVXPosition: IVXPositionType = {
+    id: 1,
+    token: ethToken,
+    operation: 'Call',
+    strategy: 'Long',
+    strike: parseEther('200'),
+    expiryTime: 1679827200,
+    premium: parseEther('50'),
+    size: parseEther('10'),
+    pnl: parseEther('100'),
+    unrealisedPnl: parseEther('200'),
+    totalFees: parseEther('20'),
+    markPrice: parseEther('250'),
+    entryPrice: parseEther('220'),
+    liqPrice: parseEther('180'),
+    collateral: parseEther('1000'),
+    collateralToken: ethToken,
+    openTimestamp: 1621463721,
+    isClosed: false,
+    closeTimestamp: undefined,
+    closePrice: undefined,
+    costPerOption: 10,
+    price: 20,
+    breakeven: parseEther('15'),
+    profit: 200,
+  }
+
+  const dummyGMXPosition: GMXPosition = {
+    id: 2,
+    token: ethToken,
+    operation: 'Put',
+    strategy: 'Short',
+    strike: parseEther('150'),
+    expiryTime: 1679827200,
+    premium: parseEther('30'),
+    size: parseEther('5'),
+    pnl: parseEther('-50'),
+    unrealisedPnl: parseEther('-100'),
+    totalFees: parseEther('10'),
+    markPrice: parseEther('120'),
+    entryPrice: parseEther('110'),
+    liqPrice: parseEther('160'),
+    collateral: parseEther('800'),
+    collateralToken: ethToken,
+    openTimestamp: 1621463721,
+    isClosed: true,
+    closeTimestamp: 1621463721,
+    closePrice: parseEther('100'),
+    contractKey: 'GMXContract',
+    averagePrice: parseEther('100'),
+    entryFundingRate: parseEther('0.05'),
+    cumulativeFundingRate: parseEther('0.1'),
+    hasRealisedProfit: true,
+    lastIncreasedTime: 1621463721,
+    hasProfit: true,
+    delta: parseEther('0.02'),
+    fundingFee: parseEther('10'),
+    collateralAfterFee: parseEther('1000'),
+    closingFee: parseEther('5'),
+    positionFee: parseEther('2'),
+    pendingDelta: parseEther('0.01'),
+    hasLowCollateral: false,
+    deltaPercentage: parseEther('2'),
+    deltaStr: '0.02',
+    deltaPercentageStr: '2%',
+    deltaBeforeFeesStr: '0.03',
+    hasProfitAfterFees: true,
+    pendingDeltaAfterFees: parseEther('0.005'),
+    deltaPercentageAfterFees: parseEther('1'),
+    deltaAfterFeesStr: '0.015',
+    deltaAfterFeesPercentageStr: '1.5%',
+    netValue: parseEther('1500'),
+    leverage: parseEther('5'),
+    leverageStr: '5x',
+  }
+
+  // Array of dummy (IVXPositionType | GMXPosition)
+  const dummyPositions: (IVXPositionType | GMXPosition)[] = [
+    dummyIVXPosition,
+    dummyGMXPosition,
   ]
 
   const dummyOrders: Order[] = [

@@ -23,7 +23,7 @@ type SelectProps<T> =
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
       size?: 'md' | 'lg'
-      fontSize?: 'md' | 'lg'
+      fontSize?: 'xs' | 'md' | 'lg'
       textColor?: 'white' | 'gray'
       textRef?: AnimationScope<any> //used in gmx swap
       hideArrow?: boolean
@@ -35,7 +35,7 @@ type SelectProps<T> =
       isDisabled?: boolean
       style?: 'normal' | 'no-style'
       size?: 'md' | 'lg'
-      fontSize?: 'md' | 'lg'
+      fontSize?: 'xs' | 'md' | 'lg'
       textColor?: 'white' | 'gray'
       textRef?: AnimationScope<any> //used in gmx swap
       hideArrow?: boolean
@@ -75,6 +75,7 @@ function Select<T>({
               'rounded bg-gray-600 px-4 py-2': style === 'normal',
               'bg-inherit text-gray-300 ': style === 'no-style',
               'flex w-full items-center justify-between': size === 'lg',
+              'text-xs font-normal': fontSize === 'xs',
               'text-sm font-normal': fontSize === 'md',
               'text-lg font-bold': fontSize === 'lg',
               'text-white': textColor === 'white',

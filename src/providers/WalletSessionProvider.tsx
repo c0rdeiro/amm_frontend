@@ -6,7 +6,7 @@ import {
 import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
 import tailwindConfig from 'tailwind.config.cjs'
 import resolveConfig from 'tailwindcss/resolveConfig'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, bsc } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 
@@ -19,7 +19,7 @@ type WalletProviderProps = {
 // }
 
 const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
-  const { chains, provider } = configureChains(
+  const { chains, publicClient } = configureChains(
     [arbitrum, bsc],
     [
       // alchemyProvider({
@@ -36,15 +36,15 @@ const WalletSessionProvider: React.FC<WalletProviderProps> = ({ children }) => {
     },
   ])
 
-  const wagmiClient = createClient({
+  const wagmiConfig = createConfig({
     autoConnect: true,
+    publicClient,
     connectors,
-    provider,
   })
   const tw = resolveConfig(tailwindConfig)
 
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         coolMode
         chains={chains}

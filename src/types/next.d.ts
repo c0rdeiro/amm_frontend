@@ -51,41 +51,11 @@ type OptionType = {
   expiryTime: number
 }
 
-type PositionType = {
-  id: number
-  isOpen: boolean
-  token: Market
-  operation: 'Call' | 'Put'
-  strategy: 'Long' | 'Short'
-  strike: number
-  expiryTime: number
-  value: number
-  size: number
-  pnl: number
-  unrealisedPnl: number
-  costPerOption: number
-  price: number
-  collateral: number
-  entryPrice: number
-  markPrice: number
-  liqPrice: number
-  breakeven: number
-  profit: number
-  fees: number
-  impliedVolatility?: number
-  delta?: number
-  vega?: number
-  gamma?: number
-  theta?: number
-  openInterest?: number
-  openDate: Date
-  closePrice?: number
-  closeDate?: Date
-}
+// type PositionType = IVXPositionType | GMXPosition
 
 type Order = {
   id: number
-  token: Market
+  token: Token
   strategy: 'Long' | 'Short'
   n: number
   type: 'Market' | 'Limit'

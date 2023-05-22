@@ -2,7 +2,6 @@ import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import USDCIcon from '@/Icons/tokens/usdc'
 import USDTIcon from '@/Icons/tokens/usdt'
-import { PositionType } from '@/types/next'
 import { useState } from 'react'
 import {
   IoCloseOutline,
@@ -15,14 +14,15 @@ import Select from '../shared/Form/Select'
 import Modal from '../shared/Modal'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import CustomSlider from '../shared/CustomSlider'
-import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import clsx from 'clsx'
 import formatNumber from '@/utils/formatNumber'
+import getIconFancyIconFromToken from '@/utils/getIconFancyIconFromToken'
+import { formatEther } from 'viem'
 
 type ClosePositionModalProps = {
   isOpen: boolean
   setIsOpen: (flag: boolean) => void
-  position: PositionType
+  position: IVXPositionType
 }
 
 const sizeMarks = {
@@ -60,7 +60,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex w-96 flex-col items-start gap-3 rounded-lg bg-gray-600 p-5">
         <div className="flex w-full items-center justify-between text-gray-300">
-          <h2 className="text-lg font-normal text-white">{`Close ${position.operation} ${position.token.label}`}</h2>
+          <h2 className="text-lg font-normal text-white">{`Close ${position.operation} ${position.token.symbol}`}</h2>
           <IoCloseOutline size={24} onClick={() => setIsOpen(false)} />
         </div>
         <span className="w-full border border-gray-500" />
@@ -100,8 +100,8 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
             >
               {position.operation}
             </span>
-            {getIconFancyIcon(position.token)}
-            <span>{position.token.label}</span>
+            {getIconFancyIconFromToken(position.token)}
+            <span>{position.token.symbol}</span>
           </div>
         </div>
         <TokenSwapItem
@@ -143,7 +143,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
           <div className="flex w-full justify-between">
             <span className="text-gray-300">Mark Price</span>
             <span className="text-white">
-              {formatNumber(position.markPrice, {
+              {formatNumber(+formatEther(position.markPrice), {
                 decimalCases: 2,
                 symbol: '$',
               })}
@@ -152,7 +152,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
           <div className="flex w-full justify-between">
             <span className="text-gray-300">Entry Price</span>
             <span className="text-white">
-              {formatNumber(position.entryPrice, {
+              {formatNumber(+formatEther(position.entryPrice), {
                 decimalCases: 2,
                 symbol: '$',
               })}
@@ -162,7 +162,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
           <div className="flex w-full justify-between">
             <span className="text-gray-300">Break even Price</span>
             <span className="text-white">
-              {formatNumber(position.breakeven, {
+              {formatNumber(+formatEther(position.breakeven), {
                 decimalCases: 2,
                 symbol: '$',
               })}
@@ -171,7 +171,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
           <div className="flex w-full justify-between">
             <span className="text-gray-300">Liquidation Price</span>
             <span className="text-white">
-              {formatNumber(position.liqPrice, {
+              {formatNumber(+formatEther(position.liqPrice), {
                 decimalCases: 2,
                 symbol: '$',
               })}
@@ -187,7 +187,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
                 'text-red-400': position.pnl < 0,
               })}
             >
-              {formatNumber(position.pnl, {
+              {formatNumber(+formatEther(position.pnl), {
                 decimalCases: 3,
                 displayPositive: true,
               })}
@@ -196,7 +196,7 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
           <div className="flex w-full justify-between">
             <span className="text-gray-300">Fees</span>
             <span className={clsx('text-white')}>
-              {formatNumber(position.fees, {
+              {formatNumber(+formatEther(position.totalFees), {
                 decimalCases: 2,
                 symbol: '$',
               })}
