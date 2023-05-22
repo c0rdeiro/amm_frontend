@@ -44,7 +44,7 @@ const MarketChart: React.FC<ChartProps> = ({
 
   useEffect(() => {
     const websocket = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${market.value.toLowerCase()}@kline_${
+      `wss://stream.binance.com:9443/ws/${market.symbol.toLowerCase()}@kline_${
         interval.value
       }`
     )

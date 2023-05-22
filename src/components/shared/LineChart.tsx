@@ -1,5 +1,4 @@
 import { useTokenPrice } from '@/store/tokenStore'
-import { useState } from 'react'
 import {
   XAxis,
   Tooltip,

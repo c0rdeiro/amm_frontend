@@ -29,16 +29,14 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ title, items }) => {
         <Menu.Items className="absolute top-5 -left-10 flex flex-col gap-2 rounded border border-gray-500 bg-gray-600 p-2">
           {items.map((item) => (
             <Menu.Item key={item.link}>
-              {({ active }) => (
-                <Link
-                  href={item.link}
-                  className="flex items-center gap-2 rounded p-2 hover:bg-gray-400"
-                  target={item.newTab ? '_blank' : undefined}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
-              )}
+              <Link
+                href={item.link}
+                className="flex items-center gap-2 rounded p-2 hover:bg-gray-400"
+                target={item.newTab ? '_blank' : undefined}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
             </Menu.Item>
           ))}
         </Menu.Items>

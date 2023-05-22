@@ -13,10 +13,10 @@ const TokenInfo: React.FC = () => {
 
   const { data } = useQuery<Token24hData>({
     queryKey: ['24h', marketToken],
-    queryFn: () => getToken24h(marketToken.value),
+    queryFn: () => getToken24h(marketToken.symbol),
   })
 
-  const { data: chainLinkData } = useChainlinkPricesQuery(marketToken.value)
+  const { data: chainLinkData } = useChainlinkPricesQuery(marketToken.symbol)
 
   const items: TokenInfoType[] = [
     {

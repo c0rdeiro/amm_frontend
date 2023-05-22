@@ -7,7 +7,7 @@ import { useTokenPrice } from '@/store/tokenStore'
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
 import { calcChartData } from '@/utils/optionsHelpers'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 
 import IVXLeverageModal from '../../Modals/IVXLeverageModal'

@@ -11,6 +11,7 @@ import {
   IoTrendingUpSharp,
 } from 'react-icons/io5'
 import { MdEdit } from 'react-icons/md'
+
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
 

@@ -3,7 +3,7 @@ import Spinner from '@/components/shared/Spinner'
 import BTCIcon from '@/Icons/tokens/btc'
 import ETHIcon from '@/Icons/tokens/eth'
 import { useMarket, useTokenActions } from '@/store/tokenStore'
-import { SupportedMarketSymbols } from '@/types/next'
+import { Market } from '@/types/next'
 import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 
@@ -17,11 +17,19 @@ const TokenSelect: React.FC = () => {
 
   const markets: {
     label: string
-    value: SupportedMarketSymbols
+    value: Market
     icon: JSX.Element
   }[] = [
-    { label: 'ETH / USDT', value: 'ETHUSDT', icon: <ETHIcon size={18} /> },
-    { label: 'BTC / USDT', value: 'BTCUSDT', icon: <BTCIcon size={18} /> },
+    {
+      label: 'ETH / USDT',
+      value: { label: 'ETH USDT', symbol: 'ETHUSDT' },
+      icon: <ETHIcon size={18} />,
+    },
+    {
+      label: 'BTC / USDT',
+      value: { label: 'BTC USDT', symbol: 'BTCUSDT' },
+      icon: <BTCIcon size={18} />,
+    },
   ]
 
   return (
@@ -30,13 +38,10 @@ const TokenSelect: React.FC = () => {
         {market ? getTokenIcon(market, 36) : undefined}
         <Select
           items={markets}
-          selectedItem={market}
-          setSelectedItem={(market: {
-            label: string
-            value: SupportedMarketSymbols
-          }) => {
-            setMarket({ label: market.label, value: market.value })
-            push(`/trading/${market.value.toLowerCase()}`)
+          selectedItem={markets.find((x) => x.value.symbol === market.symbol)}
+          setSelectedItem={(market: { label: string; value: Market }) => {
+            setMarket(market.value)
+            push(`/trading/${market.value.symbol.toLowerCase()}`)
           }}
           fontSize="lg"
           style="no-style"

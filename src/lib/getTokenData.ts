@@ -30,7 +30,7 @@ export async function getTokenData(
     candles: [],
     volume: [],
   }
-  candles.forEach((candle: BinanceCandleData, idx: number) => {
+  candles.forEach((candle: BinanceCandleData) => {
     res.candles.push({
       time: (candle[0] / 1000) as UTCTimestamp, //has to be divided by 1000 bc chart takes unix in seconds and binances gives unix in milliseconds
       open: +candle[1],

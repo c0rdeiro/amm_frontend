@@ -1,7 +1,5 @@
-import { PositionType } from '@/types/next'
 import formatDateTime from '@/utils/formatDateTime'
 import formatNumber from '@/utils/formatNumber'
-import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import { createColumnHelper, SortingState } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -14,24 +12,45 @@ import {
 
 import DataTable from '../shared/DataTable'
 import { DataTableContentItem } from '../shared/DataTableContentItem'
+import ClosePositionModal from './ClosePositionModal'
+import getIconFancyIcon from '@/utils/getIconFancyIcon'
+import { formatEther } from 'viem'
+import isIVXPosition from '@/utils/positions/isIVXPosition'
+import GMXClosePositionModal from './GMXClosePositionModal'
 
 type PositionsTableProps = {
-  data: PositionType[]
+  data: (IVXPositionType | GMXPosition)[]
   isOpen: boolean
 }
 const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
   const [sorting, setSorting] = useState<SortingState>([])
-  const [isCloseModalOpen, setisCloseModalOpen] = useState(false)
-  const [currentPosition, setCurrentPosition] = useState<
-    PositionType | undefined
+  const [isCloseIVXPositionModalOpen, setIsCloseIVXPositionModalOpen] =
+    useState(false)
+  const [isCloseGMXPositionModalOpen, setIsCloseGMXPositionModalOpen] =
+    useState(false)
+  const [currentIVXPosition, setCurrentIVXPosition] = useState<
+    IVXPositionType | undefined
   >()
-
-  const closePosition = (position: PositionType) => {
-    setisCloseModalOpen(true)
-    setCurrentPosition(position)
+  const [currentGMXPosition, setCurrentGMXPosition] = useState<
+    GMXPosition | undefined
+  >()
+  const closePosition = (position: IVXPositionType | GMXPosition) => {
+    isIVXPosition(position)
+      ? closeIVXPosition(position)
+      : closeGMXPosition(position)
   }
 
-  const columnHelper = createColumnHelper<PositionType>()
+  const closeIVXPosition = (position: IVXPositionType) => {
+    setIsCloseIVXPositionModalOpen(true)
+    setCurrentIVXPosition(position)
+  }
+
+  const closeGMXPosition = (position: GMXPosition) => {
+    setCurrentGMXPosition(position)
+    setIsCloseGMXPositionModalOpen(true)
+  }
+
+  const columnHelper = createColumnHelper<IVXPositionType | GMXPosition>()
   const columns = [
     columnHelper.accessor('token', {
       id: 'indexToken',
@@ -83,7 +102,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       id: 'size',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2 })}
+          {formatNumber(+formatEther(info.getValue()), { decimalCases: 2 })}
         </DataTableContentItem>
       ),
       header: () => <span className="text-sm text-gray-300">Size ($)</span>,
@@ -94,7 +113,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       id: 'collateral',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2 })}
+          {formatNumber(+formatEther(info.getValue()), { decimalCases: 2 })}
         </DataTableContentItem>
       ),
       header: () => (
@@ -106,7 +125,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       id: 'entryPrice',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2 })}
+          {formatNumber(+formatEther(info.getValue()), { decimalCases: 2 })}
         </DataTableContentItem>
       ),
       header: () => <span className="text-sm text-gray-300">Entry Price</span>,
@@ -116,7 +135,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       id: 'markPrice',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2 })}
+          {formatNumber(+formatEther(info.getValue()), { decimalCases: 2 })}
         </DataTableContentItem>
       ),
       header: () => <span className="text-sm text-gray-300">Mark Price</span>,
@@ -126,7 +145,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       id: 'liqPrice',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          {formatNumber(info.getValue(), { decimalCases: 2 })}
+          {formatNumber(+formatEther(info.getValue()), { decimalCases: 2 })}
         </DataTableContentItem>
       ),
       header: () => <span className="text-sm text-gray-300">Liq. Price</span>,
@@ -137,7 +156,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
           {info.getValue()
-            ? formatNumber(info.getValue()!, { decimalCases: 2 })
+            ? formatNumber(+formatEther(info.getValue()!), { decimalCases: 2 })
             : '-'}
         </DataTableContentItem>
       ),
@@ -154,7 +173,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
               'text-red-400': info.getValue() < 0,
             })}
           >
-            {formatNumber(info.getValue(), {
+            {formatNumber(+formatEther(info.getValue()), {
               decimalCases: 2,
               displayPositive: true,
             })}
@@ -185,7 +204,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
               'text-red-400': info.getValue() < 0,
             })}
           >
-            {formatNumber(info.getValue(), {
+            {formatNumber(+formatEther(info.getValue()), {
               decimalCases: 2,
               displayPositive: true,
             })}
@@ -214,11 +233,11 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       header: () => <span className="text-sm text-gray-300">Expiry</span>,
       enableSorting: false,
     }),
-    columnHelper.accessor('closeDate', {
+    columnHelper.accessor('closeTimestamp', {
       id: 'closeDate',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          {info.getValue() ? formatDateTime(info.getValue()!) : '-'}
+          {info.getValue() ? formatDateTime(new Date(info.getValue()!)) : '-'}
         </DataTableContentItem>
       ),
       header: () => <span className="text-sm text-gray-300">Closed Date</span>,
@@ -283,13 +302,20 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
         setSorting={setSorting}
         columnVisibility={columnVisibility}
       />
-      {/* {currentPosition && (
-        <GMXClosePositionModal
-          position={currentPosition}
-          isOpen={isCloseModalOpen}
-          setIsOpen={setisCloseModalOpen}
+      {currentIVXPosition && (
+        <ClosePositionModal
+          position={currentIVXPosition}
+          isOpen={isCloseIVXPositionModalOpen}
+          setIsOpen={setIsCloseIVXPositionModalOpen}
         />
-      )}*/}
+      )}
+      {currentGMXPosition && (
+        <GMXClosePositionModal
+          position={currentGMXPosition}
+          isOpen={isCloseGMXPositionModalOpen}
+          setIsOpen={setIsCloseGMXPositionModalOpen}
+        />
+      )}
     </>
   )
 }

@@ -32,7 +32,7 @@ type TokenStore = {
 }
 
 const useTokenStore = create<TokenStore>((set) => ({
-  market: markets[0] ?? { value: 'ETHUSDT', label: 'ETH' },
+  market: markets[0] ?? { symbol: 'ETHUSDT', label: 'ETH' },
   tokenAddress: '0x919E5e0C096002cb8a21397D724C4e3EbE77bC15',
   tokenPrice: undefined,
   chartHoverInfo: null,

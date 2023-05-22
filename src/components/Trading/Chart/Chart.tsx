@@ -20,8 +20,8 @@ const Chart: React.FC = () => {
   const marketToken = useMarket()
 
   const { data } = useQuery({
-    queryKey: [marketToken.value, candlesInterval.value],
-    queryFn: () => getTokenData(marketToken.value, candlesInterval.value),
+    queryKey: [marketToken.symbol, candlesInterval.value],
+    queryFn: () => getTokenData(marketToken.symbol, candlesInterval.value),
   })
   const [isCandleChart, setIsCandleChart] = useState<boolean>(true)
 
