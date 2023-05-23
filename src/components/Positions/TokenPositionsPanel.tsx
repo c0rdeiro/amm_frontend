@@ -77,6 +77,8 @@ const TokenPositionsPanel = () => {
     price: 20,
     breakeven: parseEther('15'),
     profit: 200,
+    leverage: parseEther('5'),
+    leverageStr: '5x',
   }
 
   const dummyGMXPosition: GMXPosition = {

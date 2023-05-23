@@ -17,6 +17,7 @@ import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import { formatEther } from 'viem'
 import isIVXPosition from '@/utils/positions/isIVXPosition'
 import GMXClosePositionModal from './GMXClosePositionModal'
+import SharePositionModal from './SharePositionModal'
 
 type PositionsTableProps = {
   data: (IVXPositionType | GMXPosition)[]
@@ -34,6 +35,10 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
   const [currentGMXPosition, setCurrentGMXPosition] = useState<
     GMXPosition | undefined
   >()
+
+  const [currentSharePosition, setCurrentSharePosition] = useState<
+    IVXPositionType | GMXPosition | undefined
+  >()
   const closePosition = (position: IVXPositionType | GMXPosition) => {
     isIVXPosition(position)
       ? closeIVXPosition(position)
@@ -49,6 +54,7 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
     setCurrentGMXPosition(position)
     setIsCloseGMXPositionModalOpen(true)
   }
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   const columnHelper = createColumnHelper<IVXPositionType | GMXPosition>()
   const columns = [
@@ -264,7 +270,13 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
       id: 'share',
       cell: (info) => (
         <DataTableContentItem clickType="no-action" row={info.row}>
-          <span className="cursor-pointer text-gray-400 transition duration-200 hover:text-white">
+          <span
+            className="cursor-pointer text-gray-400 transition duration-200 hover:text-white"
+            onClick={() => {
+              setIsShareModalOpen(true)
+              setCurrentSharePosition(info.row.original)
+            }}
+          >
             <HiShare size={16} />
           </span>
         </DataTableContentItem>
@@ -314,6 +326,13 @@ const PositionsTable: React.FC<PositionsTableProps> = ({ data, isOpen }) => {
           position={currentGMXPosition}
           isOpen={isCloseGMXPositionModalOpen}
           setIsOpen={setIsCloseGMXPositionModalOpen}
+        />
+      )}
+      {currentSharePosition && (
+        <SharePositionModal
+          isOpen={isShareModalOpen}
+          setIsOpen={setIsShareModalOpen}
+          position={currentSharePosition}
         />
       )}
     </>

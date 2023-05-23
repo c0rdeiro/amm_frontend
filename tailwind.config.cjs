@@ -35,7 +35,8 @@ module.exports = {
         82: '22.25rem'
       },
       width: {
-        82: '22.25rem' //right panel
+        82: '22.25rem', //right panel
+        100: '31.25rem' //500px
       },
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
