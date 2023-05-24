@@ -21,23 +21,25 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
   setIsOpen,
   position,
 }) => {
-  const link = 'https://ivx.fi/hk234/239hscj/2343cx33..'
+  const link = 'https://ivx.fi/hk234/23'
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex w-100 flex-col items-start gap-3 rounded-lg bg-gray-600 p-5">
+      <div className="flex w-96 flex-col items-start gap-3 rounded-lg bg-gray-600 p-5 md:w-100">
         <div className="flex w-full items-center justify-between text-gray-300">
           <h2 className="text-lg font-normal text-white">Share</h2>
-          <IoCloseOutline size={24} onClick={() => setIsOpen(false)} />
+          <span className="cursor-pointer">
+            <IoCloseOutline size={24} onClick={() => setIsOpen(false)} />
+          </span>
         </div>
-        <div className="flex w-full flex-col rounded-lg bg-gray-700 p-3">
+        <div className="flex w-full flex-col rounded-lg bg-[url('/share-modal-bg.png')] bg-cover p-3">
           <div className="flex w-full justify-between">
             <Image alt="logo" src="/IVX_Gradient.svg" width={79} height={25} />
-            <div className="cursor-pointer bg-gray-600 p-3 text-white">
+            <div className="cursor-pointer rounded bg-gray-600 p-3 text-white ">
               <RiDownloadLine size="24" />
             </div>
           </div>
-          <div className="mt-4 flex w-full justify-between text-white">
+          <div className="mt-4 flex w-full flex-col justify-between gap-10 text-white md:flex-row">
             <div className="flex flex-col gap-5">
               <div className="flex gap-5">
                 <span>{position.strategy}</span>
@@ -47,7 +49,7 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
                   {position.token.symbol}
                 </span>
               </div>
-              <h1 className="text-4xl font-semibold">
+              <h1 className="flex text-4xl font-semibold">
                 {formatNumber(+formatEther(position.pnl) / 100, {
                   decimalCases: 2,
                   symbol: '%',
@@ -75,7 +77,7 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
                 </div>
               </div>
             </div>
-            <div className="mr-10 flex flex-col items-center justify-center gap-1 rounded-lg bg-white bg-opacity-20 px-2">
+            <div className="mr-10 flex w-min flex-col items-center justify-center gap-1 rounded-lg bg-white bg-opacity-20 px-2">
               <Image
                 alt="logo"
                 src="/ivx-qrcode.png"
@@ -95,10 +97,11 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
               label="Copy link"
               leftIcon={<HiOutlineLink size={24} />}
               labelColor="dark"
+              size="sm"
             />
           </div>
           <p className="flex text-xs font-normal text-gray-300">Or Share via</p>
-          <div className="flex items-start gap-3">
+          <div className="flex flex-col items-center gap-3 md:flex-row md:items-start">
             <Button
               label="Twitter"
               leftIcon={<FaTwitter size={24} />}
