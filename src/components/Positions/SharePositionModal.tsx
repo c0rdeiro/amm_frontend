@@ -9,6 +9,8 @@ import { RiDownloadLine } from 'react-icons/ri'
 import tokenIcon from '@/utils/getTokenIcon'
 import { formatEther } from 'viem'
 import formatNumber from '@/utils/formatNumber'
+import { useCallback, useRef } from 'react'
+import { toPng } from 'html-to-image'
 
 type SharePositionModalProps = {
   isOpen: boolean
@@ -23,6 +25,32 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
 }) => {
   const link = 'https://ivx.fi/hk234/23'
 
+  const ref = useRef<HTMLDivElement>(null)
+
+  const filter = (node: HTMLElement) => {
+    const exclusionClasses = ['remove']
+    return !exclusionClasses.some((classname) =>
+      node.classList?.contains(classname)
+    )
+  }
+
+  const onDownloadImage = useCallback(() => {
+    if (ref.current === null) {
+      return
+    }
+
+    toPng(ref.current, { filter })
+      .then((dataUrl) => {
+        const link = document.createElement('a')
+        link.download = 'position.png'
+        link.href = dataUrl
+        link.click()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [ref])
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex w-96 flex-col items-start gap-3 rounded-lg bg-gray-600 p-5 md:w-100">
@@ -32,10 +60,16 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
             <IoCloseOutline size={24} onClick={() => setIsOpen(false)} />
           </span>
         </div>
-        <div className="flex w-full flex-col rounded-lg bg-[url('/share-modal-bg.png')] bg-cover p-3">
+        <div
+          className="flex w-full flex-col rounded-lg bg-[url('/share-modal-bg.png')] bg-cover p-3"
+          ref={ref}
+        >
           <div className="flex w-full justify-between">
             <Image alt="logo" src="/IVX_Gradient.svg" width={79} height={25} />
-            <div className="cursor-pointer rounded bg-gray-600 p-3 text-white ">
+            <div
+              className="remove cursor-pointer rounded bg-gray-600 p-3 text-white"
+              onClick={onDownloadImage}
+            >
               <RiDownloadLine size="24" />
             </div>
           </div>
