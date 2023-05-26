@@ -3,7 +3,7 @@ import { IoCloseOutline } from 'react-icons/io5'
 import Modal from '../shared/Modal'
 import Button from '../shared/Button'
 import { HiOutlineLink } from 'react-icons/hi2'
-import { FaDiscord, FaFacebookF, FaTwitter } from 'react-icons/fa'
+import { FaDiscord, FaTwitter } from 'react-icons/fa'
 import Image from 'next/image'
 import { RiDownloadLine } from 'react-icons/ri'
 import tokenIcon from '@/utils/getTokenIcon'
@@ -11,6 +11,7 @@ import { formatEther } from 'viem'
 import formatNumber from '@/utils/formatNumber'
 import { useCallback, useRef } from 'react'
 import { toPng } from 'html-to-image'
+import Link from 'next/link'
 
 type SharePositionModalProps = {
   isOpen: boolean
@@ -23,7 +24,7 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
   setIsOpen,
   position,
 }) => {
-  const link = 'https://ivx.fi/hk234/23'
+  const link = 'https://ivx.fi/'
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -118,9 +119,7 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
                 width={100}
                 height={100}
               />
-              <h3 className="text-sm font-semibold text-white">
-                https://IVX.fi
-              </h3>
+              <h3 className="text-sm font-semibold text-white">{link}</h3>
             </div>
           </div>
         </div>
@@ -136,21 +135,20 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
           </div>
           <p className="flex text-xs font-normal text-gray-300">Or Share via</p>
           <div className="flex flex-col items-center gap-3 md:flex-row md:items-start">
-            <Button
-              label="Twitter"
-              leftIcon={<FaTwitter size={24} />}
-              styleType="monochromatic"
-            />
-            <Button
-              label="Discord"
-              leftIcon={<FaDiscord size={24} />}
-              styleType="monochromatic"
-            />
-            <Button
-              label="Facebook"
-              leftIcon={<FaFacebookF size={24} />}
-              styleType="monochromatic"
-            />
+            <Link
+              href={`https://twitter.com/intent/tweet?url=${link}`}
+              className="twitter-share-button flex items-center justify-center gap-2 rounded bg-gray-500 p-3 text-sm font-normal text-white"
+              target="__blank"
+            >
+              <FaTwitter size={24} /> Twitter
+            </Link>
+            <Link
+              href={`#`}
+              className="flex items-center justify-center gap-2 rounded bg-gray-500 p-3 text-sm font-normal text-white"
+              target="__blank"
+            >
+              <FaDiscord size={24} /> Discord
+            </Link>
           </div>
         </div>
       </div>
