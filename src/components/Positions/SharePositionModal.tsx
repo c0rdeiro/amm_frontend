@@ -12,6 +12,7 @@ import formatNumber from '@/utils/formatNumber'
 import { useCallback, useRef } from 'react'
 import { toPng } from 'html-to-image'
 import Link from 'next/link'
+import { toast } from 'react-toastify'
 
 type SharePositionModalProps = {
   isOpen: boolean
@@ -51,6 +52,20 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
         console.log(err)
       })
   }, [ref])
+
+  const onCopyToClipboard = () => {
+    navigator.clipboard.writeText(link)
+    toast('Copied.', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    })
+  }
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -125,12 +140,18 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
         </div>
         <div className="flex w-full flex-col gap-3 ">
           <div className="flex items-center justify-between rounded bg-gray-500 p-3">
-            <h3 className="text-sm font-normal text-white">{link}</h3>
+            <h3
+              className="text-sm font-normal text-white"
+              onClick={onCopyToClipboard}
+            >
+              {link}
+            </h3>
             <Button
               label="Copy link"
               leftIcon={<HiOutlineLink size={24} />}
               labelColor="dark"
               size="sm"
+              onClick={onCopyToClipboard}
             />
           </div>
           <p className="flex text-xs font-normal text-gray-300">Or Share via</p>

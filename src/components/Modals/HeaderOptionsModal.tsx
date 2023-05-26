@@ -6,6 +6,7 @@ import { MenuLinkType } from '@/types/next'
 import CustomNetworkButton from '../shared/CustomNetworkButton'
 import { useAccount, useDisconnect } from 'wagmi'
 import { RxExit } from 'react-icons/rx'
+import { toast } from 'react-toastify'
 
 type HeaderOptionsProps = {
   isOpen: boolean
@@ -24,6 +25,16 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({
 
   const copyAddressToClipboard = () => {
     if (address) navigator.clipboard.writeText(address)
+    toast('Copied.', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    })
   }
 
   return (
