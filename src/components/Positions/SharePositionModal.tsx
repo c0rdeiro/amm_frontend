@@ -1,18 +1,18 @@
-import { IoCloseOutline } from 'react-icons/io5'
-
-import Modal from '../shared/Modal'
-import Button from '../shared/Button'
-import { HiOutlineLink } from 'react-icons/hi2'
-import { FaDiscord, FaTwitter } from 'react-icons/fa'
-import Image from 'next/image'
-import { RiDownloadLine } from 'react-icons/ri'
-import tokenIcon from '@/utils/getTokenIcon'
-import { formatEther } from 'viem'
 import formatNumber from '@/utils/formatNumber'
-import { useCallback, useRef } from 'react'
-import { toPng } from 'html-to-image'
+import tokenIcon from '@/utils/getTokenIcon'
+import { toBlob, toJpeg } from 'html-to-image'
+import Image from 'next/image'
 import Link from 'next/link'
+import { useCallback, useRef } from 'react'
+import { FaDiscord, FaTwitter } from 'react-icons/fa'
+import { HiOutlineLink } from 'react-icons/hi2'
+import { IoCloseOutline, IoCopy } from 'react-icons/io5'
+import { RiDownloadLine } from 'react-icons/ri'
 import { toast } from 'react-toastify'
+import { formatEther } from 'viem'
+
+import Button from '../shared/Button'
+import Modal from '../shared/Modal'
 
 type SharePositionModalProps = {
   isOpen: boolean
@@ -36,22 +36,46 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
     )
   }
 
-  const onDownloadImage = useCallback(() => {
+  const onDownloadImage = useCallback(async () => {
     if (ref.current === null) {
       return
     }
 
-    toPng(ref.current, { filter })
+    await toJpeg(ref.current, { filter })
       .then((dataUrl) => {
         const link = document.createElement('a')
         link.download = 'position.png'
         link.href = dataUrl
+        console.log(dataUrl)
+
+        navigator.clipboard.writeText(dataUrl)
         link.click()
       })
       .catch((err) => {
         console.log(err)
       })
   }, [ref])
+
+  const onCopyImageToClipboard = async () => {
+    if (ref.current === null) {
+      return
+    }
+
+    const image = await toBlob(ref.current, { filter })
+    if (image) {
+      navigator.clipboard.write([new ClipboardItem({ [image.type]: image })])
+      toast('Copied.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      })
+    }
+  }
 
   const onCopyToClipboard = () => {
     navigator.clipboard.writeText(link)
@@ -170,6 +194,12 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
             >
               <FaDiscord size={24} /> Discord
             </Link>
+            <div
+              onClick={onCopyImageToClipboard}
+              className="flex cursor-pointer items-center justify-center gap-2 rounded bg-gray-500 p-3 text-sm font-normal text-white"
+            >
+              <IoCopy size={24} /> <span>Copy Image</span>
+            </div>
           </div>
         </div>
       </div>
