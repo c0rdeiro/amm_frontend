@@ -19,10 +19,30 @@ type IVXDepositWithdrawModalProps = {
 }
 
 const tokens = [
-  { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
-  { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
-  { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
-  { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
+  {
+    label: 'ETH',
+    insideLabel: 'Ethereum',
+    value: 'ETH',
+    icon: <ETHIcon size={18} />,
+  },
+  {
+    label: 'USDC',
+    insideLabel: 'USD Coin',
+    value: 'USDC',
+    icon: <USDCIcon size={18} />,
+  },
+  {
+    label: 'USDT',
+    insideLabel: 'Tether Coin',
+    value: 'USDT',
+    icon: <USDTIcon size={18} />,
+  },
+  {
+    label: 'BTC',
+    insideLabel: 'Bitcoin',
+    value: 'BTC',
+    icon: <BTCIcon size={18} />,
+  },
 ]
 
 const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
@@ -83,6 +103,7 @@ const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
               setToken(token)
             }
             size="lg"
+            isTokenAsset
           />
         </div>
         <div className="flex w-full flex-col items-start gap-3 rounded bg-gray-500 p-3">

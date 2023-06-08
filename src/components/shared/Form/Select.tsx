@@ -15,31 +15,19 @@ export type SelectItem<T> = {
   isDisabled?: boolean
 }
 
-type SelectProps<T> =
-  | {
-      items: SelectItem<T>[]
-      selectedItem: SelectItem<T> | undefined | null
-      setSelectedItem: (arg: SelectItem<T>) => void
-      isDisabled?: boolean
-      style?: 'normal' | 'no-style'
-      size?: 'md' | 'lg'
-      fontSize?: 'xs' | 'md' | 'lg'
-      textColor?: 'white' | 'gray'
-      textRef?: AnimationScope<any> //used in gmx swap
-      hideArrow?: boolean
-    }
-  | {
-      items: SelectItem<T>[]
-      selectedItem: SelectItem<T>[] | undefined | null
-      setSelectedItem: (arg: SelectItem<T>[]) => void
-      isDisabled?: boolean
-      style?: 'normal' | 'no-style'
-      size?: 'md' | 'lg'
-      fontSize?: 'xs' | 'md' | 'lg'
-      textColor?: 'white' | 'gray'
-      textRef?: AnimationScope<any> //used in gmx swap
-      hideArrow?: boolean
-    }
+type SelectProps<T> = {
+  items: SelectItem<T>[]
+  selectedItem: SelectItem<T> | undefined | null
+  setSelectedItem: (arg: SelectItem<T>) => void
+  isDisabled?: boolean
+  style?: 'normal' | 'no-style'
+  size?: 'md' | 'lg'
+  fontSize?: 'xs' | 'md' | 'lg'
+  textColor?: 'white' | 'gray'
+  textRef?: AnimationScope<any> //used in gmx swap
+  hideArrow?: boolean
+  isTokenAsset?: boolean
+}
 
 function Select<T>({
   items,
@@ -52,6 +40,7 @@ function Select<T>({
   fontSize = 'md',
   textColor = 'gray',
   hideArrow = false,
+  isTokenAsset = false,
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   const tw = resolveConfig(tailwindConfig)
@@ -84,9 +73,17 @@ function Select<T>({
           )}
         >
           <h4 ref={textRef} className="whitespace-nowrap">
-            {Array.isArray(selectedItem)
-              ? selectedItem.map((item) => item.label).join(', ')
-              : selectedItem?.label}
+            {isTokenAsset ? (
+              <div className="flex items-center gap-3 text-white">
+                <span>{selectedItem?.icon}</span>
+                <span>{selectedItem?.insideLabel}</span>
+                <span className="rounded bg-chips-bg p-1 text-sm font-normal">
+                  {selectedItem?.label}
+                </span>
+              </div>
+            ) : (
+              <>{selectedItem?.label}</>
+            )}
           </h4>
           {!hideArrow && (
             <MdOutlineKeyboardArrowDown
@@ -114,11 +111,8 @@ function Select<T>({
                     className={clsx(
                       'pointer-events-none flex items-center gap-2 rounded p-2 ui-selected:bg-gray-400',
                       {
-                        'h-full w-full bg-gray-400': Array.isArray(selectedItem)
-                          ? selectedItem
-                              .map((x) => x.label)
-                              .includes(item.label)
-                          : item.label === selectedItem?.label,
+                        'h-full w-full bg-gray-400':
+                          item.label === selectedItem?.label,
                       }
                     )}
                   >

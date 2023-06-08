@@ -3,7 +3,7 @@ import tokenIcon from '@/utils/getTokenIcon'
 import { toBlob, toJpeg } from 'html-to-image'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { FaDiscord, FaTwitter } from 'react-icons/fa'
 import { HiOutlineLink } from 'react-icons/hi2'
 import { IoCloseOutline, IoCopy } from 'react-icons/io5'
@@ -25,7 +25,9 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
   setIsOpen,
   position,
 }) => {
-  const link = 'https://ivx.fi/'
+  const link =
+    'https://asset.cloudinary.com/ddroubfyo/84aa33513172059ca28a17fffb3b85ea'
+  const IVX_LINK = 'https://ivx.fi'
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -158,7 +160,7 @@ const SharePositionModal: React.FC<SharePositionModalProps> = ({
                 width={100}
                 height={100}
               />
-              <h3 className="text-sm font-semibold text-white">{link}</h3>
+              <h3 className="text-sm font-semibold text-white">{IVX_LINK}</h3>
             </div>
           </div>
         </div>
