@@ -7,6 +7,8 @@ import '@/styles/globals.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import WalletSessionProvider from '@/providers/WalletSessionProvider'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface CustomAppProps extends Omit<AppProps, 'Component'> {
   Component: CustomPage
@@ -25,6 +27,18 @@ const IVX = ({ Component, pageProps: { ...pageProps } }: CustomAppProps) => {
         <WalletSessionProvider>
           <Layout fullPage={Component.fullPage} title={Component.title}>
             <Component {...pageProps} />
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+            />
           </Layout>
         </WalletSessionProvider>
       </QueryClientProvider>

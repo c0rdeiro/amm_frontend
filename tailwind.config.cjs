@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     colors: {
       'white': '#FFF',
+      'black': '#000',
       'gray': {
         200: '#42474E',
         300: '#868E9B',
@@ -26,7 +27,8 @@ module.exports = {
         400: '#E35759',
         500: '#4a292d'
       },
-      'modal-bg': 'rgba(0, 0, 0, 0.4)'
+      'modal-bg': 'rgba(0, 0, 0, 0.4)',
+      'chips-bg': 'rgba(255, 255, 255, 0.1)'
       
     },
 
@@ -35,7 +37,8 @@ module.exports = {
         82: '22.25rem'
       },
       width: {
-        82: '22.25rem' //right panel
+        82: '22.25rem', //right panel
+        100: '31.25rem' //500px
       },
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],

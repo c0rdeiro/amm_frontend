@@ -33,6 +33,8 @@ type Position = {
   collateral: bigint
   collateralToken: Token
   openTimestamp: number
+  leverage: bigint
+  leverageStr: string
   isClosed: boolean
   closeTimestamp?: number
   closePrice?: bigint
@@ -70,6 +72,4 @@ type GMXPosition = Position & {
   deltaAfterFeesStr: string
   deltaAfterFeesPercentageStr: string
   netValue: bigint
-  leverage: bigint
-  leverageStr: string
 }
