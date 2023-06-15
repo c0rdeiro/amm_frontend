@@ -7,79 +7,38 @@ module.exports = {
     colors: {
       'white': '#FFF',
       'black': '#000',
-      'darkBg': "#282c35",
       'gray': {
-        100: '#FAFAFC', 
-        300: '#f8f8fa', 
-        400: '#f2f3f7', 
-      },
+        200: '#42474E',
+        300: '#868E9B',
+        400: '#484D56',
+        500: '#2A2D34',
+        600: '#1E2025',
+        700: '#171A1E'
 
-      text: {
-        'gray': '#A3a3b1',
-        'purple': '#9A9AAF',
-        'DEFAULT': '#2E2E3A',
       },
-      'primary': '#2e979a',
-      'primary-light': '#329496',
-      'primary-dark': '#1c5547',
-      'green': '#20b26c',
-      'greenDarker' : '#197148',
+      'primary': '#FFD953',
+      'primaryDarker': '#BF9D22',
+      'blue': '#3659D2',
       'green': {
-        300: '#197148',
-        400: '#1d9b5f',
-        500: '#20b26c'
+        400: '#0DAC86',
+        500: '#143f38'
       },
       'red': {
-        300: '#952f34',
-        400: '#d33e42',
-        500: '#ef454a',
+        400: '#E35759',
+        500: '#4a292d'
       },
-      'input-border': 'rgba(154, 154, 175, 0.2)',
-      'select': '#2E2E3A',
-      headerDark: '#17181e',
-      sectionsBGDark: '#101014',
-      darkSecondary: '#202124',
+      'modal-bg': 'rgba(0, 0, 0, 0.4)',
+      'chips-bg': 'rgba(255, 255, 255, 0.1)'
       
     },
 
     extend: {
-      boxShadow: {
-        'header':
-          '0px 12px 10px rgba(174, 174, 190, 0.035), 0px 42px 33px rgba(174, 174, 190, 0.05)',
-        'dark': '0px 3px 2px rgba(174, 174, 190, 0.02), 0px 6.5px 5.5px rgba(174, 174, 190, 0.03), 0px 12px 10px rgba(174, 174, 190, 0.035), 0px 22px 18px rgba(174, 174, 190, 0.04), 0px 42px 33px rgba(174, 174, 190, 0.05), 0px 100px 80px rgba(174, 174, 190, 0.07)',
-        'blue': '0px 1px 2px rgba(0, 98, 255, 0.06), 0px 2px 4px rgba(0, 98, 255, 0.08), 0px 3px 7px rgba(0, 98, 255, 0.1), 0px 6px 12px rgba(0, 98, 255, 0.12), 0px 10px 24px rgba(0, 98, 255, 0.15)',
-        'table-white':
-          '0px 3px 2px rgba(174, 174, 190, 0.02), 0px 6.5px 5.5px rgba(174, 174, 190, 0.03), 0px 12px 10px rgba(174, 174, 190, 0.035)',
-        'drawer':
-          '0px 3px 2px rgba(46, 46, 58, 0.02), 0px 6.5px 5.5px rgba(46, 46, 58, 0.03), 0px 12px 10px rgba(46, 46, 58, 0.035), 0px 22px 18px rgba(46, 46, 58, 0.04), 0px 42px 33px rgba(46, 46, 58, 0.05), 0px 100px 80px rgba(46, 46, 58, 0.07)',
-        },
+      minWidth: {
+        82: '22.25rem'
+      },
       width: {
-        'rightPanel': '27.5rem',
-        'rightPanel-min': '22.5rem',
-        '6.5': '1.625rem',
-        '8.5': '2.125rem',
-        '12.5': '3.125rem',
-        '29': '7.125rem',
-        '35': '8.813rem',
-        '50': '12.25rem',
-      },
-      height: {
-        '10.5': '2.625rem',
-        '13': '3.313rem',
-        '15': '3.688rem',
-      },
-      padding: {
-        '1.5': '0.375rem',
-        '15': '3.75rem',
-        'default-rightPanel': '27.375rem',
-      },
-      gap: {
-        '1.5': '0.375rem',
-        '17': '4.813rem',
-      },
-      fontSize: {
-        '2xs': ['0.625rem', '0.813rem'],
-        '2.5xl': ['1.75rem', '2.25rem'],
+        82: '22.25rem', //right panel
+        100: '31.25rem' //500px
       },
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
@@ -87,12 +46,11 @@ module.exports = {
       zIndex: {
         '100': '100',
       },
-      borderRadius: {
-        '4xl': '2rem',
-        '7xl': '4.438rem'
+      blur:{
+        'xs': '1.5px'
       }
+      
     },
   },
-  darkMode: "class",
   plugins: [require('@headlessui/tailwindcss')({ prefix: 'ui' })],
 }

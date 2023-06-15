@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, children }) => {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={closeModal}>
+      <Dialog as="div" className="relative z-50 h-full" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, children }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-select bg-opacity-25" />
+          <div className="fixed inset-0 bg-modal-bg  backdrop-blur-xs" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">

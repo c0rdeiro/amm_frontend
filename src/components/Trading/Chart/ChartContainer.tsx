@@ -1,3 +1,4 @@
+import { useChartVisibleRange } from '@/store/tokenStore'
 import {
   ChartOptions,
   ColorType,
@@ -7,18 +8,21 @@ import {
 import {
   createContext,
   forwardRef,
+  useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
 } from 'react'
+import tailwindConfig from 'tailwind.config.cjs'
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
   grid: {
     vertLines: {
-      color: 'rgba(154, 154, 175, 0.1)',
+      color: '#1F2227',
     },
     horzLines: {
-      color: 'rgba(154, 154, 175, 0.1)',
+      color: '#1F2227',
     },
   },
   timeScale: {
@@ -32,7 +36,7 @@ const STATIC_CHART_OPTIONS: DeepPartial<ChartOptions> = {
   },
   rightPriceScale: {
     scaleMargins: {
-      top: 0.1,
+      top: 0.25,
       bottom: 0.2,
     },
     entireTextOnly: true,
@@ -54,6 +58,8 @@ type ChartContainerProps = {
 
 const ChartContainer = forwardRef<any, ChartContainerProps>(
   ({ children, container }, ref) => {
+    const { theme } = resolveConfig(tailwindConfig)
+    const visibleRange = useChartVisibleRange()
     const chartApiRef = useRef<{
       api: () => any
       free: () => void
@@ -71,17 +77,20 @@ const ChartContainer = forwardRef<any, ChartContainerProps>(
               },
               fontFamily: "'Inter', sans-serif",
               fontSize: 12,
-              textColor: '#9A9AAF',
+              textColor: theme.colors.gray[300],
             },
             crosshair: {
               mode: 0,
               vertLine: {
-                color: '#9A9AAF66', //tailwind?.theme?.colors?['purple'] //TODO: import colors from tailwind
-                width: 2,
+                color: theme.colors.white,
+                style: 2,
+                width: 1,
               },
               horzLine: {
-                color: '#9A9AAF66',
-                width: 2,
+                color: theme.colors.white,
+                labelBackgroundColor: theme.colors.white,
+                style: 2,
+                width: 1,
               },
             },
 
@@ -112,13 +121,20 @@ const ChartContainer = forwardRef<any, ChartContainerProps>(
       return () => {
         window.removeEventListener('resize', handleResize)
       }
-    }, [])
+    }, [container.clientWidth])
     useLayoutEffect(() => {
       const currentRef = chartApiRef.current
       currentRef.api()
     }, [])
 
     useImperativeHandle(ref, () => chartApiRef.current.api(), [])
+
+    useEffect(() => {
+      if (visibleRange) {
+        const chart = chartApiRef.current.api()
+        chart.timeScale().setVisibleRange(visibleRange)
+      }
+    }, [visibleRange])
 
     return (
       <ChartContext.Provider value={chartApiRef.current}>

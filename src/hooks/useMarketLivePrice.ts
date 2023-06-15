@@ -1,5 +1,5 @@
 import {
-  CandlesIntervals,
+  CandlesInterval,
   KlineData,
   SupportedMarketSymbols,
 } from '@/types/next'
@@ -7,14 +7,14 @@ import { OhlcData, UTCTimestamp } from 'lightweight-charts'
 import { useEffect } from 'react'
 
 export default function useMarketLivePrice(
-  market: SupportedMarketSymbols,
-  interval: CandlesIntervals
+  marketSymbol: SupportedMarketSymbols,
+  interval: CandlesInterval
 ): (OhlcData & { volume: number }) | undefined {
   let data: (OhlcData & { volume: number }) | undefined = undefined
 
   useEffect(() => {
     const websocket = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${market.toLowerCase()}@kline_${interval}`
+      `wss://stream.binance.com:9443/ws/${marketSymbol.toLowerCase()}@kline_${interval}`
     )
     websocket.onmessage = (event) => {
       const raw_data: KlineData = JSON.parse(event.data)
@@ -30,7 +30,7 @@ export default function useMarketLivePrice(
     return () => {
       websocket.close()
     }
-  }, [market, interval])
+  }, [marketSymbol, interval])
 
   return data
 }

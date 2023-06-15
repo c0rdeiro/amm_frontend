@@ -1,11 +1,5 @@
-import { CandlesIntervals, SupportedMarketSymbols } from '@/types/next'
-import getDefaultPeriodFromRange from '@/utils/getDefaultPeriodFromRange'
-import {
-  HistogramData,
-  OhlcData,
-  TimeRange,
-  UTCTimestamp,
-} from 'lightweight-charts'
+import { CandlesInterval, SupportedMarketSymbols } from '@/types/next'
+import { HistogramData, OhlcData, UTCTimestamp } from 'lightweight-charts'
 
 type BinanceCandleData = [
   number, // Kline open time
@@ -23,17 +17,12 @@ type BinanceCandleData = [
 ]
 
 export async function getTokenData(
-  timeRange: TimeRange,
   market: SupportedMarketSymbols,
-  _interval?: CandlesIntervals
+  interval: CandlesInterval
 ): Promise<{ candles: OhlcData[]; volume: HistogramData[] }> {
-  const interval = _interval ?? getDefaultPeriodFromRange(timeRange)
-
   const candles: BinanceCandleData[] = await (
     await fetch(
-      `https://api.binance.com/api/v3/klines?symbol=${market}&interval=${interval}&startTime=${
-        timeRange.from.toString().split('.')[0]
-      }000&limit=1000`
+      `https://api.binance.com/api/v3/klines?symbol=${market}&interval=${interval}&limit=1000`
     )
   ).json()
 
@@ -41,8 +30,7 @@ export async function getTokenData(
     candles: [],
     volume: [],
   }
-
-  candles.map((candle: BinanceCandleData) => {
+  candles.forEach((candle: BinanceCandleData) => {
     res.candles.push({
       time: (candle[0] / 1000) as UTCTimestamp, //has to be divided by 1000 bc chart takes unix in seconds and binances gives unix in milliseconds
       open: +candle[1],

@@ -2,23 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #aeaebe;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #9a9aaf;
+}
+ */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .recharts-wrapper {
@@ -30,11 +35,14 @@
 }
 
 .rc-slider-dot.rc-slider-dot-active {
-  background-color: #2e979a !important;
+  background-color: #ffd953 !important;
 }
 
 .rc-slider-handle-dragging {
   box-shadow: none !important;
+}
+.rc-slider-mark-text-active {
+  color: #ffd953 !important;
 }
 
 input[type='number']::-webkit-outer-spin-button,
@@ -43,4 +51,8 @@ input[type='number'] {
   -webkit-appearance: none;
   margin: 0;
   -moz-appearance: textfield !important;
+}
+
+*::focus-visible {
+  outline: none;
 }

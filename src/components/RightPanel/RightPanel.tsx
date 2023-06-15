@@ -1,28 +1,23 @@
-import { PositionType, TabType } from '@/types/next'
-import Tabs from '../shared/Tabs'
-import OptionsExchange from './OptionsExchange'
-import PositionRightPanel from './PositionRightPanel'
+import { TabType } from '@/types/next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import GMXTrader from './GMXTrader'
 
-type RightPanelProps = {
-  position?: PositionType | undefined
-  isOption: boolean
-}
+import GMXTrader from './GMX/GMXTrader'
+import IVXTrader from './IVX/IVXTrader'
+import FolderTabs from './FolderTabs'
 
-const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
+const RightPanel = () => {
   const [activeTab, setActiveTab] = useState(0)
   const tabs: TabType[] = [
     {
       key: 0,
       label: '',
-      icon: (
+      rightIcon: (
         <Image
           alt="ivx-logo"
           src="/IVX_Gradient.svg"
-          width={50}
-          height={9}
+          width={68}
+          height={23}
           quality={100}
         />
       ),
@@ -34,12 +29,12 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
     {
       key: 1,
       label: '',
-      icon: (
+      rightIcon: (
         <Image
           alt="gmx-logo"
           src="/gmx_logo.svg"
-          width={25}
-          height={5}
+          width={63}
+          height={15}
           quality={100}
         />
       ),
@@ -57,31 +52,17 @@ const RightPanel: React.FC<RightPanelProps> = ({ isOption, position }) => {
 
   const getOptionTab = () => {
     switch (activeTab) {
-      case 0:
-        return <OptionsExchange />
       case 1:
         return <GMXTrader />
+      case 0:
       default:
-        return <OptionsExchange />
+        return <IVXTrader />
     }
   }
   return (
-    <div className="rounded-0 flex min-h-full w-rightPanel flex-col border-4 border-gray-400 font-medium dark:border-headerDark">
-      {isOption && (
-        <Tabs
-          tabList={tabs}
-          style="monochromatic"
-          size="sm"
-          roundStyle="straight"
-          defaultIndex={activeTab}
-        />
-      )}
-      <div className="item-center px-13  flex  flex-col gap-4  p-1 px-6 pt-8 ">
-        {/*  default no options selected */}
-        {isOption
-          ? getOptionTab()
-          : position && <PositionRightPanel position={position} />}
-      </div>
+    <div className="mx-5 flex h-min min-w-82 flex-col font-medium">
+      <FolderTabs tabList={tabs} defaultIndex={activeTab} />
+      <div>{getOptionTab()}</div>
     </div>
   )
 }

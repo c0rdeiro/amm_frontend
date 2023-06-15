@@ -1,4 +1,4 @@
-import TokenPositionsPanel from '@/components/Positions/IVX/TokenPositionsPanel'
+import TokenPositionsPanel from '@/components/Positions/TokenPositionsPanel'
 import RightPanel from '@/components/RightPanel/RightPanel'
 import Chart from '@/components/Trading/Chart/Chart'
 
@@ -8,12 +8,17 @@ type TradingPageProps = {
 
 const MarketTradingPage: React.FC<TradingPageProps> = ({ tokenName }) => {
   return (
-    <div className="flex h-full">
-      <div className="rounded-0 w-full shrink overflow-y-hidden border-t-4 border-gray-400 pl-4 pt-4 dark:border-headerDark">
+    <div className="flex h-full w-full flex-col justify-between gap-5 pb-5 text-white lg:gap-0 xl:flex-row 2xl:pb-0">
+      <div className="flex w-full shrink flex-col gap-5 lg:ml-5">
         <Chart />
-        <TokenPositionsPanel />
+        <span className="hidden xl:flex">
+          <TokenPositionsPanel />
+        </span>
       </div>
-      <RightPanel isOption={true} />
+      <RightPanel />
+      <span className="xl:hidden ">
+        <TokenPositionsPanel />
+      </span>
     </div>
   )
 }

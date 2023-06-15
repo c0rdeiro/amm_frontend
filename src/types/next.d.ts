@@ -9,7 +9,7 @@ type Market = {
   label: string
 }
 
-type CandlesIntervals = '15m' | '1h' | '4h' | '8h' | '1d'
+type CandlesInterval = '15m' | '1h' | '4h' | '8h' | '1d'
 
 type CustomPage = NextPage & {
   title: string
@@ -19,26 +19,24 @@ type CustomPage = NextPage & {
 type MenuLinkType = {
   label: string
   link: string
-  icon: React.ReactNode
-}
-
-type MarketTokenType = {
-  symbol: string
-  price: number
+  icon?: React.ReactNode
 }
 
 type TokenInfoType = {
   label: string | React.ReactNode
   value: number
   type: '$' | '%'
-  colorMode?: 'default' | 'redgreen' | 'blue' | 'gray'
+  colorMode?: 'default' | 'redgreen' | 'gray'
 }
 
 type TabType = {
   key: number
   label: string
   action: () => void
-  icon?: React.ReactNode
+  rightIcon?: React.ReactNode
+  leftIcon?: React.ReactNode
+  isDisabled?: boolean
+  bgColor?: 'red' | 'green'
 }
 
 type OptionType = {
@@ -53,26 +51,17 @@ type OptionType = {
   expiryTime: number
 }
 
-type PositionType = {
-  token: MarketTokenType
-  operation: 'Call' | 'Put'
-  numContracts: number
-  strike: number
-  expiryTime: number
-  value: number
-  size: number
-  pnl: number
-  costPerOption: number
+// type PositionType = IVXPositionType | GMXPosition
+
+type Order = {
+  id: number
+  token: Token
+  strategy: 'Long' | 'Short'
+  n: number
+  type: 'Market' | 'Limit'
   price: number
-  profit: number
-  status: 'Open' | 'Closed'
-  impliedVolatility: number
-  delta: number
-  vega: number
-  gamma: number
-  theta: number
-  openInterest: number
-  openDate: Date
+  priceAbove: boolean
+  markPrice: number
 }
 
 type TokenIconProps = {

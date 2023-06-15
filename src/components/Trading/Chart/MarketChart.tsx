@@ -5,6 +5,7 @@ import {
 } from '@/store/tokenStore'
 import { KlineData } from '@/types/next'
 import {
+  AreaData,
   HistogramData,
   ISeriesApi,
   OhlcData,
@@ -15,25 +16,37 @@ import { useEffect, useRef } from 'react'
 import ChartWrapper from './ChartWrapper'
 import { animateValue } from './Header/TokenPrice'
 import Series from './Series'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from 'tailwind.config.cjs'
 
-interface ChartProps {
+type ChartProps = {
   candlesData: OhlcData[]
   volumeData: HistogramData[]
+  pnlPrice: number
+  isCandleChart: boolean
 }
 
-const CandleChart: React.FC<ChartProps> = ({
+const MarketChart: React.FC<ChartProps> = ({
   candlesData,
   volumeData,
+  pnlPrice,
+  isCandleChart,
 }: ChartProps) => {
   const candleSeries = useRef<ISeriesApi<'Candlestick'>>(null)
+  const areaSeries = useRef<ISeriesApi<'Area'>>(null)
   const volumeSeries = useRef<ISeriesApi<'Histogram'>>(null)
+  const pnlSeries = useRef<ISeriesApi<'Area'>>(null)
+  const { theme } = resolveConfig(tailwindConfig)
   const market = useMarket()
   const interval = useCandlesInterval()
   const { setTokenPrice } = useTokenActions()
   const prevAux = useRef<number | undefined>(undefined)
+
   useEffect(() => {
     const websocket = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${market.symbol.toLowerCase()}@kline_${interval}`
+      `wss://stream.binance.com:9443/ws/${market.symbol.toLowerCase()}@kline_${
+        interval.value
+      }`
     )
     websocket.onmessage = (event) => {
       const raw_data: KlineData = JSON.parse(event.data)
@@ -46,6 +59,10 @@ const CandleChart: React.FC<ChartProps> = ({
             high: +raw_data.k.h,
             low: +raw_data.k.l,
             close: close,
+          })
+          areaSeries.current?.update({
+            time: (raw_data.k.t / 1000) as UTCTimestamp,
+            value: close,
           })
         } catch (err) {}
       }
@@ -71,7 +88,10 @@ const CandleChart: React.FC<ChartProps> = ({
         volumeSeries.current?.update({
           time: (raw_data.k.t / 1000) as UTCTimestamp,
           value: +raw_data.k.v,
-          color: +raw_data.k.o > +raw_data.k.c ? '#952f34' : '#197148',
+          color:
+            +raw_data.k.o > +raw_data.k.c
+              ? theme.colors.red[500]
+              : theme.colors.green[500],
         })
     }
     return () => {
@@ -79,12 +99,29 @@ const CandleChart: React.FC<ChartProps> = ({
     }
   }, [market, interval])
 
+  const pnlData: AreaData[] = candlesData.map((candle) => ({
+    time: candle.time,
+    value: pnlPrice,
+  })) // TODO value pnl
   return (
     <ChartWrapper>
-      <Series ref={candleSeries} type={'candles'} initialData={candlesData} />
+      {isCandleChart ? (
+        <Series ref={candleSeries} type={'candles'} initialData={candlesData} />
+      ) : (
+        <Series
+          ref={areaSeries}
+          type={'area'}
+          initialData={candlesData.map((candle) => ({
+            time: candle.time,
+            value: candle.close,
+          }))}
+        />
+      )}
       <Series ref={volumeSeries} type={'volume'} initialData={volumeData} />
+      <Series ref={pnlSeries} type={'pnlUp'} initialData={pnlData} />
+      <Series ref={pnlSeries} type={'pnlDown'} initialData={pnlData} />
     </ChartWrapper>
   )
 }
 
-export default CandleChart
+export default MarketChart
