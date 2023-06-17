@@ -1,4 +1,4 @@
-type Token = {
+type GMXToken = {
   name: string
   symbol: string
   baseSymbol?: string
@@ -17,7 +17,7 @@ type Token = {
 
 type Position = {
   id: number
-  token: Token
+  token: GMXToken
   operation: 'Call' | 'Put'
   strategy: 'Long' | 'Short'
   strike: bigint
@@ -31,7 +31,7 @@ type Position = {
   entryPrice: bigint
   liqPrice: bigint
   collateral: bigint
-  collateralToken: Token
+  collateralToken: GMXToken
   openTimestamp: number
   leverage: bigint
   leverageStr: string

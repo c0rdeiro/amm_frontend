@@ -47,7 +47,7 @@ const TokenPositionsPanel = () => {
     },
   ]
 
-  const ethToken: Token = {
+  const ethToken: GMXToken = {
     name: 'Ethereum',
     symbol: 'ETH',
   }

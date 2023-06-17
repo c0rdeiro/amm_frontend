@@ -3,7 +3,7 @@ import ETHIcon from '@/Icons/tokens/eth'
 import { Market } from '@/types/next'
 
 export default function tokenIcon(
-  entry: Market | Token,
+  entry: Market | GMXToken,
   size: number
 ): React.ReactNode {
   switch (entry.symbol?.toLowerCase()) {

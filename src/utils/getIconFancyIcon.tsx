@@ -1,7 +1,7 @@
 import getTokenIcon from './getTokenIcon'
 import clsx from 'clsx'
 
-export default function getIconFancyIcon(token: Token) {
+export default function getIconFancyIcon(token: GMXToken) {
   return (
     <span
       className={clsx(

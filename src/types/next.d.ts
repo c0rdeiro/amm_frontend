@@ -55,7 +55,7 @@ type OptionType = {
 
 type Order = {
   id: number
-  token: Token
+  token: GMXToken
   strategy: 'Long' | 'Short'
   n: number
   type: 'Market' | 'Limit'

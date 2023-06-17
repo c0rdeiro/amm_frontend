@@ -1,11 +1,14 @@
 import Button from '@/components/shared/Button'
+import CustomConnectButton from '@/components/shared/CustomConnectButton'
 import CustomSlider from '@/components/shared/CustomSlider'
 import Select from '@/components/shared/Form/Select'
 import TokenSwapItem from '@/components/shared/Swap/TokenSwapItem'
+import { Token } from '@/constants/tokens'
 import { useMarket } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
+import { useAccount } from 'wagmi'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -25,7 +28,7 @@ const sizeMarks = {
 }
 
 type GMXLongShortProps = {
-  tokens: { label: string; value: string }[]
+  tokens: Token[]
   exchangeType: 'market' | 'limit'
   strategy: 'long' | 'short'
 }
@@ -36,6 +39,8 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   strategy,
 }) => {
   const market = useMarket()
+  const { address } = useAccount()
+
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
 
   const [sizePercentage, setSizePercentage] = useState<number | number[]>(0)
@@ -94,17 +99,45 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
 
   const [limitPrice, setLimitPrice] = useState<number>()
 
-  const [token, setToken] = useState<{
-    label: string
-    value: string
-    quantity: number | undefined
-  }>({ ...tokens[0]!, quantity: undefined })
+  const [token, setToken] = useState<
+    Token & {
+      quantity: number
+    }
+  >({ ...tokens[0]!, quantity: 0 })
 
   const getSubmitBtnLabel = () => {
     if (!token.quantity || token.quantity <= 0) return 'Enter an amount'
 
     return exchangeType === 'market' ? 'Enable Leverage' : 'Enable Orders'
   }
+
+  // const { data, isError, isLoading } = useContractRead({
+  //   address: token.address,
+  //   abi: erc20ABI,
+  //   functionName: 'allowance',
+  //   args: [owner, '0x0000000000000000000000000000000000000000'],
+  // })
+  const tokenAllowance = 50
+  const getSubmitBtn = () => {
+    if (token.isERC20 && address) {
+      if (token?.quantity && tokenAllowance && tokenAllowance < token?.quantity)
+        return (
+          <Button
+            label={`Approve ${token.label}`}
+            size="lg"
+            labelColor="dark"
+            onClick={setTokenAllowance}
+          />
+        )
+      else return <></>
+    }
+    return <Button label={getSubmitBtnLabel()} size="lg" labelColor="dark" />
+  }
+
+  const setTokenAllowance = () => {
+    //TODO: call token approve
+  }
+
   return (
     <>
       <AnimatePresence initial={false}>
@@ -148,10 +181,11 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
               <Select
                 items={tokens}
                 selectedItem={token}
-                setSelectedItem={(token: { label: string; value: string }) =>
+                setSelectedItem={(
+                  token: any //TODO fix types
+                ) =>
                   setToken({
-                    label: token.label,
-                    value: token.value,
+                    ...token,
                     quantity: 0,
                   })
                 }
@@ -214,7 +248,11 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
           </div>
         </motion.div>
         <motion.div id="gmxbtn" layout="position">
-          <Button label={getSubmitBtnLabel()} size="lg" labelColor="dark" />
+          {address ? (
+            getSubmitBtn()
+          ) : (
+            <CustomConnectButton style="normal" size="lg" />
+          )}
         </motion.div>
       </AnimatePresence>
 

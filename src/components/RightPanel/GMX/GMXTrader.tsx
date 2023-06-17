@@ -13,14 +13,15 @@ import ETHIcon from '@/Icons/tokens/eth'
 import BTCIcon from '@/Icons/tokens/btc'
 import USDTIcon from '@/Icons/tokens/usdt'
 import USDCIcon from '@/Icons/tokens/usdc'
+import { TOKENS } from '@/constants/tokens'
 
 const GMXTrader = () => {
-  const tokens = [
-    { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
-    { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
-    { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
-    { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
-  ]
+  // const tokens = [
+  //   { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
+  //   { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
+  //   { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
+  //   { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
+  // ]
   const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
   const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')
   const strategyTabs: TabType[] = [
@@ -79,10 +80,10 @@ const GMXTrader = () => {
           </div>
 
           {strategy === 'swap' ? (
-            <TokenSwap tokens={tokens} exchangeType={exchangeType} />
+            <TokenSwap tokens={TOKENS} exchangeType={exchangeType} />
           ) : (
             <GMXLongShort
-              tokens={tokens}
+              tokens={TOKENS}
               exchangeType={exchangeType}
               strategy={strategy}
             />

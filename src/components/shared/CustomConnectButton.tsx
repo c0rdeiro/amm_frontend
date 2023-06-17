@@ -5,7 +5,15 @@ import Image from 'next/image'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import Button from './Button'
 
-const CustomConnectButton = () => {
+type CustomConnectButtonProps = {
+  style?: 'monochromatic' | 'normal'
+  size?: 'sm' | 'lg'
+}
+
+const CustomConnectButton: React.FC<CustomConnectButtonProps> = ({
+  style = 'monochromatic',
+  size = 'sm',
+}) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -38,9 +46,12 @@ const CustomConnectButton = () => {
                       <Button
                         onClick={openConnectModal}
                         label={'Connect Wallet'}
-                        size="sm"
+                        size={size}
                         rightIcon={<IoWalletOutline />}
-                        styleType="monochromatic"
+                        styleType={style}
+                        labelColor={
+                          style === 'monochromatic' ? 'white' : 'dark'
+                        }
                       />
                     </span>
 
@@ -48,8 +59,11 @@ const CustomConnectButton = () => {
                       <Button
                         onClick={openConnectModal}
                         label={'Connect Wallet'}
-                        size="sm"
-                        styleType="monochromatic"
+                        size={size}
+                        styleType={style}
+                        labelColor={
+                          style === 'monochromatic' ? 'white' : 'dark'
+                        }
                       />
                     </span>
                   </>
@@ -60,7 +74,7 @@ const CustomConnectButton = () => {
                 return (
                   <Button
                     onClick={openChainModal}
-                    size="sm"
+                    size={size}
                     label="Wrong network"
                     styleType="red"
                   />
