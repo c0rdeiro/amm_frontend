@@ -103,7 +103,7 @@ const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
               setToken(token)
             }
             size="lg"
-            isTokenAsset
+            tokenAssetType="full"
           />
         </div>
         <div className="flex w-full flex-col items-start gap-3 rounded bg-gray-500 p-3">

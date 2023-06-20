@@ -13,7 +13,7 @@ import ETHIcon from '@/Icons/tokens/eth'
 import BTCIcon from '@/Icons/tokens/btc'
 import USDTIcon from '@/Icons/tokens/usdt'
 import USDCIcon from '@/Icons/tokens/usdc'
-import { TOKENS } from '@/constants/tokens'
+import { TOKENS } from '@/constants'
 
 const GMXTrader = () => {
   // const tokens = [

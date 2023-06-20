@@ -5,9 +5,10 @@ import Button from '../Button'
 import { HiArrowsUpDown } from 'react-icons/hi2'
 import formatNumber from '@/utils/formatNumber'
 import { AnimatePresence, motion, useAnimate } from 'framer-motion'
+import { Token } from '@/constants'
 
 type TokenSwapProps = {
-  tokens: { label: string; value: string }[]
+  tokens: Token[]
   exchangeType: 'market' | 'limit'
 }
 const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
@@ -25,16 +26,16 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
       return !prev
     })
   }
-  const [firstToken, setFirstToken] = useState<{
-    label: string
-    value: string
-    quantity: number | undefined
-  }>({ quantity: undefined, ...tokens[0]! })
-  const [secondToken, setSecondToken] = useState<{
-    label: string
-    value: string
-    quantity: number | undefined
-  }>({ quantity: undefined, ...tokens[1]! })
+  const [firstToken, setFirstToken] = useState<
+    Token & {
+      quantity: number | undefined
+    }
+  >({ ...tokens[0]!, quantity: undefined })
+  const [secondToken, setSecondToken] = useState<
+    Token & {
+      quantity: number | undefined
+    }
+  >({ ...tokens[1]!, quantity: undefined })
 
   const [price, setPrice] = useState<number>()
 
@@ -95,10 +96,9 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
                   (token) => token.value !== secondToken.value
                 )}
                 selectedItem={firstToken}
-                setSelectedItem={(token: { label: string; value: string }) =>
+                setSelectedItem={(token: any) =>
                   setFirstToken({
-                    label: token.label,
-                    value: token.value,
+                    ...token,
                     quantity: 0,
                   })
                 }
@@ -128,12 +128,8 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
                   (token) => token.value !== firstToken.value
                 )}
                 selectedItem={secondToken}
-                setSelectedItem={(token: { label: string; value: string }) =>
-                  setSecondToken({
-                    label: token.label,
-                    value: token.value,
-                    quantity: 0,
-                  })
+                setSelectedItem={(token: any) =>
+                  setSecondToken({ ...token, quantity: 0 })
                 }
                 style="no-style"
                 textRef={token2Ref}

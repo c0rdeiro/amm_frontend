@@ -26,7 +26,7 @@ type SelectProps<T> = {
   textColor?: 'white' | 'gray'
   textRef?: AnimationScope<any> //used in gmx swap
   hideArrow?: boolean
-  isTokenAsset?: boolean
+  tokenAssetType?: 'short' | 'full'
 }
 
 function Select<T>({
@@ -40,10 +40,17 @@ function Select<T>({
   fontSize = 'md',
   textColor = 'gray',
   hideArrow = false,
-  isTokenAsset = false,
+  tokenAssetType,
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   const tw = resolveConfig(tailwindConfig)
+
+  const renderIcon = (item: SelectItem<T>) => {
+    if (item.icon) return item.icon
+
+    // if (item.symbol) {return getTokenIcon((item.symbol as Token), 18)}
+  }
+
   return (
     <div
       className={clsx('relative', {
@@ -73,11 +80,18 @@ function Select<T>({
           )}
         >
           <h4 ref={textRef} className="whitespace-nowrap">
-            {isTokenAsset ? (
+            {tokenAssetType ? (
               <div className="flex items-center gap-3 text-white">
                 <span>{selectedItem?.icon}</span>
-                <span>{selectedItem?.insideLabel}</span>
-                <span className="rounded bg-chips-bg p-1 text-sm font-normal">
+                {tokenAssetType === 'full' && (
+                  <span>{selectedItem?.insideLabel}</span>
+                )}
+                <span
+                  className={clsx({
+                    'rounded bg-chips-bg p-1 text-sm font-normal':
+                      tokenAssetType === 'full',
+                  })}
+                >
                   {selectedItem?.label}
                 </span>
               </div>
@@ -117,8 +131,8 @@ function Select<T>({
                     )}
                   >
                     {multiple && <Switch enabled={selected} size="sm" />}
-                    {item.icon}
-                    {item.insideLabel ?? item.label}
+                    {renderIcon(item)}
+                    {tokenAssetType === 'full' ? item.insideLabel : item.label}
                   </span>
                 )}
               </Listbox.Option>

@@ -3,12 +3,13 @@ import CustomConnectButton from '@/components/shared/CustomConnectButton'
 import CustomSlider from '@/components/shared/CustomSlider'
 import Select from '@/components/shared/Form/Select'
 import TokenSwapItem from '@/components/shared/Swap/TokenSwapItem'
-import { Token } from '@/constants/tokens'
+import { ADDRESS_ZERO, GMX_ROUTER_ADDRESS, Token } from '@/constants'
 import { useMarket } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { useAccount } from 'wagmi'
+import { formatEther } from 'viem'
+import { erc20ABI, useAccount, useContractRead } from 'wagmi'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -111,16 +112,21 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     return exchangeType === 'market' ? 'Enable Leverage' : 'Enable Orders'
   }
 
-  // const { data, isError, isLoading } = useContractRead({
-  //   address: token.address,
-  //   abi: erc20ABI,
-  //   functionName: 'allowance',
-  //   args: [owner, '0x0000000000000000000000000000000000000000'],
-  // })
-  const tokenAllowance = 50
+  const { data: tokenAllowance } = useContractRead({
+    address: token.address,
+    abi: erc20ABI,
+    functionName: 'allowance',
+    args: [address ?? ADDRESS_ZERO, GMX_ROUTER_ADDRESS],
+    enabled: !!address && token.isERC20,
+  })
+
   const getSubmitBtn = () => {
     if (token.isERC20 && address) {
-      if (token?.quantity && tokenAllowance && tokenAllowance < token?.quantity)
+      if (
+        token?.quantity &&
+        tokenAllowance &&
+        +formatEther(tokenAllowance) < token?.quantity
+      )
         return (
           <Button
             label={`Approve ${token.label}`}
@@ -129,13 +135,23 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             onClick={setTokenAllowance}
           />
         )
-      else return <></>
     }
-    return <Button label={getSubmitBtnLabel()} size="lg" labelColor="dark" />
+    return (
+      <Button
+        label={getSubmitBtnLabel()}
+        size="lg"
+        labelColor="dark"
+        isDisabled={!token?.quantity}
+      />
+    )
   }
 
   const setTokenAllowance = () => {
     //TODO: call token approve
+  }
+
+  const getTokenBalance = () => {
+    //TODO: get token balance
   }
 
   return (
@@ -147,7 +163,6 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             key="tokenswapprice"
             animate={{ opacity: 1 }}
             initial={{ opacity: 0 }}
-            // exit={{ opacity: 0 }}
           >
             <TokenSwapItem
               label={'Price'}
@@ -179,6 +194,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             }
             tokenSelect={
               <Select
+                tokenAssetType="short"
                 items={tokens}
                 selectedItem={token}
                 setSelectedItem={(
@@ -192,7 +208,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
                 style="no-style"
               />
             }
-            secondaryText={``}
+            secondaryText={`Balance ${getTokenBalance()}`}
             complementaryComponent={
               <div className="mx-2 mt-2 mb-6">
                 <CustomSlider
