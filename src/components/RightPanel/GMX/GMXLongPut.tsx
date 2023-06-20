@@ -8,8 +8,9 @@ import { useMarket } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { formatEther } from 'viem'
+import { formatEther, parseEther } from 'viem'
 import { erc20ABI, useAccount, useContractRead } from 'wagmi'
+import { writeContract } from '@wagmi/core'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -121,12 +122,16 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   })
 
   const getSubmitBtn = () => {
-    if (token.isERC20 && address) {
-      if (
-        token?.quantity &&
-        tokenAllowance &&
-        +formatEther(tokenAllowance) < token?.quantity
-      )
+    console.log({
+      tokenAllowance,
+    })
+    if (
+      token.isERC20 &&
+      address &&
+      token?.quantity &&
+      tokenAllowance !== undefined
+    ) {
+      if (+formatEther(tokenAllowance) < token?.quantity)
         return (
           <Button
             label={`Approve ${token.label}`}
@@ -146,8 +151,17 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     )
   }
 
-  const setTokenAllowance = () => {
-    //TODO: call token approve
+  const setTokenAllowance = async () => {
+    if (token.isERC20 && address) {
+      const { hash } = await writeContract({
+        address: token.address,
+        abi: erc20ABI,
+        functionName: 'approve',
+        args: [GMX_ROUTER_ADDRESS, parseEther(`${token.quantity}`)],
+      })
+
+      console.log('DONE', hash)
+    }
   }
 
   const getTokenBalance = () => {
