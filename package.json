@@ -28,7 +28,7 @@
     "react-toastify": "^9.1.3",
     "recharts": "^2.5.0",
     "tailwind": "^4.0.0",
-    "viem": "^0.3.31",
+    "viem": "^1.0.7",
     "wagmi": "^1.0.5",
     "zod": "^3.18.0",
     "zustand": "^4.1.4"
