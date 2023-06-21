@@ -18,6 +18,7 @@ import clsx from 'clsx'
 import formatNumber from '@/utils/formatNumber'
 import getIconFancyIcon from '@/utils/getIconFancyIcon'
 import { formatEther } from 'viem'
+import { TOKENS, Token } from '@/constants'
 
 type ClosePositionModalProps = {
   isOpen: boolean
@@ -32,12 +33,6 @@ const sizeMarks = {
   75: { label: '75%', style: { color: '#A3a3b1' } },
   100: { label: '100%', style: { color: '#A3a3b1' } },
 }
-const tokens = [
-  { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
-  { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
-  { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
-  { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
-]
 
 const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
   isOpen,
@@ -50,11 +45,11 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
     console.log('confirm') //TODO: confirm logic
   }
 
-  const [token, setToken] = useState<{
-    label: string
-    value: string
-    quantity: number | undefined
-  }>({ ...tokens[0]!, quantity: undefined })
+  const [token, setToken] = useState<
+    Token & {
+      quantity: number | undefined
+    }
+  >({ ...TOKENS[0]!, quantity: undefined })
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -113,12 +108,11 @@ const ClosePositionModal: React.FC<ClosePositionModalProps> = ({
           }
           tokenSelect={
             <Select
-              items={tokens}
+              items={TOKENS}
               selectedItem={token}
-              setSelectedItem={(token: { label: string; value: string }) =>
+              setSelectedItem={(token) =>
                 setToken({
-                  label: token.label,
-                  value: token.value,
+                  ...token,
                   quantity: 0,
                 })
               }

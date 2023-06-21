@@ -17,6 +17,7 @@ import Select from '../../shared/Form/Select'
 import TokenSwapItem from '../../shared/Swap/TokenSwapItem'
 import Tabs from '../../shared/Tabs'
 import IVXLineChartWrapper from './IVXLineChartWrapper'
+import { Token, TOKENS } from '@/constants'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },
@@ -110,12 +111,6 @@ const IVXTrader = () => {
   ]
   const [strikePrice, setStrikePrice] = useState<number>(strikePrices[0]!.key)
 
-  const tokens = [
-    { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
-    { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
-    { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
-    { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
-  ]
   const [sizePercentage, setSizePercentage] = useState<number | number[]>(0)
 
   const availableMargin = 364038.73 //TODO
@@ -123,11 +118,11 @@ const IVXTrader = () => {
   const fees = 33 //TODO
   const total = 2204.43 //TODO
 
-  const [token, setToken] = useState<{
-    label: string
-    value: string
-    quantity: number | undefined
-  }>({ ...tokens[0]!, quantity: undefined })
+  const [token, setToken] = useState<
+    Token & {
+      quantity: number | undefined
+    }
+  >({ ...TOKENS[0]!, quantity: undefined })
   const maxRange = (tokenPrice ?? 0) * 1.6
 
   let lineChartData = undefined
@@ -185,12 +180,11 @@ const IVXTrader = () => {
           }
           tokenSelect={
             <Select
-              items={tokens}
+              items={TOKENS}
               selectedItem={token}
-              setSelectedItem={(token: { label: string; value: string }) =>
+              setSelectedItem={(token) =>
                 setToken({
-                  label: token.label,
-                  value: token.value,
+                  ...token,
                   quantity: 0,
                 })
               }

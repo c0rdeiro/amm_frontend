@@ -1,49 +1,19 @@
-import BTCIcon from '@/Icons/tokens/btc'
-import ETHIcon from '@/Icons/tokens/eth'
-import USDCIcon from '@/Icons/tokens/usdc'
-import USDTIcon from '@/Icons/tokens/usdt'
+import { Token, TOKENS } from '@/constants'
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
 import { useState } from 'react'
 import { IoCloseOutline } from 'react-icons/io5'
 
 import Button from '../shared/Button'
+import Input from '../shared/Form/Input'
 import Select from '../shared/Form/Select'
 import Modal from '../shared/Modal'
 import Tabs from '../shared/Tabs'
-import Input from '../shared/Form/Input'
 
 type IVXDepositWithdrawModalProps = {
   isOpen: boolean
   setIsOpen: (flag: boolean) => void
 }
-
-const tokens = [
-  {
-    label: 'ETH',
-    insideLabel: 'Ethereum',
-    value: 'ETH',
-    icon: <ETHIcon size={18} />,
-  },
-  {
-    label: 'USDC',
-    insideLabel: 'USD Coin',
-    value: 'USDC',
-    icon: <USDCIcon size={18} />,
-  },
-  {
-    label: 'USDT',
-    insideLabel: 'Tether Coin',
-    value: 'USDT',
-    icon: <USDTIcon size={18} />,
-  },
-  {
-    label: 'BTC',
-    insideLabel: 'Bitcoin',
-    value: 'BTC',
-    icon: <BTCIcon size={18} />,
-  },
-]
 
 const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
   isOpen,
@@ -53,10 +23,7 @@ const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
     'Deposit' | 'Withdraw'
   >('Deposit')
 
-  const [token, setToken] = useState<{
-    label: string
-    value: string
-  }>({ ...tokens[0]! })
+  const [token, setToken] = useState<Token>(TOKENS[0]!)
 
   const [amount, setAmount] = useState<number | undefined>()
 
@@ -97,11 +64,9 @@ const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
         <div className="flex w-full flex-col items-start gap-3 rounded bg-gray-500 p-3 ">
           <h5 className="text-xs font-normal text-gray-300">Asset</h5>
           <Select
-            items={tokens}
+            items={TOKENS}
             selectedItem={token}
-            setSelectedItem={(token: { label: string; value: string }) =>
-              setToken(token)
-            }
+            setSelectedItem={(token: Token) => setToken(token)}
             size="lg"
             tokenAssetType="full"
           />

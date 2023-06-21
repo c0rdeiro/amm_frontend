@@ -26,7 +26,7 @@ export type Token = {
   decimals: number
   address: `0x${string}`
   isNative?: boolean
-  isERC20?: boolean
+  isStable?: boolean
 }
 
 export const TOKENS: Token[] = [
@@ -57,7 +57,7 @@ export const TOKENS: Token[] = [
     address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
     network: 'ARBITRUM',
     decimals: 6,
-    isERC20: true,
+    isStable: true,
   },
   {
     insideLabel: 'USD Coin',
@@ -67,6 +67,6 @@ export const TOKENS: Token[] = [
     address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
     network: 'ARBITRUM',
     decimals: 6,
-    isERC20: true,
+    isStable: true,
   },
 ]

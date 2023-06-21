@@ -7,18 +7,18 @@ import { AnimationScope } from 'framer-motion'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from 'tailwind.config.cjs'
 
-export type SelectItem<T> = {
-  label: string
-  value: T
-  insideLabel?: string
-  icon?: React.ReactNode
-  isDisabled?: boolean
-}
+// export type SelectItem<T> = {
+//   label: string
+//   value: T
+//   insideLabel?: string
+//   icon?: React.ReactNode
+//   isDisabled?: boolean
+// }
 
 type SelectProps<T> = {
-  items: SelectItem<T>[]
-  selectedItem: SelectItem<T> | undefined | null
-  setSelectedItem: (arg: SelectItem<T>) => void
+  items: T[]
+  selectedItem: T | undefined | null
+  setSelectedItem: (arg: T) => void
   isDisabled?: boolean
   style?: 'normal' | 'no-style'
   size?: 'md' | 'lg'
@@ -29,7 +29,14 @@ type SelectProps<T> = {
   tokenAssetType?: 'short' | 'full'
 }
 
-function Select<T>({
+function Select<
+  T extends {
+    label: string
+    insideLabel?: string
+    icon?: React.ReactNode
+    isDisabled?: boolean
+  }
+>({
   items,
   selectedItem,
   setSelectedItem,
@@ -45,7 +52,7 @@ function Select<T>({
   const multiple = Array.isArray(selectedItem)
   const tw = resolveConfig(tailwindConfig)
 
-  const renderIcon = (item: SelectItem<T>) => {
+  const renderIcon = (item: T) => {
     if (item.icon) return item.icon
 
     // if (item.symbol) {return getTokenIcon((item.symbol as Token), 18)}
@@ -71,7 +78,7 @@ function Select<T>({
               'rounded bg-gray-600 px-4 py-2': style === 'normal',
               'bg-inherit text-gray-300 ': style === 'no-style',
               'flex w-full items-center justify-between': size === 'lg',
-              'text-xs font-normal': fontSize === 'xs',
+              'text-xs font-medium': fontSize === 'xs',
               'text-sm font-normal': fontSize === 'md',
               'text-lg font-bold': fontSize === 'lg',
               'text-white': textColor === 'white',

@@ -7,7 +7,7 @@ import { ADDRESS_ZERO, GMX_ROUTER_ADDRESS, Token } from '@/constants'
 import { useMarket, useTokenPrice } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatEther, parseEther } from 'viem'
 import { erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { writeContract } from '@wagmi/core'
@@ -41,21 +41,23 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   strategy,
 }) => {
   const market = useMarket()
-  const entryPrice = useTokenPrice()
+  const tokenPrice = useTokenPrice()
   const { address } = useAccount()
 
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
 
   const [sizePercentage, setSizePercentage] = useState<number | number[]>(0)
+  const [collateralIn, setCollateralIn] = useState(
+    tokens.filter((x) => x.isStable)[0]
+  )
 
   const infoItems: { key: number; label: string; value: string | number }[] = [
     //TODO: change values to real data
-    { key: 0, label: 'Collateral in', value: 'USD' },
     {
       key: 1,
       label: 'Entry Price',
-      value: entryPrice
-        ? formatNumber(entryPrice, { symbol: '$', decimalCases: 2 })
+      value: tokenPrice
+        ? formatNumber(tokenPrice, { symbol: '$', decimalCases: 2 })
         : '-',
     },
     {
@@ -79,14 +81,16 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     {
       key: 0,
       label: 'Entry Price',
-      value: entryPrice
-        ? formatNumber(entryPrice, { symbol: '$', decimalCases: 2 })
+      value: tokenPrice
+        ? formatNumber(tokenPrice, { symbol: '$', decimalCases: 2 })
         : '-',
     },
     {
       key: 1,
       label: 'Exit Price',
-      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+      value: tokenPrice
+        ? formatNumber(tokenPrice, { symbol: '$', decimalCases: 2 })
+        : '-',
     },
     {
       key: 2,
@@ -123,12 +127,12 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     abi: erc20ABI,
     functionName: 'allowance',
     args: [address ?? ADDRESS_ZERO, GMX_ROUTER_ADDRESS],
-    enabled: !!address && token.isERC20,
+    enabled: !!address && token.isStable,
   })
 
   const getSubmitBtn = () => {
     if (
-      token.isERC20 &&
+      token.isStable &&
       address &&
       token?.quantity &&
       tokenAllowance !== undefined
@@ -154,7 +158,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   }
 
   const setTokenAllowance = async () => {
-    if (token.isERC20 && address) {
+    if (token.isStable && address) {
       const { hash } = await writeContract({
         address: token.address,
         abi: erc20ABI,
@@ -208,16 +212,24 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             value={token.quantity}
             placeholder="0.0"
             onValueChange={(qt) =>
-              setToken((prev) => ({ ...prev, quantity: qt }))
+              setToken((prev) => {
+                setSizePercentage(
+                  currentBalance ? (qt * 100) / +currentBalance?.formatted : 0
+                )
+                console.log(
+                  'PERCENTAGE',
+                  currentBalance ? (qt * 100) / +currentBalance?.formatted : 0
+                )
+
+                return { ...prev, quantity: qt }
+              })
             }
             tokenSelect={
               <Select
                 tokenAssetType="short"
-                items={tokens.filter((token) => !token.isERC20)}
+                items={tokens.filter((token) => !token.isStable)}
                 selectedItem={token}
-                setSelectedItem={(
-                  token: any //TODO fix types
-                ) =>
+                setSelectedItem={(token) =>
                   setToken({
                     ...token,
                     quantity: 0,
@@ -277,6 +289,25 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             </div>
           </div>
           <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="text-xs font-normal text-gray-300">
+                Collateral in
+              </div>
+              <div className="text-sm">
+                {strategy === 'long' ? (
+                  'USD'
+                ) : (
+                  <Select
+                    items={tokens.filter((token) => token.isStable)}
+                    selectedItem={collateralIn}
+                    setSelectedItem={(val) => setCollateralIn(val)}
+                    style="no-style"
+                    textColor="white"
+                    fontSize="xs"
+                  />
+                )}
+              </div>
+            </div>
             {infoItems.map((item) => (
               <div key={item.key} className="flex justify-between">
                 <div className="text-xs font-normal text-gray-300">

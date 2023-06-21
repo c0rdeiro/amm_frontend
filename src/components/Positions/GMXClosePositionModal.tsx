@@ -12,6 +12,7 @@ import Select from '../shared/Form/Select'
 import Modal from '../shared/Modal'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
 import Tabs from '../shared/Tabs'
+import { TOKENS, Token } from '@/constants'
 
 type GMXClosePositionModalProps = {
   position: GMXPosition
@@ -52,15 +53,8 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
   const [allowedSlippage, setAllowedSlippage] = useState(0.003)
   const [fees, setfees] = useState(0.16)
 
-  const tokens: { label: string; value: string }[] = [
-    { label: 'ETH', value: 'ETH' },
-    { label: 'USDC', value: 'USDC' },
-    { label: 'USDT', value: 'USDT' },
-    { label: 'BTC', value: 'BTC' },
-  ]
-
   const getFirstToken = () => {
-    const token = tokens.find((token) => token.value === position.token.symbol)
+    const token = TOKENS.find((token) => token.value === position.token.symbol)
 
     return token
       ? {
@@ -74,9 +68,9 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
           quantity: 0,
         }
       : {
-          ...tokens[0]!,
+          ...TOKENS[0]!,
           label: `${formatNumber(0, { decimalCases: 4 })} ${
-            tokens[0]!.value
+            TOKENS[0]!.value
           } ${formatNumber(receiveDollars, {
             decimalCases: 2,
             symbol: '$',
@@ -86,11 +80,11 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
   }
 
   const [receiveDollars, setreceiveDollars] = useState(0)
-  const [receiveToken, setreceiveToken] = useState<{
-    label: string
-    value: string
-    quantity: number
-  }>(getFirstToken())
+  const [receiveToken, setreceiveToken] = useState<
+    Token & {
+      quantity: number
+    }
+  >(getFirstToken())
   const [sizePercentage, setSizePercentage] = useState<number | number[]>(0)
 
   return (
@@ -256,17 +250,17 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
             <div className="flex w-full items-center justify-between  ">
               <span className="text-gray-300">{`Receive`}</span>
               <Select
-                items={tokens}
+                items={TOKENS}
                 selectedItem={receiveToken}
-                setSelectedItem={(token: { label: string; value: string }) =>
+                setSelectedItem={(token) =>
                   setreceiveToken({
+                    ...token,
                     label: `${formatNumber(0, { decimalCases: 4 })} ${
                       token.value
                     } (${formatNumber(receiveDollars, {
                       decimalCases: 2,
                       symbol: '$',
                     })})`,
-                    value: token.value,
                     quantity: 0,
                   })
                 }
