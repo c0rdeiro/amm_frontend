@@ -24,11 +24,31 @@ export type Token = {
   insideLabel: string
   network: SUPPORTED_NETWORKS
   decimals: number
-  isERC20: boolean
   address: `0x${string}`
+  isNative?: boolean
+  isERC20?: boolean
 }
 
 export const TOKENS: Token[] = [
+  {
+    insideLabel: 'Ethereum',
+    value: 'ETH',
+    label: 'ETH',
+    symbol: 'ETH',
+    network: 'ARBITRUM',
+    address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+    decimals: 18,
+    isNative: true,
+  },
+  {
+    insideLabel: 'Bitcoin',
+    value: 'BTC',
+    label: 'BTC',
+    symbol: 'BTC',
+    network: 'ARBITRUM',
+    address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
+    decimals: 8,
+  },
   {
     insideLabel: 'Tether Coin',
     label: 'USDT',
@@ -48,25 +68,5 @@ export const TOKENS: Token[] = [
     network: 'ARBITRUM',
     decimals: 6,
     isERC20: true,
-  },
-  {
-    insideLabel: 'Ethereum',
-    value: 'ETH',
-    label: 'ETH',
-    symbol: 'ETH',
-    network: 'ARBITRUM',
-    address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-    decimals: 18,
-    isERC20: false,
-  },
-  {
-    insideLabel: 'Bitcoin',
-    value: 'BTC',
-    label: 'BTC',
-    symbol: 'BTC',
-    network: 'ARBITRUM',
-    address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
-    decimals: 8,
-    isERC20: false,
   },
 ]

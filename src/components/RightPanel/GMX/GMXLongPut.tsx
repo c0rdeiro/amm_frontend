@@ -4,13 +4,14 @@ import CustomSlider from '@/components/shared/CustomSlider'
 import Select from '@/components/shared/Form/Select'
 import TokenSwapItem from '@/components/shared/Swap/TokenSwapItem'
 import { ADDRESS_ZERO, GMX_ROUTER_ADDRESS, Token } from '@/constants'
-import { useMarket } from '@/store/tokenStore'
+import { useMarket, useTokenPrice } from '@/store/tokenStore'
 import formatNumber from '@/utils/formatNumber'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { formatEther, parseEther } from 'viem'
-import { erc20ABI, useAccount, useContractRead } from 'wagmi'
+import { erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { writeContract } from '@wagmi/core'
+import useTokenBalance from '@/hooks/useTokenBalance'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -41,6 +42,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   strategy,
 }) => {
   const market = useMarket()
+  const entryPrice = useTokenPrice()
   const { address } = useAccount()
 
   const [leverageOption, setLeverageOption] = useState<number | number[]>(1.1)
@@ -53,7 +55,9 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     {
       key: 1,
       label: 'Entry Price',
-      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+      value: entryPrice
+        ? formatNumber(entryPrice, { symbol: '$', decimalCases: 2 })
+        : '-',
     },
     {
       key: 2,
@@ -76,7 +80,9 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     {
       key: 0,
       label: 'Entry Price',
-      value: formatNumber(123, { symbol: '$', decimalCases: 2 }),
+      value: entryPrice
+        ? formatNumber(entryPrice, { symbol: '$', decimalCases: 2 })
+        : '-',
     },
     {
       key: 1,
@@ -122,9 +128,6 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   })
 
   const getSubmitBtn = () => {
-    console.log({
-      tokenAllowance,
-    })
     if (
       token.isERC20 &&
       address &&
@@ -164,9 +167,11 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     }
   }
 
-  const getTokenBalance = () => {
-    //TODO: get token balance
-  }
+  const { data: currentBalance } = useBalance({
+    address: address,
+    token: token.isNative ? undefined : token.address,
+    watch: true,
+  })
 
   return (
     <>
@@ -209,7 +214,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             tokenSelect={
               <Select
                 tokenAssetType="short"
-                items={tokens}
+                items={tokens.filter((token) => !token.isERC20)}
                 selectedItem={token}
                 setSelectedItem={(
                   token: any //TODO fix types
@@ -222,7 +227,13 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
                 style="no-style"
               />
             }
-            secondaryText={`Balance ${getTokenBalance()}`}
+            secondaryText={`Balance ${
+              currentBalance?.formatted
+                ? formatNumber(+currentBalance?.formatted, {
+                    decimalCases: 4,
+                  })
+                : 0
+            }`}
             complementaryComponent={
               <div className="mx-2 mt-2 mb-6">
                 <CustomSlider
