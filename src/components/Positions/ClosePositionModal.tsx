@@ -1,24 +1,20 @@
-import BTCIcon from '@/Icons/tokens/btc'
-import ETHIcon from '@/Icons/tokens/eth'
-import USDCIcon from '@/Icons/tokens/usdc'
-import USDTIcon from '@/Icons/tokens/usdt'
+import { Token, TOKENS } from '@/constants'
+import formatNumber from '@/utils/formatNumber'
+import getIconFancyIcon from '@/utils/getIconFancyIcon'
+import clsx from 'clsx'
 import { useState } from 'react'
 import {
   IoCloseOutline,
-  IoTrendingUpSharp,
   IoTrendingDownSharp,
+  IoTrendingUpSharp,
 } from 'react-icons/io5'
+import { formatEther } from 'viem'
 
 import Button from '../shared/Button'
+import CustomSlider from '../shared/CustomSlider'
 import Select from '../shared/Form/Select'
 import Modal from '../shared/Modal'
 import TokenSwapItem from '../shared/Swap/TokenSwapItem'
-import CustomSlider from '../shared/CustomSlider'
-import clsx from 'clsx'
-import formatNumber from '@/utils/formatNumber'
-import getIconFancyIcon from '@/utils/getIconFancyIcon'
-import { formatEther } from 'viem'
-import { TOKENS, Token } from '@/constants'
 
 type ClosePositionModalProps = {
   isOpen: boolean

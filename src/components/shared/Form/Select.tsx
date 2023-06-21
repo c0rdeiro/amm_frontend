@@ -7,14 +7,6 @@ import { AnimationScope } from 'framer-motion'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from 'tailwind.config.cjs'
 
-// export type SelectItem<T> = {
-//   label: string
-//   value: T
-//   insideLabel?: string
-//   icon?: React.ReactNode
-//   isDisabled?: boolean
-// }
-
 type SelectProps<T> = {
   items: T[]
   selectedItem: T | undefined | null
@@ -51,12 +43,6 @@ function Select<
 }: SelectProps<T>) {
   const multiple = Array.isArray(selectedItem)
   const tw = resolveConfig(tailwindConfig)
-
-  const renderIcon = (item: T) => {
-    if (item.icon) return item.icon
-
-    // if (item.symbol) {return getTokenIcon((item.symbol as Token), 18)}
-  }
 
   return (
     <div
@@ -138,7 +124,7 @@ function Select<
                     )}
                   >
                     {multiple && <Switch enabled={selected} size="sm" />}
-                    {renderIcon(item)}
+                    {item.icon}
                     {tokenAssetType === 'full' ? item.insideLabel : item.label}
                   </span>
                 )}

@@ -1,8 +1,5 @@
 import IVXDepositWithdrawModal from '@/components/Modals/IVXDepositWithdrawModal'
-import BTCIcon from '@/Icons/tokens/btc'
-import ETHIcon from '@/Icons/tokens/eth'
-import USDCIcon from '@/Icons/tokens/usdc'
-import USDTIcon from '@/Icons/tokens/usdt'
+import { Token, TOKENS } from '@/constants'
 import { useTokenPrice } from '@/store/tokenStore'
 import { TabType } from '@/types/next'
 import formatNumber from '@/utils/formatNumber'
@@ -17,7 +14,6 @@ import Select from '../../shared/Form/Select'
 import TokenSwapItem from '../../shared/Swap/TokenSwapItem'
 import Tabs from '../../shared/Tabs'
 import IVXLineChartWrapper from './IVXLineChartWrapper'
-import { Token, TOKENS } from '@/constants'
 
 const sizeMarks = {
   0: { label: '0%', style: { color: '#A3a3b1' } },

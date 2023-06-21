@@ -1,5 +1,6 @@
 import 'rc-slider/assets/index.css'
 
+import { TOKENS } from '@/constants'
 import { TabType } from '@/types/next'
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
 import { useState } from 'react'
@@ -9,19 +10,8 @@ import { IoTrendingDownSharp, IoTrendingUpSharp } from 'react-icons/io5'
 import TokenSwap from '../../shared/Swap/TokenSwap'
 import Tabs from '../../shared/Tabs'
 import GMXLongShort from './GMXLongPut'
-import ETHIcon from '@/Icons/tokens/eth'
-import BTCIcon from '@/Icons/tokens/btc'
-import USDTIcon from '@/Icons/tokens/usdt'
-import USDCIcon from '@/Icons/tokens/usdc'
-import { TOKENS } from '@/constants'
 
 const GMXTrader = () => {
-  // const tokens = [
-  //   { label: 'ETH', value: 'ETH', icon: <ETHIcon size={18} /> },
-  //   { label: 'USDC', value: 'USDC', icon: <USDCIcon size={18} /> },
-  //   { label: 'USDT', value: 'USDT', icon: <USDTIcon size={18} /> },
-  //   { label: 'BTC', value: 'BTC', icon: <BTCIcon size={18} /> },
-  // ]
   const [strategy, setStrategy] = useState<'long' | 'short' | 'swap'>('long')
   const [exchangeType, setExchangeType] = useState<'market' | 'limit'>('market')
   const strategyTabs: TabType[] = [

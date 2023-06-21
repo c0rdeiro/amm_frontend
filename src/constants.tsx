@@ -1,3 +1,7 @@
+import BTCIcon from './Icons/tokens/btc'
+import ETHIcon from './Icons/tokens/eth'
+import USDCIcon from './Icons/tokens/usdc'
+import USDTIcon from './Icons/tokens/usdt'
 import { Market } from './types/next'
 
 export const markets: Market[] = [
@@ -25,6 +29,7 @@ export type Token = {
   network: SUPPORTED_NETWORKS
   decimals: number
   address: `0x${string}`
+  icon: React.ReactNode
   isNative?: boolean
   isStable?: boolean
 }
@@ -38,6 +43,7 @@ export const TOKENS: Token[] = [
     network: 'ARBITRUM',
     address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     decimals: 18,
+    icon: <ETHIcon size={18} />,
     isNative: true,
   },
   {
@@ -47,6 +53,7 @@ export const TOKENS: Token[] = [
     symbol: 'BTC',
     network: 'ARBITRUM',
     address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
+    icon: <BTCIcon size={18} />,
     decimals: 8,
   },
   {
@@ -57,6 +64,7 @@ export const TOKENS: Token[] = [
     address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
     network: 'ARBITRUM',
     decimals: 6,
+    icon: <USDTIcon size={18} />,
     isStable: true,
   },
   {
@@ -66,6 +74,7 @@ export const TOKENS: Token[] = [
     symbol: 'USDC',
     address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
     network: 'ARBITRUM',
+    icon: <USDCIcon size={18} />,
     decimals: 6,
     isStable: true,
   },
