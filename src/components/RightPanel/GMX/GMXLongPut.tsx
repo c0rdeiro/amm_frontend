@@ -11,7 +11,6 @@ import { useState } from 'react'
 import { formatEther, parseEther } from 'viem'
 import { erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { writeContract } from '@wagmi/core'
-import useTokenBalance from '@/hooks/useTokenBalance'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
