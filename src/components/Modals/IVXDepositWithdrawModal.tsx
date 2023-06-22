@@ -95,7 +95,7 @@ const IVXDepositWithdrawModal: React.FC<IVXDepositWithdrawModalProps> = ({
             <h4 className="flex items-center gap-1 text-xs  font-normal text-gray-300">
               <span>Available</span>
               <div className="rounded-md bg-gray-400 bg-opacity-70 p-1 text-white opacity-70">
-                {token.value}
+                {token.symbol}
               </div>
             </h4>
             <h3 className="text-sm text-white">

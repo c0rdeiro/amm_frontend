@@ -54,13 +54,13 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
   const [fees, setfees] = useState(0.16)
 
   const getFirstToken = () => {
-    const token = TOKENS.find((token) => token.value === position.token.symbol)
+    const token = TOKENS.find((token) => token.symbol === position.token.symbol)
 
     return token
       ? {
           ...token,
           label: `${formatNumber(0, { decimalCases: 4 })} ${
-            token.value
+            token.symbol
           } ${formatNumber(receiveDollars, {
             decimalCases: 2,
             symbol: '$',
@@ -70,7 +70,7 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
       : {
           ...TOKENS[0]!,
           label: `${formatNumber(0, { decimalCases: 4 })} ${
-            TOKENS[0]!.value
+            TOKENS[0]!.symbol
           } ${formatNumber(receiveDollars, {
             decimalCases: 2,
             symbol: '$',
@@ -256,7 +256,7 @@ const GMXClosePositionModal: React.FC<GMXClosePositionModalProps> = ({
                   setreceiveToken({
                     ...token,
                     label: `${formatNumber(0, { decimalCases: 4 })} ${
-                      token.value
+                      token.symbol
                     } (${formatNumber(receiveDollars, {
                       decimalCases: 2,
                       symbol: '$',

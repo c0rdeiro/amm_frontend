@@ -227,7 +227,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             tokenSelect={
               <Select
                 tokenAssetType="short"
-                items={tokens.filter((token) => !token.isStable)}
+                items={tokens}
                 selectedItem={token}
                 setSelectedItem={(token) =>
                   setToken({

@@ -21,8 +21,6 @@ export const GMX_ROUTER_ADDRESS = '0xaBBc5F99639c9B6bCb58544ddf04EFA6802F4064'
 type SUPPORTED_NETWORKS = 'ARBITRUM'
 
 export type Token = {
-  //TODO: refactor to lose value (when refactoring Select)
-  value: string
   symbol: string
   label: string
   insideLabel: string
@@ -37,7 +35,6 @@ export type Token = {
 export const TOKENS: Token[] = [
   {
     insideLabel: 'Ethereum',
-    value: 'ETH',
     label: 'ETH',
     symbol: 'ETH',
     network: 'ARBITRUM',
@@ -48,7 +45,6 @@ export const TOKENS: Token[] = [
   },
   {
     insideLabel: 'Bitcoin',
-    value: 'BTC',
     label: 'BTC',
     symbol: 'BTC',
     network: 'ARBITRUM',
@@ -59,7 +55,6 @@ export const TOKENS: Token[] = [
   {
     insideLabel: 'Tether Coin',
     label: 'USDT',
-    value: 'USDT',
     symbol: 'USDT',
     address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
     network: 'ARBITRUM',
@@ -70,7 +65,6 @@ export const TOKENS: Token[] = [
   {
     insideLabel: 'USD Coin',
     label: 'USDC',
-    value: 'USDC',
     symbol: 'USDC',
     address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
     network: 'ARBITRUM',

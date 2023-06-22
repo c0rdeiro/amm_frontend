@@ -93,7 +93,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
             tokenSelect={
               <Select
                 items={tokens.filter(
-                  (token) => token.value !== secondToken.value
+                  (token) => token.symbol !== secondToken.symbol
                 )}
                 selectedItem={firstToken}
                 setSelectedItem={(token: any) =>
@@ -125,7 +125,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ tokens, exchangeType }) => {
             tokenSelect={
               <Select
                 items={tokens.filter(
-                  (token) => token.value !== firstToken.value
+                  (token) => token.symbol !== firstToken.symbol
                 )}
                 selectedItem={secondToken}
                 setSelectedItem={(token: any) =>
