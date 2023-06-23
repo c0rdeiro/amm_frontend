@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { formatEther, parseEther } from 'viem'
 import { erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { writeContract } from '@wagmi/core'
+import { toast } from 'react-toastify'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -147,6 +148,18 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
           />
         )
     }
+
+    if (currentBalance && token?.quantity > +currentBalance?.formatted) {
+      return (
+        <Button
+          label={`Insuficient ${token.symbol} funds`}
+          size="lg"
+          labelColor="dark"
+          isDisabled={true}
+        />
+      )
+    }
+
     return (
       <Button
         label={getSubmitBtnLabel()}
@@ -159,14 +172,26 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
 
   const setTokenAllowance = async () => {
     if (token.isStable && address) {
-      const { hash } = await writeContract({
-        address: token.address,
-        abi: erc20ABI,
-        functionName: 'approve',
-        args: [GMX_ROUTER_ADDRESS, parseEther(`${token.quantity}`)],
-      })
-
-      console.log('DONE', hash)
+      try {
+        const { hash } = await writeContract({
+          address: token.address,
+          abi: erc20ABI,
+          functionName: 'approve',
+          args: [GMX_ROUTER_ADDRESS, parseEther(`${token.quantity}`)],
+        })
+        console.log(hash)
+      } catch (e) {
+        toast.error('Approval cancelled.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        })
+      }
     }
   }
 
