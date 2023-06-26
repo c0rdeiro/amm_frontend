@@ -1,9 +1,14 @@
+import { prepareWriteContract, writeContract } from '@wagmi/core'
+import { parseGwei } from 'viem'
+
 export const BASIS_POINTS_DIVISOR = 10000
 export const MAX_LEVERAGE = 100 * BASIS_POINTS_DIVISOR
 export const MAX_ALLOWED_LEVERAGE = 50 * BASIS_POINTS_DIVISOR
 export const MARGIN_FEE_BASIS_POINTS = 10
 export const USD_DECIMALS = 30
 export const LIQUIDATION_FEE = 5 * 10 ** USD_DECIMALS
+export const IVX_REFERRAL_CODE =
+  '0x696c6f7665697678000000000000000000000000000000000000000000000000'
 
 function getLiquidationPriceFromDelta(
   liquidationAmount: bigint,
@@ -102,4 +107,77 @@ export function getLiquidationPrice(
   return liquidationPriceForFees < liquidationPriceForMaxLeverage
     ? liquidationPriceForFees
     : liquidationPriceForMaxLeverage
+}
+
+export async function openMarketPosition(
+  account: `0x${string}`,
+  path: `0x${string}`[],
+  indexToken: `0x${string}`,
+  amountIn: bigint,
+  minOut: bigint,
+  sizeDelta: bigint,
+  isLong: boolean,
+  acceptablePrice: bigint,
+  executionFee: bigint,
+  callbackTarget: `0x${string}`
+) {
+  const { request } = await prepareWriteContract({
+    address: account,
+    abi: GMX_POSITION_ROUTER_ABI,
+    functionName: 'createIncreasePosition',
+    value: parseGwei('2'), //TODO check this
+    args: [
+      path,
+      indexToken,
+      amountIn,
+      minOut,
+      sizeDelta,
+      isLong,
+      acceptablePrice,
+      executionFee,
+      IVX_REFERRAL_CODE,
+      callbackTarget,
+    ],
+  })
+  const { hash } = await writeContract(request)
+
+  return hash
+}
+
+export async function closeMarketPosition(
+  account: `0x${string}`,
+  path: `0x${string}`[],
+  indexToken: `0x${string}`,
+  collateralDelta: bigint,
+  sizeDelta: bigint,
+  isLong: boolean,
+  receiver: `0x${string}`,
+  acceptablePrice: bigint,
+  minOut: bigint,
+  executionFee: bigint,
+  withdrawETH: boolean,
+  callbackTarget: `0x${string}`
+) {
+  const { request } = await prepareWriteContract({
+    address: account,
+    abi: GMX_POSITION_ROUTER_ABI,
+    functionName: 'createDecreasePosition',
+    value: parseGwei('2'), //TODO check this
+    args: [
+      path,
+      indexToken,
+      collateralDelta,
+      sizeDelta,
+      isLong,
+      receiver,
+      acceptablePrice,
+      minOut,
+      executionFee,
+      withdrawETH,
+      callbackTarget,
+    ],
+  })
+  const { hash } = await writeContract(request)
+
+  return hash
 }

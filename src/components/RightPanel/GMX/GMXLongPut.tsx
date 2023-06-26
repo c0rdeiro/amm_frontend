@@ -145,6 +145,10 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     enabled: !!address && token.isStable,
   })
 
+  const getSubmitBtnAction = () => {
+    return undefined //exchangeType === 'market' //TODO
+  }
+
   const getSubmitBtn = () => {
     if (
       token.isStable &&
@@ -180,6 +184,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
         size="lg"
         labelColor="dark"
         isDisabled={!token?.quantity}
+        onClick={getSubmitBtnAction()}
       />
     )
   }
@@ -214,6 +219,8 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     token: token.isNative ? undefined : token.address,
     watch: true,
   })
+
+  console.log(sizePercentage)
 
   return (
     <>
@@ -253,7 +260,8 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
             onValueChange={(qt) =>
               setToken((prev) => {
                 setSizePercentage(
-                  currentBalance ? (qt * 100) / +currentBalance?.formatted : 0
+                  // currentBalance ? (qt * 100) / +currentBalance?.formatted : 0
+                  75
                 )
                 console.log(
                   'PERCENTAGE',
@@ -295,7 +303,7 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
                         quantity: +currentBalance?.formatted * (n / 100),
                       }))
                     return setSizePercentage(n)
-                  }} //TODO: this will alter the size
+                  }}
                   marks={sizeMarks}
                   min={0}
                   max={100}
