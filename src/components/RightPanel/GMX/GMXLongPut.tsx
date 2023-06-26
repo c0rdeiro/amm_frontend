@@ -12,6 +12,7 @@ import { formatEther, parseEther } from 'viem'
 import { erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 import { writeContract } from '@wagmi/core'
 import { toast } from 'react-toastify'
+import { getLiquidationPrice } from '@/utils/gmx'
 
 const leverageMarks = {
   1.1: { label: '1.1x', style: { color: '#A3a3b1' } },
@@ -51,6 +52,23 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   const [collateralIn, setCollateralIn] = useState(
     tokens.filter((x) => x.isStable)[0]
   )
+  const [token, setToken] = useState<
+    Token & {
+      quantity: number
+    }
+  >({ ...tokens[0]!, quantity: 0 })
+
+  const liqPrice = undefined
+  // getLiquidationPrice(
+  //   strategy === 'long',
+  //   BigInt(token?.quantity),
+  //   0n,
+  //   tokenPrice ? BigInt(Math.round(tokenPrice)) : 0n,
+  //   0n,
+  //   false
+  // )
+
+  // console.log('LIQ', liqPrice)
 
   const infoItems: { key: number; label: string; value: string | number }[] = [
     //TODO: change values to real data
@@ -64,7 +82,9 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
     {
       key: 2,
       label: 'Liq. Price',
-      value: formatNumber(-1685, { symbol: '$', decimalCases: 2 }),
+      value: liqPrice
+        ? formatNumber(+formatEther(liqPrice), { symbol: '$', decimalCases: 2 })
+        : '-',
     },
     {
       key: 3,
@@ -110,12 +130,6 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
   ]
 
   const [limitPrice, setLimitPrice] = useState<number>()
-
-  const [token, setToken] = useState<
-    Token & {
-      quantity: number
-    }
-  >({ ...tokens[0]!, quantity: 0 })
 
   const getSubmitBtnLabel = () => {
     if (!token.quantity || token.quantity <= 0) return 'Enter an amount'
@@ -274,7 +288,14 @@ const GMXLongShort: React.FC<GMXLongShortProps> = ({
               <div className="mx-2 mt-2 mb-6">
                 <CustomSlider
                   option={sizePercentage}
-                  setOption={setSizePercentage} //TODO: this will alter the size
+                  setOption={(n) => {
+                    if (currentBalance && !Array.isArray(n))
+                      setToken((prev) => ({
+                        ...prev,
+                        quantity: +currentBalance?.formatted * (n / 100),
+                      }))
+                    return setSizePercentage(n)
+                  }} //TODO: this will alter the size
                   marks={sizeMarks}
                   min={0}
                   max={100}
