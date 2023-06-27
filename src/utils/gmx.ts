@@ -9,6 +9,9 @@ export const USD_DECIMALS = 30
 export const LIQUIDATION_FEE = 5 * 10 ** USD_DECIMALS
 export const IVX_REFERRAL_CODE =
   '0x696c6f7665697678000000000000000000000000000000000000000000000000'
+export const POSITION_ROUTER_ADDRESS =
+  '0xb87a436B93fFE9D75c5cFA7bAcFff96430b09868'
+export const ORDER_BOOK_ADDRESS = '0x09f77E8A13De9a35a7231028187e9fD5DB8a2ACB'
 
 function getLiquidationPriceFromDelta(
   liquidationAmount: bigint,
@@ -144,6 +147,39 @@ export async function openMarketPosition(
   return hash
 }
 
+export async function openMarketPositionEth(
+  path: `0x${string}`[],
+  indexToken: `0x${string}`,
+  minOut: bigint,
+  sizeDelta: bigint,
+  isLong: boolean,
+  acceptablePrice: bigint,
+  executionFee: bigint,
+  callbackTarget: `0x${string}`
+) {
+  const { request } = await prepareWriteContract({
+    address: POSITION_ROUTER_ADDRESS,
+    abi: GMX_POSITION_ROUTER_ABI,
+    functionName: 'createIncreasePositionETH',
+    args: [
+      path,
+      indexToken,
+      minOut,
+      sizeDelta,
+      isLong,
+      acceptablePrice,
+      executionFee,
+      IVX_REFERRAL_CODE,
+      callbackTarget,
+    ],
+    value: parseGwei('2'),
+  })
+
+  const { hash } = await writeContract(request)
+
+  return hash
+}
+
 export async function closeMarketPosition(
   account: `0x${string}`,
   path: `0x${string}`[],
@@ -176,6 +212,43 @@ export async function closeMarketPosition(
       withdrawETH,
       callbackTarget,
     ],
+  })
+  const { hash } = await writeContract(request)
+
+  return hash
+}
+
+export async function openLimitOrder(
+  path: `0x${string}`[],
+  amountIn: bigint,
+  indexToken: `0x${string}`,
+  minOut: bigint,
+  sizeDelta: bigint,
+  collateralToken: `0x${string}`,
+  isLong: boolean,
+  triggerPrice: bigint,
+  triggerAboveThreshold: boolean,
+  executionFee: bigint,
+  shouldWrap: boolean
+) {
+  const { request } = await prepareWriteContract({
+    address: ORDER_BOOK_ADDRESS,
+    abi: GMX_ORDER_BOOK_ABI,
+    functionName: 'createIncreaseOrder',
+    args: [
+      path,
+      amountIn,
+      indexToken,
+      minOut,
+      sizeDelta,
+      collateralToken,
+      isLong,
+      triggerPrice,
+      triggerAboveThreshold,
+      executionFee,
+      shouldWrap,
+    ],
+    value: parseGwei('2'),
   })
   const { hash } = await writeContract(request)
 
