@@ -1,4 +1,4 @@
-# 0DTE options Frontend
+# AMM options Frontend
 
 ### Tech Stack
 
